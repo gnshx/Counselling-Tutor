@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { GraduationCap, Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
+import { GraduationCap, Lock, Mail, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 
 export default function TeacherLogin() {
   const [email, setEmail] = useState('teacher@school.com');
@@ -26,16 +26,22 @@ export default function TeacherLogin() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Login failed');
-        setIsLoading(false);
+        // Even if login POST fails, redirect to dashboard in open demo mode
+        router.push('/dashboard');
         return;
       }
 
       router.push('/dashboard');
     } catch {
-      setError('Connection error. Please try again.');
+      // In bypass mode, redirect directly to dashboard
+      router.push('/dashboard');
+    } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleBypassLogin = () => {
+    router.push('/dashboard');
   };
 
   return (
@@ -72,13 +78,24 @@ export default function TeacherLogin() {
             <p className="text-xs text-slate-400">Access the Teacher Portal to manage students and feedback</p>
           </div>
 
-          {/* Quick Demo Credentials Box */}
-          <div className="p-3 rounded-xl bg-indigo-950/60 border border-indigo-800/50 text-xs text-indigo-200 space-y-1">
-            <p className="font-bold flex items-center gap-1.5 text-indigo-300">
-              <span>💡 Demo Credentials:</span>
+          {/* Quick Demo Login Banner */}
+          <div className="p-4 rounded-2xl bg-indigo-950/60 border border-indigo-800/50 text-xs text-indigo-200 space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="font-bold flex items-center gap-1.5 text-indigo-300">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>Open Preview Mode Active</span>
+              </p>
+            </div>
+            <p className="text-slate-300">
+              JWT lock is temporarily relaxed so guests & friends can explore the dashboard without login errors!
             </p>
-            <p>Email: <code className="text-amber-300 font-mono font-bold">teacher@school.com</code></p>
-            <p>Password: <code className="text-amber-300 font-mono font-bold">teacher123</code></p>
+            <button
+              type="button"
+              onClick={handleBypassLogin}
+              className="w-full mt-1 py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <span>Instant Guest Access to Dashboard →</span>
+            </button>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -131,7 +148,7 @@ export default function TeacherLogin() {
       </main>
 
       <footer className="py-6 text-center text-xs text-slate-600">
-        Teacher Portal Access • Secure Authentication
+        Teacher Portal Access • Open Demo Mode
       </footer>
     </div>
   );

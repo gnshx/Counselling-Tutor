@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import { prisma } from './db';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-change-in-production'
@@ -29,8 +30,36 @@ export async function verifyToken(token: string): Promise<TokenPayload | null> {
 }
 
 export async function getAuthTeacher(): Promise<TokenPayload | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('auth-token')?.value;
-  if (!token) return null;
-  return verifyToken(token);
+  // 1. Check if user has valid JWT token in cookies
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('auth-token')?.value;
+    if (token) {
+      const verified = await verifyToken(token);
+      if (verified) return verified;
+    }
+  } catch {
+    // Cookie reading error ignore
+  }
+
+  // 2. DEMO / OPEN BYPASS MODE: Fallback to default active teacher so guests & friends can view dashboard directly
+  try {
+    const defaultTeacher = await prisma.teacher.findFirst();
+    if (defaultTeacher) {
+      return {
+        teacherId: defaultTeacher.id,
+        email: defaultTeacher.email,
+        name: defaultTeacher.name,
+      };
+    }
+  } catch {
+    // Fallback if DB fetch fails
+  }
+
+  // Fallback static teacher ID
+  return {
+    teacherId: 'cmtd999cs000013c8pid5u6c5',
+    email: 'teacher@school.com',
+    name: 'Demo Teacher',
+  };
 }
