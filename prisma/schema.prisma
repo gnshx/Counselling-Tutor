@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  school       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  students Student[]
+  feedback TeacherFeedback[]
+}
+
+model Student {
+  id                   String   @id @default(cuid())
+  name                 String
+  dob                  DateTime
+  classGrade           String
+  school               String?
+  parentJob            String?
+  familyIncome         String?
+  parentBackground     String?
+  backgroundInfo       String?
+  accessCode           String   @unique
+  questionnaireStatus  String   @default("not_started") // not_started, in_progress, completed
+  assessmentStatus     String   @default("not_started")
+  feedbackStatus       String   @default("not_started")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  teacherId String
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+
+  questionnaireResponse QuestionnaireResponse?
+  assessmentResponse    AssessmentResponse?
+  teacherFeedback       TeacherFeedback?
+}
+
+model QuestionnaireResponse {
+  id          String   @id @default(cuid())
+  responses   Json     // Array of { questionId: string, answer: string | string[] }
+  completedAt DateTime @default(now())
+
+  studentId String  @unique
+  student   Student @relation(fields: [studentId], references: [id])
+}
+
+model AssessmentResponse {
+  id             String   @id @default(cuid())
+  responses      Json     // Array of { questionId: string, selectedAnswer: string, isCorrect: boolean }
+  score          Int
+  totalQuestions Int      @default(15)
+  completedAt    DateTime @default(now())
+
+  studentId String  @unique
+  student   Student @relation(fields: [studentId], references: [id])
+}
+
+model TeacherFeedback {
+  id              String   @id @default(cuid())
+  ratings         Json     // Array of { questionId: string, rating: number | "N/O" }
+  strongestAreas  Json?    // string[]
+  interestedAreas Json?    // string[]
+  workingStyle    String?
+  comment         String?
+  completedAt     DateTime @default(now())
+
+  studentId String  @unique
+  student   Student @relation(fields: [studentId], references: [id])
+
+  teacherId String
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+}
