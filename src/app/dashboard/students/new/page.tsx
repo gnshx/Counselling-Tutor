@@ -12,7 +12,7 @@ export default function AddStudentPage() {
   const [formData, setFormData] = useState({
     name: '',
     dob: '',
-    classGrade: '10',
+    classGrade: '8',
     school: '',
     parentJob: '',
     familyIncome: '',
@@ -155,10 +155,9 @@ export default function AddStudentPage() {
                     onChange={(e) => setFormData({ ...formData, classGrade: e.target.value })}
                     className="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500"
                   >
+                    <option value="8">Class 8</option>
                     <option value="9">Class 9</option>
                     <option value="10">Class 10</option>
-                    <option value="11">Class 11</option>
-                    <option value="12">Class 12</option>
                   </select>
                 </div>
               </div>
