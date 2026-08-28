@@ -7,7 +7,7 @@ import { QuestionCard } from '@/components/student/QuestionCard';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
 import { Button } from '@/components/ui/Button';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
 
 export default function StudentQuestionnairePage() {
   const router = useRouter();
@@ -66,7 +66,6 @@ export default function StudentQuestionnairePage() {
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      // Submit questionnaire
       await handleSubmit();
     }
   };
@@ -102,7 +101,6 @@ export default function StudentQuestionnairePage() {
         return;
       }
 
-      // Update localStorage session status
       const updatedStudent = { ...student, questionnaireStatus: 'completed' };
       localStorage.setItem('student_session', JSON.stringify(updatedStudent));
 
@@ -116,7 +114,7 @@ export default function StudentQuestionnairePage() {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center px-4 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 flex flex-col justify-center px-4 py-8">
         <CompletionScreen
           studentName={student.name}
           onNextJourney={() => router.push('/student/assessment')}
@@ -127,29 +125,33 @@ export default function StudentQuestionnairePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-pink-500 selection:text-white relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-violet-600/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 flex flex-col justify-between selection:bg-pink-500 selection:text-white relative overflow-hidden">
+      {/* Soft Ambient Background Decoration */}
+      <div className="absolute top-0 right-1/4 w-[30rem] h-[30rem] bg-violet-200/40 dark:bg-violet-900/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-[30rem] h-[30rem] bg-pink-200/40 dark:bg-pink-900/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-20">
+      <header className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md sticky top-0 z-20 shadow-xs">
         <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
           <button
             onClick={() => router.push('/student')}
-            className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Portal</span>
           </button>
 
-          <span className="text-xs font-extrabold text-violet-400 tracking-wider uppercase">
-            Question {currentIndex + 1} of {totalQuestions}
-          </span>
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-black text-violet-700 dark:text-violet-400 tracking-wider uppercase">
+              Question {currentIndex + 1} of {totalQuestions}
+            </span>
+          </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-2xl w-full mx-auto px-4 py-6 flex-1 flex flex-col justify-center space-y-6 z-10">
+      <main className="max-w-2xl w-full mx-auto px-4 py-8 sm:py-10 flex-1 flex flex-col justify-center space-y-8 z-10">
         {/* Progress Bar */}
         <ProgressBar
           current={currentIndex + 1}
@@ -157,6 +159,7 @@ export default function StudentQuestionnairePage() {
           showText={true}
           label={`Question ${currentIndex + 1} of ${totalQuestions}`}
           colorTheme="violet"
+          height="lg"
         />
 
         {/* Question Card */}
@@ -168,9 +171,9 @@ export default function StudentQuestionnairePage() {
           onFollowUpChange={handleFollowUpChange}
         />
 
-        {error && <p className="text-xs font-bold text-rose-400 text-center">{error}</p>}
+        {error && <p className="text-xs font-extrabold text-rose-500 text-center">{error}</p>}
 
-        {/* Navigation Buttons */}
+        {/* Navigation Buttons with Generous Spacing */}
         <div className="flex items-center justify-between gap-4 pt-2">
           <Button
             type="button"
@@ -195,8 +198,8 @@ export default function StudentQuestionnairePage() {
         </div>
       </main>
 
-      <footer className="py-4 text-center text-xs text-slate-600">
-        Student Career Discovery Questionnaire
+      <footer className="py-4 text-center text-xs font-medium text-slate-500">
+        Student Career Discovery • Positive Possibilities Only ✨
       </footer>
     </div>
   );

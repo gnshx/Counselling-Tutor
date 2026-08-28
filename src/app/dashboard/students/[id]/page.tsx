@@ -4,9 +4,8 @@ import React, { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/teacher/Header';
 import { StatusBadge } from '@/components/ui/StatusBadge';
-import { ArrowLeft, User, Calendar, GraduationCap, School, MessageSquarePlus, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, GraduationCap, School, Briefcase, DollarSign, MessageSquarePlus, CheckCircle } from 'lucide-react';
 import { questionnaireQuestions } from '@/lib/data/questionnaire';
-import { teacherFeedbackQuestions } from '@/lib/data/teacher-feedback';
 
 interface StudentDetail {
   id: string;
@@ -14,8 +13,8 @@ interface StudentDetail {
   dob: string;
   classGrade: string;
   school?: string | null;
-  parentBackground?: string | null;
-  backgroundInfo?: string | null;
+  parentJob?: string | null;
+  familyIncome?: string | null;
   accessCode: string;
   questionnaireStatus: string;
   assessmentStatus: string;
@@ -85,7 +84,6 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
     year: 'numeric',
   });
 
-  // Helper to map questionnaire response IDs to human-readable labels
   const getQuestionnaireAnswerLabel = (qId: string, ans: any) => {
     const question = questionnaireQuestions.find((q) => q.id === qId);
     if (!question) return String(ans);
@@ -169,6 +167,24 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
             </div>
           </div>
 
+          {/* Family Background Info */}
+          {(student.parentJob || student.familyIncome) && (
+            <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 flex flex-wrap gap-4 text-xs">
+              {student.parentJob && (
+                <div className="flex items-center gap-1.5 text-indigo-900 dark:text-indigo-200">
+                  <Briefcase className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                  <span>Parent Occupation: <strong>{student.parentJob}</strong></span>
+                </div>
+              )}
+              {student.familyIncome && (
+                <div className="flex items-center gap-1.5 text-indigo-900 dark:text-indigo-200">
+                  <DollarSign className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <span>Family Income Range: <strong>{student.familyIncome}</strong></span>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Progress Overview Section */}
           <div>
             <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Progress Summary</h2>
@@ -249,7 +265,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
             <div className="space-y-4 pt-2">
               <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 text-emerald-800 dark:text-emerald-300 text-sm font-semibold flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-emerald-600" />
-                <span>Feedback submitted on {new Date().toLocaleDateString()}</span>
+                <span>Feedback submitted</span>
               </div>
 
               {student.teacherFeedback.comment && (

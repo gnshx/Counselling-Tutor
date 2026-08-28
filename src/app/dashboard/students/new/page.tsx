@@ -14,8 +14,8 @@ export default function AddStudentPage() {
     dob: '',
     classGrade: '10',
     school: '',
-    parentBackground: '',
-    backgroundInfo: '',
+    parentJob: '',
+    familyIncome: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -100,8 +100,8 @@ export default function AddStudentPage() {
                     dob: '',
                     classGrade: '10',
                     school: '',
-                    parentBackground: '',
-                    backgroundInfo: '',
+                    parentJob: '',
+                    familyIncome: '',
                   });
                 }}
               >
@@ -171,23 +171,29 @@ export default function AddStudentPage() {
               />
 
               <Input
-                label="Parent / Family Background (Optional)"
-                value={formData.parentBackground}
-                onChange={(e) => setFormData({ ...formData, parentBackground: e.target.value })}
-                placeholder="e.g. Agriculture / Small Business / Service"
+                label="Parent / Guardian Job / Occupation"
+                value={formData.parentJob}
+                onChange={(e) => setFormData({ ...formData, parentJob: e.target.value })}
+                placeholder="e.g. Teacher, Farmer, Engineer, Shopkeeper, Private Service..."
               />
 
               <div className="w-full space-y-1.5">
                 <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
-                  Additional Background Info (Optional)
+                  Family Annual Income Range
                 </label>
-                <textarea
-                  rows={3}
-                  value={formData.backgroundInfo}
-                  onChange={(e) => setFormData({ ...formData, backgroundInfo: e.target.value })}
-                  placeholder="Any relevant observations or notes..."
+                <select
+                  value={formData.familyIncome}
+                  onChange={(e) => setFormData({ ...formData, familyIncome: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500"
-                />
+                >
+                  <option value="">Select Income Range (Optional)</option>
+                  <option value="Below ₹1 Lakh">Below ₹1 Lakh per year</option>
+                  <option value="₹1 Lakh - ₹3 Lakhs">₹1 Lakh - ₹3 Lakhs per year</option>
+                  <option value="₹3 Lakhs - ₹6 Lakhs">₹3 Lakhs - ₹6 Lakhs per year</option>
+                  <option value="₹6 Lakhs - ₹10 Lakhs">₹6 Lakhs - ₹10 Lakhs per year</option>
+                  <option value="Above ₹10 Lakhs">Above ₹10 Lakhs per year</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
               </div>
 
               {error && <p className="text-xs font-semibold text-rose-500">{error}</p>}

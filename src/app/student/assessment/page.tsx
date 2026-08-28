@@ -6,7 +6,7 @@ import { assessmentQuestions, AssessmentQuestion } from '@/lib/data/assessment';
 import { AssessmentCard } from '@/components/student/AssessmentCard';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
 import { Button } from '@/components/ui/Button';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
 
 export default function StudentAssessmentPage() {
   const router = useRouter();
@@ -51,7 +51,6 @@ export default function StudentAssessmentPage() {
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      // Submit assessment
       await handleSubmit();
     }
   };
@@ -84,21 +83,20 @@ export default function StudentAssessmentPage() {
         return;
       }
 
-      // Update localStorage session status
       const updatedStudent = { ...student, assessmentStatus: 'completed' };
       localStorage.setItem('student_session', JSON.stringify(updatedStudent));
 
       setIsCompleted(true);
     } catch {
       setError('Connection error. Please try again.');
-    } flex: {
+    } finally {
       setIsSubmitting(false);
     }
   };
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center px-4 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950 text-slate-900 dark:text-slate-100 flex flex-col justify-center px-4 py-8">
         <CompletionScreen
           studentName={student.name}
           isAllCompleted={true}
@@ -108,29 +106,32 @@ export default function StudentAssessmentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-purple-500 selection:text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950 text-slate-900 dark:text-slate-100 flex flex-col justify-between selection:bg-purple-500 selection:text-white relative overflow-hidden">
       {/* Background glow */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-[30rem] h-[30rem] bg-purple-200/40 dark:bg-purple-900/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-20">
+      <header className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md sticky top-0 z-20 shadow-xs">
         <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
           <button
             onClick={() => router.push('/student')}
-            className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-purple-600 dark:text-slate-400 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Portal</span>
           </button>
 
-          <span className="text-xs font-extrabold text-purple-400 tracking-wider uppercase">
-            Challenge {currentIndex + 1} of {totalQuestions}
-          </span>
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-black text-purple-700 dark:text-purple-400 tracking-wider uppercase">
+              Challenge {currentIndex + 1} of {totalQuestions}
+            </span>
+          </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-2xl w-full mx-auto px-4 py-6 flex-1 flex flex-col justify-center space-y-6 z-10">
+      <main className="max-w-2xl w-full mx-auto px-4 py-8 sm:py-10 flex-1 flex flex-col justify-center space-y-8 z-10">
         {/* Assessment Card */}
         <AssessmentCard
           question={currentQuestion}
@@ -141,7 +142,7 @@ export default function StudentAssessmentPage() {
           isSubmitting={isSubmitting}
         />
 
-        {error && <p className="text-xs font-bold text-rose-400 text-center">{error}</p>}
+        {error && <p className="text-xs font-extrabold text-rose-500 text-center">{error}</p>}
 
         {/* Navigation Controls */}
         <div className="flex items-center justify-between gap-4 max-w-2xl mx-auto w-full pt-2">
@@ -168,8 +169,8 @@ export default function StudentAssessmentPage() {
         </div>
       </main>
 
-      <footer className="py-4 text-center text-xs text-slate-600">
-        Brain & Life Challenge Assessment
+      <footer className="py-4 text-center text-xs font-medium text-slate-500">
+        Brain & Life Challenge • Empowering Student Growth ✨
       </footer>
     </div>
   );

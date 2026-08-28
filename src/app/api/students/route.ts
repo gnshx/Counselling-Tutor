@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { name, dob, classGrade, school, parentBackground, backgroundInfo } = body;
+    const { name, dob, classGrade, school, parentJob, familyIncome } = body;
 
     if (!name || !dob || !classGrade) {
       return NextResponse.json(
@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
     }
 
     let accessCode = generateAccessCode();
-    // Ensure uniqueness
     let existing = await prisma.student.findUnique({ where: { accessCode } });
     while (existing) {
       accessCode = generateAccessCode();
@@ -72,8 +71,8 @@ export async function POST(request: NextRequest) {
         dob: new Date(dob),
         classGrade,
         school: school || null,
-        parentBackground: parentBackground || null,
-        backgroundInfo: backgroundInfo || null,
+        parentJob: parentJob || null,
+        familyIncome: familyIncome || null,
         accessCode,
         teacherId: teacher.teacherId,
       },
