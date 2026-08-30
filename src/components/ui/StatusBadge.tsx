@@ -1,8 +1,7 @@
 import React from 'react';
-import { CheckCircle2, Clock, CircleDot, AlertCircle } from 'lucide-react';
 
 interface StatusBadgeProps {
-  status: 'completed' | 'in_progress' | 'not_started' | string;
+  status: 'completed' | 'in_progress' | 'not_started' | 'review_needed' | string;
   label?: string;
   size?: 'sm' | 'md';
 }
@@ -13,34 +12,40 @@ export function StatusBadge({ status, label, size = 'md' }: StatusBadgeProps) {
       case 'completed':
       case 'Complete':
         return {
-          bg: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/50',
-          icon: <CheckCircle2 className={size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} />,
+          bg: 'bg-[var(--color-success-soft)] text-[var(--color-success)] border-[var(--color-success)]/20',
+          icon: '🟢',
           text: label || 'Completed',
+        };
+      case 'review_needed':
+        return {
+          bg: 'bg-[var(--color-primary-soft)] text-[var(--color-primary)] border-[var(--color-primary)]/20',
+          icon: '🔵',
+          text: label || 'Review needed',
         };
       case 'in_progress':
       case 'In Progress':
         return {
-          bg: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-800/50',
-          icon: <Clock className={size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} />,
-          text: label || 'In Progress',
+          bg: 'bg-[var(--color-warm-soft)] text-[var(--color-warm)] border-[var(--color-warm)]/20',
+          icon: '🟡',
+          text: label || 'In progress',
         };
       case 'not_started':
       case 'Not Started':
       default:
         return {
-          bg: 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700',
-          icon: <CircleDot className={size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} />,
-          text: label || 'Not Started',
+          bg: 'bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border-[var(--color-border-subtle)]',
+          icon: '⚪',
+          text: label || 'Not started',
         };
     }
   };
 
   const config = getStatusConfig();
-  const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-xs font-medium gap-1' : 'px-2.5 py-1 text-xs font-semibold gap-1.5';
+  const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-xs font-semibold gap-1.5' : 'px-3 py-1 text-sm font-semibold gap-2';
 
   return (
-    <span className={`inline-flex items-center rounded-full border shadow-2xs transition-colors ${config.bg} ${sizeClasses}`}>
-      {config.icon}
+    <span className={`inline-flex items-center rounded-full border transition-colors ${config.bg} ${sizeClasses}`}>
+      <span className="text-[10px] leading-none">{config.icon}</span>
       <span>{config.text}</span>
     </span>
   );

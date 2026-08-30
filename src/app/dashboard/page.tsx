@@ -66,31 +66,31 @@ export default function TeacherDashboard() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans">
       <Header
-        teacherName={teacher?.name || 'Teacher'}
-        schoolName={teacher?.school || 'Demo School'}
+        teacherName={teacher?.name || 'Educator'}
+        schoolName={teacher?.school || 'School Dashboard'}
         onLogout={handleLogout}
       />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Welcome Section */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[var(--color-surface)] p-8 rounded-[2rem] border border-[var(--color-border-subtle)] shadow-sm transition-colors">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
-              Good Morning, {teacher?.name || 'Teacher'} 👋
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)]">
+              Welcome, {teacher?.name || 'Educator'} 👋
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Track your students&apos; career discovery progress and submit observation feedback.
+            <p className="text-[var(--color-text-secondary)] mt-2">
+              Track student discovery progress and add your professional observations.
             </p>
           </div>
 
           <Link
             href="/dashboard/students/new"
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-200 dark:shadow-none transition-all cursor-pointer shrink-0 active:scale-95"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-bold text-sm shadow-sm transition-all cursor-pointer shrink-0 active:scale-95"
           >
             <Plus className="w-5 h-5" />
-            <span>Add New Student</span>
+            <span>Add Student</span>
           </Link>
         </div>
 
@@ -104,27 +104,27 @@ export default function TeacherDashboard() {
         />
 
         {/* Filters & Search Toolbar */}
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="bg-[var(--color-surface)] p-4 rounded-[1.5rem] border border-[var(--color-border-subtle)] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 transition-colors">
           <div className="flex items-center gap-3 w-full sm:w-auto">
             {/* Search Input */}
             <div className="relative w-full sm:w-64">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-3.5" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by student name..."
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                placeholder="Search students..."
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-sm text-[var(--color-text-primary)] focus:outline-hidden focus:ring-2 focus:ring-[var(--color-primary)] transition-all"
               />
             </div>
 
             {/* Class Filter */}
             <div className="relative w-full sm:w-40">
-              <Filter className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Filter className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-3.5" />
               <select
                 value={selectedClass}
                 onChange={(e) => setSelectedClass(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-sm text-[var(--color-text-primary)] focus:outline-hidden focus:ring-2 focus:ring-[var(--color-primary)] transition-all appearance-none cursor-pointer"
               >
                 <option value="">All Classes</option>
                 <option value="8">Class 8</option>
@@ -137,12 +137,12 @@ export default function TeacherDashboard() {
           <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
             <button
               onClick={() => fetchTeacherAndStudents()}
-              className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              title="Refresh student list"
+              className="p-2.5 rounded-xl border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-soft)] transition-colors cursor-pointer"
+              title="Refresh list"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             </button>
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <span className="text-xs font-bold text-[var(--color-text-muted)]">
               Showing {students.length} student{students.length === 1 ? '' : 's'}
             </span>
           </div>
@@ -150,9 +150,9 @@ export default function TeacherDashboard() {
 
         {/* Student Table */}
         {isLoading ? (
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center text-slate-500">
-            <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-sm font-semibold">Loading student roster...</p>
+          <div className="bg-[var(--color-surface)] rounded-[1.5rem] border border-[var(--color-border-subtle)] p-12 text-center text-[var(--color-text-secondary)]">
+            <div className="w-8 h-8 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-sm font-semibold">Loading students...</p>
           </div>
         ) : (
           <StudentTable students={students} />

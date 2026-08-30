@@ -8,6 +8,7 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
 import { Button } from '@/components/ui/Button';
 import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function StudentQuestionnairePage() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export default function StudentQuestionnairePage() {
 
   const currentQuestion: QuestionnaireQuestion = questionnaireQuestions[currentIndex];
   const totalQuestions = questionnaireQuestions.length;
+  const progressPercent = Math.round(((currentIndex) / totalQuestions) * 100);
 
   const handleAnswerChange = (val: any) => {
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: val }));
@@ -96,7 +98,7 @@ export default function StudentQuestionnairePage() {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || 'Failed to submit questionnaire');
+        setError(data.error || 'Something didn\'t go as planned. Please try again.');
         setIsSubmitting(false);
         return;
       }
@@ -106,7 +108,7 @@ export default function StudentQuestionnairePage() {
 
       setIsCompleted(true);
     } catch {
-      setError('Connection error. Please try again.');
+      setError('Something didn\'t go as planned. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -114,93 +116,117 @@ export default function StudentQuestionnairePage() {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 flex flex-col justify-center px-4 py-8">
+      <div className="min-h-screen bg-[var(--color-background-main)] flex flex-col justify-center px-4 py-8">
         <CompletionScreen
           studentName={student.name}
           onNextJourney={() => router.push('/student/assessment')}
-          nextJourneyTitle="Brain Challenge"
+          nextJourneyTitle="Explore Your Thinking"
+          title="✨ Nice work!"
+          subtitle="You've completed the discovery section. Your responses have been saved securely."
         />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 text-slate-900 dark:text-slate-100 flex flex-col justify-between selection:bg-pink-500 selection:text-white relative overflow-hidden">
-      {/* Soft Ambient Background Decoration */}
-      <div className="absolute top-0 right-1/4 w-[30rem] h-[30rem] bg-violet-200/40 dark:bg-violet-900/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-[30rem] h-[30rem] bg-pink-200/40 dark:bg-pink-900/20 rounded-full blur-3xl pointer-events-none" />
-
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] flex flex-col font-sans selection:bg-[var(--color-primary-soft)] selection:text-[var(--color-primary)]">
+      
       {/* Header */}
-      <header className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md sticky top-0 z-20 shadow-xs">
-        <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20 transition-colors">
+        <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
           <button
             onClick={() => router.push('/student')}
-            className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Portal</span>
+            <span>Back</span>
           </button>
 
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-500" />
-            <span className="text-xs font-black text-violet-700 dark:text-violet-400 tracking-wider uppercase">
-              Question {currentIndex + 1} of {totalQuestions}
-            </span>
+          <div className="text-[var(--color-primary)] font-bold text-sm tracking-wider uppercase">
+            Discover Yourself
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-2xl w-full mx-auto px-4 py-8 sm:py-10 flex-1 flex flex-col justify-center space-y-8 z-10">
-        {/* Progress Bar */}
-        <ProgressBar
-          current={currentIndex + 1}
-          total={totalQuestions}
-          showText={true}
-          label={`Question ${currentIndex + 1} of ${totalQuestions}`}
-          colorTheme="violet"
-          height="lg"
-        />
+      <main className="max-w-3xl w-full mx-auto px-4 py-8 flex-1 flex flex-col z-10">
+        
+        {/* Progress header */}
+        <div className="mb-8">
+          <div className="flex justify-between text-sm font-semibold text-[var(--color-text-secondary)] mb-3">
+            <span>Question {currentIndex + 1} of {totalQuestions}</span>
+            <span className="text-[var(--color-primary)]">{progressPercent}%</span>
+          </div>
+          <div className="w-full h-2 bg-[var(--color-surface-soft)] rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
 
-        {/* Question Card */}
-        <QuestionCard
-          question={currentQuestion}
-          value={answers[currentQuestion.id]}
-          onChange={handleAnswerChange}
-          followUpValue={followUpAnswers[currentQuestion.id]}
-          onFollowUpChange={handleFollowUpChange}
-        />
+        {/* Question Container */}
+        <div className="flex-1 flex flex-col justify-center min-h-[400px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+              className="w-full"
+            >
+              <QuestionCard
+                question={currentQuestion}
+                value={answers[currentQuestion.id]}
+                onChange={handleAnswerChange}
+                followUpValue={followUpAnswers[currentQuestion.id]}
+                onFollowUpChange={handleFollowUpChange}
+              />
+            </motion.div>
+          </AnimatePresence>
 
-        {error && <p className="text-xs font-extrabold text-rose-500 text-center">{error}</p>}
+          {error && <p className="text-sm font-semibold text-red-500 text-center mt-6">{error}</p>}
+        </div>
 
-        {/* Navigation Buttons with Generous Spacing */}
-        <div className="flex items-center justify-between gap-4 pt-2">
-          <Button
+        {/* Reassuring text */}
+        <div className="text-center mt-6 mb-10">
+          <p className="text-sm text-[var(--color-text-muted)] font-medium">
+            There are no perfect answers. Choose what feels most like you.
+          </p>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex items-center justify-between gap-4 pt-6 border-t border-[var(--color-border-subtle)]">
+          <button
             type="button"
-            variant="outline"
             onClick={handlePrev}
             disabled={currentIndex === 0 || isSubmitting}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
+            className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all ${
+              currentIndex === 0 || isSubmitting 
+                ? 'opacity-0 pointer-events-none' 
+                : 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)] cursor-pointer'
+            }`}
           >
-            Previous
-          </Button>
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back</span>
+          </button>
 
-          <Button
+          <button
             type="button"
-            variant="gradient"
             onClick={handleNext}
-            isLoading={isSubmitting}
-            disabled={!canProceed()}
-            rightIcon={currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+            disabled={!canProceed() || isSubmitting}
+            className={`flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold transition-all ${
+              !canProceed() || isSubmitting
+                ? 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] cursor-not-allowed border border-[var(--color-border-subtle)]'
+                : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-sm cursor-pointer'
+            }`}
           >
-            {currentIndex === totalQuestions - 1 ? 'Complete Questionnaire' : 'Next Question'}
-          </Button>
+            <span>{isSubmitting ? 'Saving...' : currentIndex === totalQuestions - 1 ? 'Finish' : 'Next'}</span>
+            {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />)}
+          </button>
         </div>
       </main>
-
-      <footer className="py-4 text-center text-xs font-medium text-slate-500">
-        Student Career Discovery • Positive Possibilities Only ✨
-      </footer>
     </div>
   );
 }

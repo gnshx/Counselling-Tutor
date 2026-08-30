@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { assessmentQuestions, AssessmentQuestion } from '@/lib/data/assessment';
 import { AssessmentCard } from '@/components/student/AssessmentCard';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
-import { Button } from '@/components/ui/Button';
-import { ArrowLeft, ArrowRight, Check, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function StudentAssessmentPage() {
   const router = useRouter();
@@ -36,6 +36,7 @@ export default function StudentAssessmentPage() {
   const currentQuestion: AssessmentQuestion = assessmentQuestions[currentIndex];
   const totalQuestions = assessmentQuestions.length;
   const selectedAnswer = answers[currentQuestion.id] || null;
+  const progressPercent = Math.round(((currentIndex) / totalQuestions) * 100);
 
   const handleSelectAnswer = (option: string) => {
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: option }));
@@ -78,7 +79,7 @@ export default function StudentAssessmentPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || 'Failed to submit assessment');
+        setError(data.error || 'Something didn\'t go as planned. Please try again.');
         setIsSubmitting(false);
         return;
       }
@@ -88,7 +89,7 @@ export default function StudentAssessmentPage() {
 
       setIsCompleted(true);
     } catch {
-      setError('Connection error. Please try again.');
+      setError('Something didn\'t go as planned. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -96,82 +97,117 @@ export default function StudentAssessmentPage() {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950 text-slate-900 dark:text-slate-100 flex flex-col justify-center px-4 py-8">
+      <div className="min-h-screen bg-[var(--color-background-main)] flex flex-col justify-center px-4 py-8">
         <CompletionScreen
           studentName={student.name}
           isAllCompleted={true}
+          title="✨ Nice work!"
+          subtitle="You've completed the thinking assessment. You took the time to challenge yourself — that's something to be proud of."
         />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-slate-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-purple-950 text-slate-900 dark:text-slate-100 flex flex-col justify-between selection:bg-purple-500 selection:text-white relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-0 left-1/4 w-[30rem] h-[30rem] bg-purple-200/40 dark:bg-purple-900/20 rounded-full blur-3xl pointer-events-none" />
-
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] flex flex-col font-sans selection:bg-[var(--color-cyan-soft)] selection:text-[var(--color-cyan)]">
+      
       {/* Header */}
-      <header className="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md sticky top-0 z-20 shadow-xs">
-        <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20 transition-colors">
+        <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
           <button
             onClick={() => router.push('/student')}
-            className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-purple-600 dark:text-slate-400 dark:hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Portal</span>
+            <span>Back</span>
           </button>
 
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-500" />
-            <span className="text-xs font-black text-purple-700 dark:text-purple-400 tracking-wider uppercase">
-              Challenge {currentIndex + 1} of {totalQuestions}
-            </span>
+          <div className="text-[var(--color-cyan)] font-bold text-sm tracking-wider uppercase">
+            Explore Your Thinking
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-2xl w-full mx-auto px-4 py-8 sm:py-10 flex-1 flex flex-col justify-center space-y-8 z-10">
-        {/* Assessment Card */}
-        <AssessmentCard
-          question={currentQuestion}
-          questionNumber={currentIndex + 1}
-          totalQuestions={totalQuestions}
-          selectedAnswer={selectedAnswer}
-          onSelectAnswer={handleSelectAnswer}
-          isSubmitting={isSubmitting}
-        />
+      <main className="max-w-3xl w-full mx-auto px-4 py-8 flex-1 flex flex-col z-10">
+        
+        {/* Progress header */}
+        <div className="mb-8">
+          <div className="flex justify-between text-sm font-semibold text-[var(--color-text-secondary)] mb-3">
+            <span>Challenge {currentIndex + 1} of {totalQuestions}</span>
+            <span className="text-[var(--color-cyan)]">{progressPercent}%</span>
+          </div>
+          <div className="w-full h-2 bg-[var(--color-surface-soft)] rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-[var(--color-cyan)] rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
 
-        {error && <p className="text-xs font-extrabold text-rose-500 text-center">{error}</p>}
+        {/* Question Container */}
+        <div className="flex-1 flex flex-col justify-center min-h-[400px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+              className="w-full"
+            >
+              <AssessmentCard
+                question={currentQuestion}
+                questionNumber={currentIndex + 1}
+                totalQuestions={totalQuestions}
+                selectedAnswer={selectedAnswer}
+                onSelectAnswer={handleSelectAnswer}
+                isSubmitting={isSubmitting}
+              />
+            </motion.div>
+          </AnimatePresence>
 
-        {/* Navigation Controls */}
-        <div className="flex items-center justify-between gap-4 max-w-2xl mx-auto w-full pt-2">
-          <Button
+          {error && <p className="text-sm font-semibold text-red-500 text-center mt-6">{error}</p>}
+        </div>
+
+        {/* Reassuring text */}
+        <div className="text-center mt-6 mb-10">
+          <p className="text-sm text-[var(--color-text-muted)] font-medium">
+            Take your time. This is about discovering your style, not just finding the right answer.
+          </p>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex items-center justify-between gap-4 pt-6 border-t border-[var(--color-border-subtle)]">
+          <button
             type="button"
-            variant="outline"
             onClick={handlePrev}
             disabled={currentIndex === 0 || isSubmitting}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
+            className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all ${
+              currentIndex === 0 || isSubmitting 
+                ? 'opacity-0 pointer-events-none' 
+                : 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)] cursor-pointer'
+            }`}
           >
-            Previous
-          </Button>
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back</span>
+          </button>
 
-          <Button
+          <button
             type="button"
-            variant="gradient"
             onClick={handleNext}
-            isLoading={isSubmitting}
-            disabled={!selectedAnswer}
-            rightIcon={currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+            disabled={!selectedAnswer || isSubmitting}
+            className={`flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold transition-all ${
+              !selectedAnswer || isSubmitting
+                ? 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] cursor-not-allowed border border-[var(--color-border-subtle)]'
+                : 'bg-[var(--color-cyan)] hover:bg-[#0891b2] text-white shadow-sm cursor-pointer'
+            }`}
           >
-            {currentIndex === totalQuestions - 1 ? 'Finish Brain Challenge' : 'Next Challenge'}
-          </Button>
+            <span>{isSubmitting ? 'Saving...' : currentIndex === totalQuestions - 1 ? 'Finish' : 'Next'}</span>
+            {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />)}
+          </button>
         </div>
       </main>
-
-      <footer className="py-4 text-center text-xs font-medium text-slate-500">
-        Brain & Life Challenge • Empowering Student Growth ✨
-      </footer>
     </div>
   );
 }

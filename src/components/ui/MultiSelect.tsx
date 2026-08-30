@@ -75,16 +75,16 @@ export function MultiSelect({
                 isSelected
                   ? themeClasses[colorTheme].selected
                   : isAtLimit
-                  ? 'bg-slate-50 text-slate-400 border-slate-200 opacity-60 cursor-not-allowed dark:bg-slate-900/50 dark:border-slate-800 dark:text-slate-600'
-                  : 'bg-white/80 dark:bg-slate-900/80 text-slate-800 dark:text-slate-100 border-slate-200/90 dark:border-slate-800 hover:border-violet-300 hover:bg-violet-50/50 dark:hover:bg-slate-800/80'
+                  ? 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] border-[var(--color-border-subtle)] opacity-60 cursor-not-allowed'
+                  : 'bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] hover:bg-[var(--color-surface-soft)] hover:border-[var(--color-primary)]/50'
               } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-[0.99]'}`}
             >
               <span className="leading-snug">{option.label}</span>
               <div
                 className={`w-6 h-6 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
                   isSelected
-                    ? 'bg-white text-violet-700 border-white dark:text-indigo-700'
-                    : 'border-slate-300 dark:border-slate-700'
+                    ? 'bg-white text-violet-700 border-white'
+                    : 'border-[var(--color-border-subtle)]'
                 }`}
               >
                 {isSelected && <Check className="w-4 h-4 stroke-[3]" />}

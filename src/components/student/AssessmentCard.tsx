@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { AssessmentQuestion } from '@/lib/data/assessment';
-import { ProgressBar } from '../ui/ProgressBar';
 import { Sparkles } from 'lucide-react';
 
 interface AssessmentCardProps {
@@ -27,47 +26,42 @@ export function AssessmentCard({
   const subContent = parts.slice(1).join('\n');
 
   return (
-    <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-[2rem] p-6 sm:p-10 border border-purple-100 dark:border-purple-950/60 shadow-2xl shadow-purple-100/50 dark:shadow-none max-w-2xl mx-auto space-y-8 transition-all">
+    <div className="bg-[var(--color-surface)] rounded-[2rem] p-8 sm:p-12 border border-[var(--color-border-subtle)] shadow-[0_8px_30px_rgba(15,23,42,0.06)] max-w-2xl mx-auto space-y-10 transition-all text-center">
       {/* Encouraging Header */}
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-100 via-pink-100 to-amber-100 dark:from-purple-950 dark:via-pink-950 dark:to-amber-950 border border-purple-200/60 dark:border-purple-800/40 text-purple-800 dark:text-purple-300 text-xs font-black uppercase tracking-wider">
-          <Sparkles className="w-4 h-4 text-amber-500 animate-bounce" />
-          <span>BRAIN & LIFE CHALLENGE</span>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-cyan-soft)] text-[var(--color-cyan)] text-sm font-bold uppercase tracking-wider mb-2">
+          <Sparkles className="w-4 h-4" />
+          <span>Brain & Life Challenge</span>
         </div>
-        <p className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
-          Discover your problem-solving superpowers! There are no scary questions here.
-        </p>
       </div>
 
       {/* Challenge Number & Category */}
-      <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-        <span className="text-sm font-black text-purple-700 dark:text-purple-400">
-          Challenge {questionNumber} / {totalQuestions}
-        </span>
-        <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+      <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-4">
+        <span className="text-sm font-bold text-[var(--color-text-secondary)]">
           {question.categoryLabel}
         </span>
       </div>
 
-      {/* Question Content with Spacing */}
-      <div className="text-center space-y-4 py-2">
-        <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-snug">
+      {/* Question Content */}
+      <div className="text-center space-y-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] leading-snug">
           {mainQuestion}
         </h2>
         {subContent && (
-          <div className="inline-block bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-2xl px-6 py-4 text-xl sm:text-2xl font-mono font-bold text-indigo-600 dark:text-indigo-400 shadow-inner">
+          <div className="inline-block bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] rounded-2xl px-6 py-4 text-xl sm:text-2xl font-mono font-bold text-[var(--color-text-primary)] shadow-sm">
             {subContent}
           </div>
         )}
         {question.hint && (
-          <p className="text-sm italic text-slate-500 dark:text-slate-400">{question.hint}</p>
+          <p className="text-sm italic text-[var(--color-text-muted)]">{question.hint}</p>
         )}
       </div>
 
-      {/* 2x2 Grid of Large Touch Buttons with Generous Spacing */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        {question.options.map((option) => {
+      {/* 2x2 Grid of Large Touch Buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {question.options.map((option, index) => {
           const isSelected = selectedAnswer === option;
+          const label = String.fromCharCode(65 + index); // A, B, C, D
 
           return (
             <button
@@ -75,27 +69,23 @@ export function AssessmentCard({
               type="button"
               disabled={isSubmitting}
               onClick={() => onSelectAnswer(option)}
-              className={`p-5 sm:p-6 rounded-2xl border text-center font-bold text-base sm:text-lg transition-all cursor-pointer ${
+              className={`p-5 sm:p-6 rounded-2xl border text-center font-bold text-base sm:text-lg transition-all cursor-pointer flex items-center justify-center gap-4 ${
                 isSelected
-                  ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white border-purple-600 shadow-xl shadow-purple-200 dark:shadow-none scale-[1.03] ring-2 ring-purple-400'
-                  : 'bg-white/80 dark:bg-slate-900 text-slate-800 border-slate-200 hover:border-purple-300 hover:bg-purple-50/50 dark:text-slate-200 dark:border-slate-800 dark:hover:bg-slate-800'
+                  ? 'bg-[var(--color-cyan-soft)] text-[var(--color-cyan)] border-[var(--color-cyan)] shadow-sm scale-[1.02] ring-2 ring-[var(--color-cyan-soft)]'
+                  : 'bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] hover:border-[var(--color-cyan)] hover:bg-[var(--color-surface-soft)]'
               } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`}
             >
-              {option}
+              <span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border ${
+                isSelected 
+                  ? 'bg-[#0891b2] text-white border-[#0891b2]' 
+                  : 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] border-[var(--color-border-subtle)]'
+              }`}>
+                {label}
+              </span>
+              <span>{option}</span>
             </button>
           );
         })}
-      </div>
-
-      {/* Progress Bar */}
-      <div className="pt-4">
-        <ProgressBar
-          current={questionNumber}
-          total={totalQuestions}
-          showText={false}
-          colorTheme="amber"
-          height="lg"
-        />
       </div>
     </div>
   );

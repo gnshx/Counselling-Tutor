@@ -20,50 +20,50 @@ export function DashboardCards({
     {
       label: 'Total Students',
       value: totalStudents,
-      icon: <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />,
-      bg: 'bg-indigo-50 border-indigo-100 dark:bg-indigo-950/40 dark:border-indigo-900/50',
+      icon: <Users className="w-5 h-5 text-[var(--color-primary)]" />,
+      bg: 'bg-[var(--color-primary-soft)] border-[var(--color-primary)]/20',
     },
     {
-      label: 'Questionnaire Done',
+      label: 'Discovery Done',
       value: `${questionnaireCompleted}/${totalStudents}`,
-      icon: <FileQuestion className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />,
-      bg: 'bg-emerald-50 border-emerald-100 dark:bg-emerald-950/40 dark:border-emerald-900/50',
+      icon: <FileQuestion className="w-5 h-5 text-[var(--color-success)]" />,
+      bg: 'bg-[var(--color-success-soft)] border-[var(--color-success)]/20',
     },
     {
-      label: 'Assessment Done',
+      label: 'Challenge Done',
       value: `${assessmentCompleted}/${totalStudents}`,
-      icon: <Brain className="w-5 h-5 text-purple-600 dark:text-purple-400" />,
-      bg: 'bg-purple-50 border-purple-100 dark:bg-purple-950/40 dark:border-purple-900/50',
+      icon: <Brain className="w-5 h-5 text-[var(--color-cyan)]" />,
+      bg: 'bg-[var(--color-cyan-soft)] border-[var(--color-cyan)]/20',
     },
     {
       label: 'Pending Feedback',
       value: pendingFeedback,
-      icon: <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />,
-      bg: 'bg-amber-50 border-amber-100 dark:bg-amber-950/40 dark:border-amber-900/50',
+      icon: <Clock className="w-5 h-5 text-[var(--color-warm)]" />,
+      bg: 'bg-[var(--color-warm-soft)] border-[var(--color-warm)]/20',
       highlight: pendingFeedback > 0,
     },
     {
       label: 'Fully Complete',
       value: allCompleted,
-      icon: <CheckCircle2 className="w-5 h-5 text-teal-600 dark:text-teal-400" />,
-      bg: 'bg-teal-50 border-teal-100 dark:bg-teal-950/40 dark:border-teal-900/50',
+      icon: <CheckCircle2 className="w-5 h-5 text-[var(--color-success)]" />,
+      bg: 'bg-[var(--color-surface)] border-[var(--color-border-subtle)]',
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-4 mb-6">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
       {cards.map((card, idx) => (
         <div
           key={idx}
-          className={`p-4 rounded-2xl border transition-all ${card.bg} ${
-            card.highlight ? 'ring-2 ring-amber-400/50 dark:ring-amber-500/50' : ''
+          className={`p-6 rounded-[1.5rem] border shadow-sm transition-all flex flex-col justify-between h-32 ${card.bg} ${
+            card.highlight ? 'ring-2 ring-[var(--color-warm)]' : ''
           }`}
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wider">{card.label}</span>
-            <div className="p-2 rounded-xl bg-white dark:bg-slate-900 shadow-2xs">{card.icon}</div>
+            <span className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">{card.label}</span>
+            <div className="p-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] shadow-sm shrink-0">{card.icon}</div>
           </div>
-          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">{card.value}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)]">{card.value}</p>
         </div>
       ))}
     </div>

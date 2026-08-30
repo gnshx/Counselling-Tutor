@@ -11,24 +11,24 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+          <label className="block text-sm font-semibold text-[var(--color-text-secondary)]">
             {label}
-            {props.required && <span className="text-pink-500 ml-1">*</span>}
+            {props.required && <span className="text-rose-500 ml-1">*</span>}
           </label>
         )}
         <input
           ref={ref}
-          className={`w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-sm transition-colors focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+          className={`w-full px-4 py-2.5 rounded-xl border bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-hidden focus:ring-2 focus:ring-[var(--color-primary)] ${
             error
-              ? 'border-red-500 ring-1 ring-red-500'
-              : 'border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600'
+              ? 'border-rose-500 ring-1 ring-rose-500'
+              : 'border-[var(--color-border-subtle)] hover:border-[var(--color-primary)]/50'
           } ${className}`}
           {...props}
         />
         {error ? (
-          <p className="text-xs text-red-500 font-medium">{error}</p>
+          <p className="text-xs text-rose-500 font-medium">{error}</p>
         ) : helperText ? (
-          <p className="text-xs text-slate-500 dark:text-slate-400">{helperText}</p>
+          <p className="text-xs text-[var(--color-text-muted)]">{helperText}</p>
         ) : null}
       </div>
     );

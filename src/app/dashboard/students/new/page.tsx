@@ -59,33 +59,33 @@ export default function AddStudentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans">
       <Header />
 
       <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
         </Link>
 
         {createdStudent ? (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-emerald-200 dark:border-emerald-800/50 shadow-xl shadow-emerald-50 dark:shadow-none text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+          <div className="bg-[var(--color-surface)] rounded-3xl p-8 border border-[var(--color-success)]/30 shadow-md text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-[var(--color-success-soft)] text-[var(--color-success)] flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Student Created!</h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Student Created!</h2>
+              <p className="text-sm text-[var(--color-text-secondary)]">
                 Provide this Access Code to <strong>{createdStudent.name}</strong> to begin their journey.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-slate-950 text-amber-300 font-mono text-3xl font-black tracking-widest border border-slate-800 flex items-center justify-center gap-3">
-              <KeyRound className="w-6 h-6 text-pink-400 shrink-0" />
+            <div className="p-6 rounded-2xl bg-[var(--color-surface-soft)] text-[var(--color-primary)] font-mono text-3xl font-bold tracking-widest border border-[var(--color-border-subtle)] flex items-center justify-center gap-3">
+              <KeyRound className="w-6 h-6 text-[var(--color-warm)] shrink-0" />
               <span>{createdStudent.accessCode}</span>
             </div>
 
@@ -117,14 +117,14 @@ export default function AddStudentPage() {
             </div>
           </div>
         ) : (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xs space-y-6">
-            <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
-              <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+          <div className="bg-[var(--color-surface)] rounded-3xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-sm space-y-6">
+            <div className="flex items-center gap-3 border-b border-[var(--color-border-subtle)] pb-4">
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center">
                 <UserPlus className="w-5 h-5" />
               </div>
               <div>
-                <h1 className="text-xl font-extrabold text-slate-900 dark:text-slate-100">Add New Student</h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Create a student profile to generate their journey access code</p>
+                <h1 className="text-xl font-bold text-[var(--color-text-primary)]">Add New Student</h1>
+                <p className="text-xs text-[var(--color-text-secondary)]">Create a student profile to generate their journey access code</p>
               </div>
             </div>
 
@@ -147,13 +147,13 @@ export default function AddStudentPage() {
                 />
 
                 <div className="w-full space-y-1.5">
-                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
-                    Class / Grade <span className="text-pink-500">*</span>
+                  <label className="block text-sm font-semibold text-[var(--color-text-secondary)]">
+                    Class / Grade <span className="text-rose-500">*</span>
                   </label>
                   <select
                     value={formData.classGrade}
                     onChange={(e) => setFormData({ ...formData, classGrade: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2.5 rounded-xl border bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-sm focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-hidden transition-all cursor-pointer"
                   >
                     <option value="8">Class 8</option>
                     <option value="9">Class 9</option>
@@ -177,13 +177,13 @@ export default function AddStudentPage() {
               />
 
               <div className="w-full space-y-1.5">
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                <label className="block text-sm font-semibold text-[var(--color-text-secondary)]">
                   Family Annual Income Range
                 </label>
                 <select
                   value={formData.familyIncome}
                   onChange={(e) => setFormData({ ...formData, familyIncome: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2.5 rounded-xl border bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-sm focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-hidden transition-all cursor-pointer"
                 >
                   <option value="">Select Income Range (Optional)</option>
                   <option value="Below ₹1 Lakh">Below ₹1 Lakh per year</option>

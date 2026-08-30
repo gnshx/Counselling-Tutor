@@ -29,13 +29,13 @@ export function RatingScale({ value, onChange, disabled = false }: RatingScalePr
             className={`flex-1 min-w-[70px] py-2.5 px-3 rounded-xl border font-medium text-center transition-all flex flex-col items-center justify-center gap-0.5 ${
               isSelected
                 ? opt.value === 'N/O'
-                  ? 'bg-slate-800 text-white border-slate-800 shadow-md ring-2 ring-slate-400 dark:bg-slate-700 dark:border-slate-600'
-                  : 'bg-indigo-600 text-white border-indigo-600 shadow-md ring-2 ring-indigo-300 dark:ring-indigo-800'
-                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300 dark:bg-slate-900 dark:text-slate-200 dark:border-slate-800 dark:hover:bg-slate-800'
+                  ? 'bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] shadow-md ring-2 ring-[var(--color-primary)]'
+                  : 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md ring-2 ring-[var(--color-primary-soft)]'
+                : 'bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] hover:bg-[var(--color-surface-soft)] hover:border-[var(--color-primary)]/50'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-95'}`}
           >
             <span className="text-base font-bold">{opt.label}</span>
-            <span className={`text-[10px] uppercase tracking-wider ${isSelected ? 'text-indigo-100 dark:text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}>
+            <span className={`text-[10px] uppercase tracking-wider ${isSelected ? 'text-white/90' : 'text-[var(--color-text-secondary)]'}`}>
               {opt.desc}
             </span>
           </button>

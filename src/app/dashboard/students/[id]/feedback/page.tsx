@@ -116,10 +116,10 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
+      <div className="min-h-screen bg-[var(--color-background-main)]">
         <Header />
-        <div className="max-w-3xl mx-auto p-12 text-center text-slate-500">
-          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        <div className="max-w-3xl mx-auto p-12 text-center text-[var(--color-text-secondary)]">
+          <div className="w-8 h-8 border-4 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p>Loading feedback form...</p>
         </div>
       </div>
@@ -127,27 +127,27 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans">
       <Header />
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         <Link
           href={`/dashboard/students/${id}`}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Student Profile</span>
         </Link>
 
         {isSuccess ? (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-emerald-200 dark:border-emerald-800/50 shadow-xl text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+          <div className="bg-[var(--color-surface)] rounded-3xl p-8 border border-[var(--color-success)]/30 shadow-md text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-[var(--color-success-soft)] text-[var(--color-success)] flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Feedback Submitted!</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Feedback Submitted!</h2>
+              <p className="text-sm text-[var(--color-text-secondary)] max-w-md mx-auto">
                 Teacher observation feedback for <strong>{student?.name}</strong> has been saved.
               </p>
             </div>
@@ -159,15 +159,15 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
             </div>
           </div>
         ) : (
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xs space-y-8">
+          <div className="bg-[var(--color-surface)] rounded-3xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-sm space-y-8">
             {/* Header */}
-            <div className="flex items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-4 border-b border-[var(--color-border-subtle)] pb-6">
+              <div className="w-12 h-12 rounded-2xl bg-[var(--color-warm-soft)] text-[var(--color-warm)] flex items-center justify-center shrink-0">
                 <MessageSquarePlus className="w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100">Teacher Observation Feedback</h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Teacher Observation Feedback</h1>
+                <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
                   Evaluating <strong>{student?.name}</strong> (Class {student?.classGrade})
                 </p>
               </div>
@@ -176,16 +176,16 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Rating Questions 1-7 */}
               <div className="space-y-6">
-                <h2 className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                <h2 className="text-sm font-bold text-[var(--color-primary)] uppercase tracking-wider">
                   Ratings (1 = Very Low, 5 = Very Good, N/O = Not Observed)
                 </h2>
 
                 {teacherFeedbackQuestions
                   .filter((q) => q.type === 'rating')
                   .map((q, idx) => (
-                    <div key={q.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 space-y-3">
-                      <label className="block text-sm font-bold text-slate-800 dark:text-slate-200">
-                        {idx + 1}. {q.question} <span className="text-pink-500">*</span>
+                    <div key={q.id} className="p-4 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
+                      <label className="block text-sm font-bold text-[var(--color-text-primary)]">
+                        {idx + 1}. {q.question} <span className="text-rose-500">*</span>
                       </label>
                       <RatingScale
                         value={ratings[q.id] ?? null}
@@ -196,9 +196,9 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
               </div>
 
               {/* Question 8: Strongest Areas */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 space-y-3">
-                <label className="block text-sm font-bold text-slate-800 dark:text-slate-200">
-                  8. Which areas appear to be the student&apos;s strongest based on your observations? <span className="text-pink-500">*</span>
+              <div className="p-4 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
+                <label className="block text-sm font-bold text-[var(--color-text-primary)]">
+                  8. Which areas appear to be the student&apos;s strongest based on your observations? <span className="text-rose-500">*</span>
                 </label>
                 <MultiSelect
                   options={teacherFeedbackQuestions.find((q) => q.id === 'tf8')?.options || []}
@@ -210,9 +210,9 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
               </div>
 
               {/* Question 9: Interested Areas */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 space-y-3">
-                <label className="block text-sm font-bold text-slate-800 dark:text-slate-200">
-                  9. Which areas does the student appear most interested in? <span className="text-pink-500">*</span>
+              <div className="p-4 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
+                <label className="block text-sm font-bold text-[var(--color-text-primary)]">
+                  9. Which areas does the student appear most interested in? <span className="text-rose-500">*</span>
                 </label>
                 <MultiSelect
                   options={teacherFeedbackQuestions.find((q) => q.id === 'tf9')?.options || []}
@@ -224,9 +224,9 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
               </div>
 
               {/* Question 10: Preferred Working Style */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 space-y-3">
-                <label className="block text-sm font-bold text-slate-800 dark:text-slate-200">
-                  10. What is the student&apos;s preferred working style based on your observation? <span className="text-pink-500">*</span>
+              <div className="p-4 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
+                <label className="block text-sm font-bold text-[var(--color-text-primary)]">
+                  10. What is the student&apos;s preferred working style based on your observation? <span className="text-rose-500">*</span>
                 </label>
                 <RadioGroup
                   options={teacherFeedbackQuestions.find((q) => q.id === 'tf10')?.options || []}
@@ -237,11 +237,11 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
               </div>
 
               {/* Optional Comment */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 space-y-2">
-                <label className="block text-sm font-bold text-slate-800 dark:text-slate-200">
+              <div className="p-4 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-2">
+                <label className="block text-sm font-bold text-[var(--color-text-primary)]">
                   Optional Teacher Comment (Max 200 characters)
                 </label>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-[var(--color-text-secondary)]">
                   Is there anything important about this student&apos;s strengths or interests that the questions did not capture?
                 </p>
                 <textarea
@@ -250,9 +250,9 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="Type any additional observations..."
-                  className="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2.5 rounded-xl border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-sm focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-hidden transition-all"
                 />
-                <div className="text-right text-xs text-slate-400 font-semibold">{comment.length} / 200</div>
+                <div className="text-right text-xs text-[var(--color-text-muted)] font-semibold">{comment.length} / 200</div>
               </div>
 
               {error && <p className="text-xs font-bold text-rose-500 text-center">{error}</p>}
