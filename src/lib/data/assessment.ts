@@ -20,11 +20,11 @@ export const assessmentQuestions: AssessmentQuestion[] = [
   },
   {
     id: 'a2',
-    question: "What is India's unified emergency number?",
+    question: "Which number is for police, ambulance, and fire engine?",
     category: 'general_awareness',
     categoryLabel: '🌍 General Awareness',
-    options: ['100', '101', '112', '999'],
-    correctAnswer: '112',
+    options: ['Police - 100', 'Ambulance - 108', 'Fire - 101', 'All in one - 112'],
+    correctAnswer: 'All in one - 112',
   },
   {
     id: 'a3',

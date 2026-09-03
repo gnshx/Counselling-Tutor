@@ -17,7 +17,7 @@ export function RatingScale({ value, onChange, disabled = false }: RatingScalePr
   ];
 
   return (
-    <div className="flex flex-wrap gap-2 sm:gap-3">
+    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5 sm:gap-3">
       {options.map((opt) => {
         const isSelected = value === opt.value;
         return (
@@ -26,16 +26,24 @@ export function RatingScale({ value, onChange, disabled = false }: RatingScalePr
             type="button"
             disabled={disabled}
             onClick={() => onChange(opt.value)}
-            className={`flex-1 min-w-[70px] py-2.5 px-3 rounded-xl border font-medium text-center transition-all flex flex-col items-center justify-center gap-0.5 ${
+            className={`py-3 px-2 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 ${
               isSelected
                 ? opt.value === 'N/O'
-                  ? 'bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] shadow-md ring-2 ring-[var(--color-primary)]'
-                  : 'bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-md ring-2 ring-[var(--color-primary-soft)]'
-                : 'bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] hover:bg-[var(--color-surface-soft)] hover:border-[var(--color-primary)]/50'
-            } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-95'}`}
+                  ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 border-slate-400 dark:border-slate-500 shadow-xs font-bold'
+                  : 'bg-blue-600 text-white border-blue-600 dark:bg-blue-600 dark:border-blue-500 shadow-sm font-bold ring-2 ring-blue-500/20'
+                : 'bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-700/80 hover:bg-blue-50/60 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-slate-600'
+            } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]'}`}
           >
-            <span className="text-base font-bold">{opt.label}</span>
-            <span className={`text-[10px] uppercase tracking-wider ${isSelected ? 'text-white/90' : 'text-[var(--color-text-secondary)]'}`}>
+            <span className="text-base sm:text-lg font-bold leading-none">{opt.label}</span>
+            <span
+              className={`text-xs font-medium leading-none truncate max-w-full ${
+                isSelected
+                  ? opt.value === 'N/O'
+                    ? 'text-slate-800 dark:text-slate-200'
+                    : 'text-blue-100'
+                  : 'text-slate-500 dark:text-slate-400'
+              }`}
+            >
               {opt.desc}
             </span>
           </button>
@@ -44,3 +52,4 @@ export function RatingScale({ value, onChange, disabled = false }: RatingScalePr
     </div>
   );
 }
+

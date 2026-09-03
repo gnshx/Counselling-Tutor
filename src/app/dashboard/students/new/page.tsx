@@ -59,46 +59,46 @@ export default function AddStudentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans">
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans antialiased">
       <Header />
 
       <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
         </Link>
 
         {createdStudent ? (
-          <div className="bg-[var(--color-surface)] rounded-3xl p-8 border border-[var(--color-success)]/30 shadow-md text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-[var(--color-success-soft)] text-[var(--color-success)] flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-8 h-8" />
+          <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs text-center space-y-6">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800/60">
+              <CheckCircle2 className="w-6 h-6" />
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Student Created!</h2>
-              <p className="text-sm text-[var(--color-text-secondary)]">
+              <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Student Profile Created</h2>
+              <p className="text-xs text-[var(--color-text-secondary)]">
                 Provide this Access Code to <strong>{createdStudent.name}</strong> to begin their journey.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[var(--color-surface-soft)] text-[var(--color-primary)] font-mono text-3xl font-bold tracking-widest border border-[var(--color-border-subtle)] flex items-center justify-center gap-3">
-              <KeyRound className="w-6 h-6 text-[var(--color-warm)] shrink-0" />
+            <div className="p-4 sm:p-5 rounded-xl bg-[var(--color-surface-soft)] text-indigo-600 dark:text-indigo-400 font-mono text-2xl sm:text-3xl font-bold tracking-widest border border-[var(--color-border-subtle)] flex items-center justify-center gap-3">
+              <KeyRound className="w-5 h-5 text-[var(--color-text-muted)] shrink-0" />
               <span>{createdStudent.accessCode}</span>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button
                 variant="outline"
-                className="w-full"
+                className="w-full text-xs"
                 onClick={() => {
                   setCreatedStudent(null);
                   setFormData({
                     name: '',
                     dob: '',
-                    classGrade: '10',
+                    classGrade: '8',
                     school: '',
                     parentJob: '',
                     familyIncome: '',
@@ -109,7 +109,7 @@ export default function AddStudentPage() {
               </Button>
               <Button
                 variant="primary"
-                className="w-full"
+                className="w-full text-xs"
                 onClick={() => router.push('/dashboard')}
               >
                 Return to Dashboard
@@ -117,14 +117,14 @@ export default function AddStudentPage() {
             </div>
           </div>
         ) : (
-          <div className="bg-[var(--color-surface)] rounded-3xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-sm space-y-6">
+          <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-6">
             <div className="flex items-center gap-3 border-b border-[var(--color-border-subtle)] pb-4">
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center">
-                <UserPlus className="w-5 h-5" />
+              <div className="w-9 h-9 rounded-lg bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center border border-[var(--color-primary)]/20">
+                <UserPlus className="w-4 h-4" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-[var(--color-text-primary)]">Add New Student</h1>
-                <p className="text-xs text-[var(--color-text-secondary)]">Create a student profile to generate their journey access code</p>
+                <h1 className="text-lg font-semibold text-[var(--color-text-primary)]">Add New Student Profile</h1>
+                <p className="text-xs text-[var(--color-text-secondary)]">Create a student record to generate an access login code</p>
               </div>
             </div>
 
@@ -147,13 +147,13 @@ export default function AddStudentPage() {
                 />
 
                 <div className="w-full space-y-1.5">
-                  <label className="block text-sm font-semibold text-[var(--color-text-secondary)]">
+                  <label className="block text-xs font-semibold text-[var(--color-text-secondary)]">
                     Class / Grade <span className="text-rose-500">*</span>
                   </label>
                   <select
                     value={formData.classGrade}
                     onChange={(e) => setFormData({ ...formData, classGrade: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-sm focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-hidden transition-all cursor-pointer"
+                    className="w-full px-3.5 py-2.5 rounded-lg border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] focus:outline-none transition-all cursor-pointer"
                   >
                     <option value="8">Class 8</option>
                     <option value="9">Class 9</option>
@@ -177,13 +177,13 @@ export default function AddStudentPage() {
               />
 
               <div className="w-full space-y-1.5">
-                <label className="block text-sm font-semibold text-[var(--color-text-secondary)]">
+                <label className="block text-xs font-semibold text-[var(--color-text-secondary)]">
                   Family Annual Income Range
                 </label>
                 <select
                   value={formData.familyIncome}
                   onChange={(e) => setFormData({ ...formData, familyIncome: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-sm focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-hidden transition-all cursor-pointer"
+                  className="w-full px-3.5 py-2.5 rounded-lg border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] focus:outline-none transition-all cursor-pointer"
                 >
                   <option value="">Select Income Range (Optional)</option>
                   <option value="Below ₹1 Lakh">Below ₹1 Lakh per year</option>
@@ -201,7 +201,7 @@ export default function AddStudentPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-1/2"
+                  className="w-1/2 text-xs"
                   onClick={() => router.push('/dashboard')}
                 >
                   Cancel
@@ -209,7 +209,7 @@ export default function AddStudentPage() {
                 <Button
                   type="submit"
                   variant="primary"
-                  className="w-1/2"
+                  className="w-1/2 text-xs"
                   isLoading={isLoading}
                 >
                   Create Student

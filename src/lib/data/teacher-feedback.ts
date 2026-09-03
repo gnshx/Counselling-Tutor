@@ -52,6 +52,36 @@ export const teacherFeedbackQuestions: TeacherFeedbackQuestion[] = [
     required: true,
   },
   {
+    id: 'tf_sincerity',
+    question: "How would you rate the student's sincerity and dedication towards learning and duties?",
+    type: 'rating',
+    required: true,
+  },
+  {
+    id: 'tf_attendance',
+    question: "How would you rate the student's attendance, punctuality, and regularity?",
+    type: 'rating',
+    required: true,
+  },
+  {
+    id: 'tf_discipline',
+    question: "How would you rate the student's obedience and classroom discipline?",
+    type: 'rating',
+    required: true,
+  },
+  {
+    id: 'tf_respect',
+    question: "How would you rate the student's level of respect towards teachers, staff, and peers?",
+    type: 'rating',
+    required: true,
+  },
+  {
+    id: 'tf_cleanliness',
+    question: "How would you rate the student's personal cleanliness, neatness, and care for belongings?",
+    type: 'rating',
+    required: true,
+  },
+  {
     id: 'tf8',
     question: "Which areas appear to be the student's strongest based on your observations?",
     type: 'multi-select',

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Sparkles, KeyRound, ArrowRight, ShieldCheck, Compass, Brain, Users, CheckCircle, Shield } from 'lucide-react';
+import { Sparkles, KeyRound, ArrowRight, ShieldCheck, Compass, Brain, Users, CheckCircle, Shield, GraduationCap, Star } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 export default function Home() {
@@ -51,16 +51,16 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] selection:bg-[var(--color-primary-soft)] selection:text-[var(--color-primary)] font-sans">
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans antialiased selection:bg-blue-500 selection:text-white">
       {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-border-subtle)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[var(--color-surface)]/80 backdrop-blur-xl border-b border-[var(--color-border-subtle)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary-soft)] flex items-center justify-center">
-              <Compass className="w-6 h-6 text-[var(--color-primary)]" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm text-white">
+              <Compass className="w-5 h-5 stroke-[2.5]" />
             </div>
             <span className="font-bold text-xl tracking-tight text-[var(--color-text-primary)]">
-              Career<span className="text-[var(--color-primary)]">Discovery</span>
+              Career<span className="text-blue-600 dark:text-blue-400 font-extrabold">Discovery</span>
             </span>
           </div>
 
@@ -69,63 +69,59 @@ export default function Home() {
 
             <Link
               href="/login"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] transition-colors shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 transition-all shadow-2xs hover:shadow-xs"
             >
-              <ShieldCheck className="w-4 h-4 text-[var(--color-cyan)]" />
-              <span>Teacher Login</span>
+              <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span>Teacher Portal</span>
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="pb-24">
+      <main className="pb-20">
         {/* Hero Section */}
-        <section className="relative overflow-hidden pt-20 pb-32">
-          <div className="absolute inset-0 hero-gradient -z-10" />
-          {/* Abstract background shapes */}
-          <div className="absolute top-20 left-10 w-64 h-64 bg-[var(--color-primary-soft)] rounded-full mix-blend-multiply filter blur-3xl opacity-70 -z-10" />
-          <div className="absolute bottom-10 right-10 w-72 h-72 bg-[var(--color-cyan-soft)] rounded-full mix-blend-multiply filter blur-3xl opacity-70 -z-10" />
-          
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-16">
-            <div className="flex-1 text-center lg:text-left z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary-soft)] text-[var(--color-primary-hover)] text-sm font-medium mb-6">
-                <Sparkles className="w-4 h-4" />
-                <span>Your future isn't one straight line</span>
+        <section className="relative overflow-hidden pt-12 sm:pt-24 pb-20 sm:pb-32">
+          {/* Subtle background glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-blue-500/10 via-indigo-500/5 to-transparent blur-3xl -z-10 pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+            <div className="flex-1 text-center lg:text-left z-10 space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 text-xs font-bold tracking-wide">
+                <Sparkles className="w-4 h-4 text-blue-500" />
+                <span>AI-Assisted Career Discovery Platform</span>
               </div>
-              <h1 className="text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-[var(--color-text-primary)] leading-[1.15]">
-                Discover what makes you <span className="text-[var(--color-primary)]">uniquely you.</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--color-text-primary)] leading-[1.12]">
+                Discover what makes you <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">uniquely you.</span>
               </h1>
-              <p className="text-lg lg:text-xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto lg:mx-0">
-                Explore your interests, strengths, and thinking style — and take the next step toward a future that feels right for you.
+              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                Explore your natural interests, strengths, and thinking style — taking guided, confident steps toward a future tailored for you.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
                 <button 
                   onClick={scrollToHowItWorks}
-                  className="px-8 py-4 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold text-lg transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  className="px-7 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                 >
                   Start Your Journey
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
             {/* Access Code Card */}
             <div id="access-card" className="flex-1 w-full max-w-md z-10 scroll-mt-32">
-              <div className="bg-[var(--color-surface)] rounded-3xl p-8 shadow-md border border-[var(--color-border-subtle)] relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-[var(--color-primary)]" />
-                
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-[var(--color-primary-soft)] flex items-center justify-center">
-                    <span className="text-2xl">🎓</span>
+              <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-800 relative overflow-hidden space-y-6">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800/80 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
+                    <GraduationCap className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-[var(--color-text-primary)]">Your journey starts here</h2>
-                    <p className="text-sm text-[var(--color-text-secondary)]">Already have your access code?</p>
+                    <h2 className="text-lg font-bold text-[var(--color-text-primary)]">Student Portal Access</h2>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Enter your 8-character access code</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-[var(--color-text-secondary)] mb-6">
-                  Enter the access code shared by your teacher or counselor. Your code gives you secure access to your personal career journey.
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  Enter the access code provided by your educator to log in and complete your career discovery activities.
                 </p>
 
                 <form onSubmit={handleStudentAccess} className="space-y-4">
@@ -136,10 +132,10 @@ export default function Home() {
                       value={accessCode}
                       onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
                       placeholder="A B C 1 2 X Y"
-                      className="w-full px-4 py-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-center font-mono text-xl font-bold tracking-[0.5em] text-[var(--color-text-primary)] uppercase focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] transition-all placeholder:tracking-normal"
+                      className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-center font-mono text-xl font-bold tracking-[0.35em] text-[var(--color-text-primary)] uppercase focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all placeholder:tracking-normal placeholder:font-sans placeholder:text-xs placeholder:font-medium placeholder:text-slate-400"
                     />
                     {error && (
-                      <p className="text-sm text-red-500 mt-2 flex items-center justify-center gap-1">
+                      <p className="text-xs text-rose-500 font-semibold mt-2 text-center">
                         {error}
                       </p>
                     )}
@@ -147,10 +143,10 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 px-6 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-semibold text-base shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full py-3.5 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]"
                   >
-                    <span>{isLoading ? 'Preparing Journey...' : 'Continue'}</span>
-                    <ArrowRight className="w-5 h-5" />
+                    <span>{isLoading ? 'Preparing Journey...' : 'Continue to Portal'}</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               </div>
@@ -159,65 +155,67 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section id="how-it-works" className="py-24 bg-[var(--color-surface)] scroll-mt-20">
+        <section id="how-it-works" className="py-20 sm:py-28 bg-[var(--color-surface)] border-y border-[var(--color-border-subtle)] scroll-mt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-4">How it works</h2>
-              <p className="text-lg text-[var(--color-text-secondary)]">A simple, calm progression to help you learn more about yourself.</p>
+            <div className="text-center mb-16 space-y-3">
+              <h2 className="text-2xl sm:text-4xl font-bold text-[var(--color-text-primary)]">How the Process Works</h2>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] max-w-xl mx-auto">A simple three-step journey to explore and understand student strengths.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-              {/* Connector lines (hidden on mobile) */}
-              <div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-[var(--color-border-subtle)] z-0" />
-              
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-24 h-24 rounded-2xl bg-[var(--color-primary-soft)] flex items-center justify-center mb-6 shadow-sm border border-[var(--color-border-subtle)]">
-                  <Compass className="w-10 h-10 text-[var(--color-primary)]" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="p-7 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-background-main)] flex flex-col items-start text-left space-y-4 hover:-translate-y-1 transition-all shadow-2xs hover:shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800/80 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                  <Compass className="w-6 h-6" />
                 </div>
-                <div className="text-[var(--color-primary)] font-semibold text-sm mb-2">01 — Discover</div>
-                <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-3">Discover Yourself</h3>
-                <p className="text-[var(--color-text-secondary)]">Answer thoughtful questions about what you enjoy, your values, and how you see the world.</p>
+                <div className="text-blue-600 dark:text-blue-400 font-bold text-xs uppercase tracking-wider">Step 01</div>
+                <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Self-Discovery Questionnaire</h3>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">Students answer structured questions regarding personal preferences, subject interests, and future goals.</p>
               </div>
 
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-24 h-24 rounded-2xl bg-[var(--color-cyan-soft)] flex items-center justify-center mb-6 shadow-sm border border-[var(--color-border-subtle)]">
-                  <Brain className="w-10 h-10 text-[var(--color-cyan)]" />
+              <div className="p-7 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-background-main)] flex flex-col items-start text-left space-y-4 hover:-translate-y-1 transition-all shadow-2xs hover:shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/70 border border-sky-200 dark:border-sky-800/80 flex items-center justify-center text-sky-600 dark:text-sky-400">
+                  <Brain className="w-6 h-6" />
                 </div>
-                <div className="text-[var(--color-cyan)] font-semibold text-sm mb-2">02 — Explore</div>
-                <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-3">Explore Your Thinking</h3>
-                <p className="text-[var(--color-text-secondary)]">Try gentle challenges that reveal different ways you approach and solve everyday problems.</p>
+                <div className="text-sky-600 dark:text-sky-400 font-bold text-xs uppercase tracking-wider">Step 02</div>
+                <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Reasoning & Mindset Challenge</h3>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">Interactive scenario challenges measure problem solving, logical reasoning, and analytical thinking.</p>
               </div>
 
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-24 h-24 rounded-2xl bg-[var(--color-warm-soft)] flex items-center justify-center mb-6 shadow-sm border border-[var(--color-border-subtle)]">
-                  <Users className="w-10 h-10 text-[var(--color-warm)]" />
+              <div className="p-7 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-background-main)] flex flex-col items-start text-left space-y-4 hover:-translate-y-1 transition-all shadow-2xs hover:shadow-md">
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800/80 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <Users className="w-6 h-6" />
                 </div>
-                <div className="text-[var(--color-warm)] font-semibold text-sm mb-2">03 — Reflect</div>
-                <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-3">Counselor Insight</h3>
-                <p className="text-[var(--color-text-secondary)]">Your teacher or counselor adds observations to help you explore career possibilities together.</p>
+                <div className="text-emerald-600 dark:text-emerald-400 font-bold text-xs uppercase tracking-wider">Step 03</div>
+                <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Educator Synthesis & Feedback</h3>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">Educators review student data alongside classroom observations to produce actionable career recommendations.</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Trust & Privacy */}
-        <section className="py-20 bg-[var(--color-background-main)] border-t border-[var(--color-border-subtle)]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <Shield className="w-12 h-12 text-[var(--color-success)] mx-auto mb-6" />
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">Your journey belongs to you.</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left mt-10">
-              <div className="flex gap-3">
-                <CheckCircle className="w-6 h-6 text-[var(--color-success)] shrink-0" />
+        <section className="py-20 bg-[var(--color-background-main)]">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800/80 flex items-center justify-center mx-auto text-emerald-600 dark:text-emerald-400">
+              <Shield className="w-6 h-6" />
+            </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)]">Designed for Educational Integrity & Privacy</h2>
+              <p className="text-sm text-[var(--color-text-secondary)] max-w-xl mx-auto">Built from the ground up for schools, ensuring data protection and positive guidance.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left pt-4">
+              <div className="flex gap-4 p-6 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] shadow-2xs">
+                <CheckCircle className="w-6 h-6 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-[var(--color-text-primary)]">Safe & Secure</h4>
-                  <p className="text-sm text-[var(--color-text-secondary)] mt-1">Your responses are handled securely and access is controlled through your unique code.</p>
+                  <h4 className="font-bold text-base text-[var(--color-text-primary)]">Secure Access Control</h4>
+                  <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mt-1 leading-relaxed">Unique access keys isolate student records and restrict profile access exclusively to assigned educators.</p>
                 </div>
               </div>
-              <div className="flex gap-3">
-                <CheckCircle className="w-6 h-6 text-[var(--color-success)] shrink-0" />
+              <div className="flex gap-4 p-6 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] shadow-2xs">
+                <CheckCircle className="w-6 h-6 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-[var(--color-text-primary)]">For Your Growth</h4>
-                  <p className="text-sm text-[var(--color-text-secondary)] mt-1">Assessments are meant for discovery and are never intended to define your future.</p>
+                  <h4 className="font-bold text-base text-[var(--color-text-primary)]">Growth-Oriented Assessment</h4>
+                  <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mt-1 leading-relaxed">Evaluations emphasize development areas and natural affinity rather than high-pressure grading scores.</p>
                 </div>
               </div>
             </div>
@@ -226,10 +224,11 @@ export default function Home() {
       </main>
 
       <footer className="bg-[var(--color-surface)] border-t border-[var(--color-border-subtle)] py-8 text-center">
-        <p className="text-sm text-[var(--color-text-secondary)]">
-          &copy; {new Date().getFullYear()} Career Discovery & Counselling Tutor.
+        <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
+          &copy; {new Date().getFullYear()} Career Discovery & Counselling Platform. All rights reserved.
         </p>
       </footer>
     </div>
   );
 }
+

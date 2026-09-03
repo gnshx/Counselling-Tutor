@@ -40,12 +40,12 @@ export function StudentTable({ students }: StudentTableProps) {
 
   if (students.length === 0) {
     return (
-      <div className="bg-[var(--color-surface)] rounded-[1.5rem] border border-[var(--color-border-subtle)] p-12 text-center shadow-sm transition-colors">
-        <div className="w-16 h-16 bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <KeyRound className="w-8 h-8" />
+      <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border-subtle)] p-12 text-center shadow-2xs transition-colors">
+        <div className="w-12 h-12 bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] rounded-xl flex items-center justify-center mx-auto mb-3 border border-[var(--color-border-subtle)]">
+          <KeyRound className="w-6 h-6" />
         </div>
-        <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">No students found</h3>
-        <p className="text-sm text-[var(--color-text-secondary)] max-w-md mx-auto mb-6">
+        <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">No students found</h3>
+        <p className="text-xs text-[var(--color-text-secondary)] max-w-md mx-auto mb-4">
           Add your first student to generate an access code and start their career discovery journey.
         </p>
       </div>
@@ -53,18 +53,18 @@ export function StudentTable({ students }: StudentTableProps) {
   }
 
   return (
-    <div className="bg-[var(--color-surface)] rounded-[1.5rem] border border-[var(--color-border-subtle)] overflow-hidden shadow-sm transition-colors">
+    <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border-subtle)] overflow-hidden shadow-2xs transition-colors">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-[var(--color-surface-soft)] border-b border-[var(--color-border-subtle)] text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">
-              <th className="py-4 px-4 sm:px-6">Student Info</th>
-              <th className="py-4 px-4">Access Code</th>
-              <th className="py-4 px-4 text-center">Discovery</th>
-              <th className="py-4 px-4 text-center">Challenge</th>
-              <th className="py-4 px-4 text-center">Feedback</th>
-              <th className="py-4 px-4 text-center">Status</th>
-              <th className="py-4 px-4 sm:px-6 text-right">Actions</th>
+            <tr className="bg-[var(--color-surface-soft)]/60 border-b border-[var(--color-border-subtle)] text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider">
+              <th className="py-3.5 px-4 sm:px-5">Student Info</th>
+              <th className="py-3.5 px-4">Access Code</th>
+              <th className="py-3.5 px-4 text-center">Discovery</th>
+              <th className="py-3.5 px-4 text-center">Challenge</th>
+              <th className="py-3.5 px-4 text-center">Feedback</th>
+              <th className="py-3.5 px-4 text-center">Status</th>
+              <th className="py-3.5 px-4 sm:px-5 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--color-border-subtle)] text-sm">
@@ -83,71 +83,69 @@ export function StudentTable({ students }: StudentTableProps) {
               return (
                 <tr
                   key={student.id}
-                  className="hover:bg-[var(--color-surface-soft)] transition-colors"
+                  className="hover:bg-[var(--color-surface-soft)]/50 transition-colors"
                 >
                   {/* Name & Class */}
-                  <td className="py-4 px-4 sm:px-6">
-                    <div className="font-bold text-[var(--color-text-primary)]">{student.name}</div>
-                    <div className="text-xs text-[var(--color-text-secondary)] flex items-center gap-2 mt-0.5">
-                      <span className="font-semibold text-[var(--color-primary)]">Class {student.classGrade}</span>
+                  <td className="py-3.5 px-4 sm:px-5">
+                    <div className="font-semibold text-[var(--color-text-primary)]">{student.name}</div>
+                    <div className="text-xs text-[var(--color-text-secondary)] flex items-center gap-1.5 mt-0.5 font-normal">
+                      <span className="font-medium text-[var(--color-primary)]">Class {student.classGrade}</span>
                       <span>•</span>
                       <span>DOB: {formattedDob}</span>
                     </div>
                   </td>
 
                   {/* Access Code */}
-                  <td className="py-4 px-4">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs font-mono font-bold text-[var(--color-text-primary)]">
+                  <td className="py-3.5 px-4">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs font-mono font-medium text-[var(--color-text-primary)]">
                       <KeyRound className="w-3 h-3 text-[var(--color-primary)]" />
                       <span>{student.accessCode}</span>
                     </div>
                   </td>
 
                   {/* Questionnaire Status */}
-                  <td className="py-4 px-4 text-center">
+                  <td className="py-3.5 px-4 text-center">
                     <StatusBadge status={student.questionnaireStatus} size="sm" />
                   </td>
 
                   {/* Assessment Status */}
-                  <td className="py-4 px-4 text-center">
-                    <div className="flex flex-col items-center gap-1">
-                      <StatusBadge status={student.assessmentStatus} size="sm" />
-                    </div>
+                  <td className="py-3.5 px-4 text-center">
+                    <StatusBadge status={student.assessmentStatus} size="sm" />
                   </td>
 
                   {/* Teacher Feedback Status */}
-                  <td className="py-4 px-4 text-center">
+                  <td className="py-3.5 px-4 text-center">
                     <StatusBadge status={student.feedbackStatus} size="sm" />
                   </td>
 
                   {/* Overall Status */}
-                  <td className="py-4 px-4 text-center">
-                    <StatusBadge status={overall} />
+                  <td className="py-3.5 px-4 text-center">
+                    <StatusBadge status={overall} size="sm" />
                   </td>
 
                   {/* Actions */}
-                  <td className="py-4 px-4 sm:px-6 text-right">
+                  <td className="py-3.5 px-4 sm:px-5 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/dashboard/students/${student.id}`}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--color-surface-soft)] hover:bg-[var(--color-border-subtle)] text-[var(--color-text-primary)] transition-colors"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[var(--color-surface-soft)] hover:bg-[var(--color-border-subtle)] text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>Profile</span>
                       </Link>
 
                       {isFeedbackDone ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[var(--color-success)] bg-[var(--color-success-soft)]">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60">
                           <CheckCircle className="w-3.5 h-3.5" />
                           <span>Submitted</span>
                         </span>
                       ) : (
                         <Link
                           href={`/dashboard/students/${student.id}/feedback`}
-                          className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                          className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
                             isFeedbackReady
-                              ? 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-sm'
-                              : 'bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:bg-[var(--color-border-subtle)]'
+                              ? 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xs'
+                              : 'bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)] hover:bg-[var(--color-border-subtle)]'
                           }`}
                         >
                           <MessageSquarePlus className="w-3.5 h-3.5" />

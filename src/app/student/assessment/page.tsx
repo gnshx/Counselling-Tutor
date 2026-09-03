@@ -101,28 +101,27 @@ export default function StudentAssessmentPage() {
         <CompletionScreen
           studentName={student.name}
           isAllCompleted={true}
-          title="✨ Nice work!"
-          subtitle="You've completed the thinking assessment. You took the time to challenge yourself — that's something to be proud of."
+          title="Assessment Completed"
+          subtitle="You've completed the thinking challenge section. Your answers have been recorded."
         />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] flex flex-col font-sans selection:bg-[var(--color-cyan-soft)] selection:text-[var(--color-cyan)]">
-      
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] flex flex-col font-sans antialiased">
       {/* Header */}
-      <header className="bg-[var(--color-surface)]/80 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20 transition-colors">
+      <header className="bg-[var(--color-surface)]/90 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20 transition-colors">
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
           <button
             onClick={() => router.push('/student')}
-            className="flex items-center gap-1.5 text-sm font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back</span>
+            <span>Back to Portal</span>
           </button>
 
-          <div className="text-[var(--color-cyan)] font-bold text-sm tracking-wider uppercase">
+          <div className="text-[var(--color-primary)] font-semibold text-xs tracking-wider uppercase">
             Explore Your Thinking
           </div>
         </div>
@@ -130,30 +129,29 @@ export default function StudentAssessmentPage() {
 
       {/* Main Container */}
       <main className="max-w-3xl w-full mx-auto px-4 py-8 flex-1 flex flex-col z-10">
-        
         {/* Progress header */}
-        <div className="mb-8">
-          <div className="flex justify-between text-sm font-semibold text-[var(--color-text-secondary)] mb-3">
+        <div className="mb-6">
+          <div className="flex justify-between text-xs font-semibold text-[var(--color-text-secondary)] mb-2">
             <span>Challenge {currentIndex + 1} of {totalQuestions}</span>
-            <span className="text-[var(--color-cyan)]">{progressPercent}%</span>
+            <span className="text-[var(--color-primary)]">{progressPercent}%</span>
           </div>
-          <div className="w-full h-2 bg-[var(--color-surface-soft)] rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-[var(--color-surface-soft)] rounded-full overflow-hidden border border-[var(--color-border-subtle)]">
             <div 
-              className="h-full bg-[var(--color-cyan)] rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
 
         {/* Question Container */}
-        <div className="flex-1 flex flex-col justify-center min-h-[400px]">
+        <div className="flex-1 flex flex-col justify-center min-h-[380px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
               className="w-full"
             >
               <AssessmentCard
@@ -167,44 +165,44 @@ export default function StudentAssessmentPage() {
             </motion.div>
           </AnimatePresence>
 
-          {error && <p className="text-sm font-semibold text-red-500 text-center mt-6">{error}</p>}
+          {error && <p className="text-xs font-semibold text-rose-500 text-center mt-4">{error}</p>}
         </div>
 
         {/* Reassuring text */}
-        <div className="text-center mt-6 mb-10">
-          <p className="text-sm text-[var(--color-text-muted)] font-medium">
-            Take your time. This is about discovering your style, not just finding the right answer.
+        <div className="text-center mt-4 mb-8">
+          <p className="text-xs text-[var(--color-text-muted)] font-medium">
+            Select your preferred answer for each scenario.
           </p>
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between gap-4 pt-6 border-t border-[var(--color-border-subtle)]">
+        <div className="flex items-center justify-between gap-4 pt-4 border-t border-[var(--color-border-subtle)]">
           <button
             type="button"
             onClick={handlePrev}
             disabled={currentIndex === 0 || isSubmitting}
-            className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${
               currentIndex === 0 || isSubmitting 
                 ? 'opacity-0 pointer-events-none' 
                 : 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)] cursor-pointer'
             }`}
           >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <ArrowLeft className="w-4 h-4" />
+            <span>Previous</span>
           </button>
 
           <button
             type="button"
             onClick={handleNext}
             disabled={!selectedAnswer || isSubmitting}
-            className={`flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-medium transition-colors ${
               !selectedAnswer || isSubmitting
                 ? 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] cursor-not-allowed border border-[var(--color-border-subtle)]'
-                : 'bg-[var(--color-cyan)] hover:bg-[#0891b2] text-white shadow-sm cursor-pointer'
+                : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xs cursor-pointer'
             }`}
           >
-            <span>{isSubmitting ? 'Saving...' : currentIndex === totalQuestions - 1 ? 'Finish' : 'Next'}</span>
-            {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />)}
+            <span>{isSubmitting ? 'Saving...' : currentIndex === totalQuestions - 1 ? 'Finish Assessment' : 'Next Challenge'}</span>
+            {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />)}
           </button>
         </div>
       </main>

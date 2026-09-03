@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
         classGrade: true,
         questionnaireStatus: true,
         assessmentStatus: true,
+        feedbackStatus: true,
       },
     });
 

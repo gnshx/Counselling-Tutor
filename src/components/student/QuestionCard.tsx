@@ -22,34 +22,34 @@ export function QuestionCard({
   onFollowUpChange,
 }: QuestionCardProps) {
   return (
-    <div className="bg-[var(--color-surface)] rounded-[2rem] p-8 sm:p-12 border border-[var(--color-border-subtle)] shadow-[0_8px_30px_rgba(15,23,42,0.06)] space-y-10 transition-all text-center">
+    <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-10 border border-[var(--color-border-subtle)] shadow-2xs space-y-8 transition-colors text-center">
       
       {/* Header / Category & Question */}
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-3">
         {question.icon && (
-          <div className="text-4xl mb-2">
+          <div className="text-3xl mb-1">
             {question.icon}
           </div>
         )}
-        <div className="space-y-4">
-          <span className="text-sm font-bold uppercase tracking-widest text-[var(--color-primary)]">
+        <div className="space-y-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">
             {question.category.replace('_', ' ')}
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] leading-snug">
+          <h2 className="text-xl sm:text-2xl font-semibold text-[var(--color-text-primary)] leading-snug">
             {question.question}
           </h2>
         </div>
       </div>
 
       {/* Render input by question type with generous spacing */}
-      <div className="pt-4 max-w-xl mx-auto text-left">
+      <div className="pt-2 max-w-xl mx-auto text-left">
         {question.type === 'multi-select' && (
           <MultiSelect
             options={question.options}
             selectedValues={Array.isArray(value) ? value : []}
             onChange={onChange}
             maxSelections={question.maxSelections}
-            colorTheme="violet"
+            colorTheme="indigo"
           />
         )}
 
@@ -58,12 +58,12 @@ export function QuestionCard({
             options={question.options}
             selectedValue={typeof value === 'string' ? value : null}
             onChange={onChange}
-            colorTheme="violet"
+            colorTheme="indigo"
           />
         )}
 
         {question.type === 'scale' && (
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
             {question.options.map((opt) => {
               const isSelected = value === opt.value;
               return (
@@ -71,13 +71,13 @@ export function QuestionCard({
                   key={opt.value}
                   type="button"
                   onClick={() => onChange(opt.value)}
-      className={`p-4 rounded-xl border text-center font-bold transition-all flex flex-col items-center justify-center gap-2 cursor-pointer ${
-        isSelected
-          ? 'bg-[var(--color-primary-soft)] text-[var(--color-primary)] border-[var(--color-primary)] shadow-sm ring-2 ring-[var(--color-primary-soft)] scale-[1.02]'
-          : 'bg-[var(--color-surface)] text-[var(--color-text-secondary)] border-[var(--color-border-subtle)] hover:border-[var(--color-primary)] hover:bg-[var(--color-surface-soft)]'
-      }`}
+                  className={`p-4 rounded-xl border text-center font-medium transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
+                    isSelected
+                      ? 'bg-blue-50/90 dark:bg-blue-950/70 text-blue-950 dark:text-blue-100 border-blue-500 dark:border-blue-400 font-semibold shadow-xs'
+                      : 'bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-700/80 hover:bg-blue-50/40 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-slate-600'
+                  } active:scale-[0.99]`}
                 >
-                  <span className="text-sm font-bold leading-snug">{opt.label}</span>
+                  <span className="text-sm font-semibold leading-snug">{opt.label}</span>
                 </button>
               );
             })}
@@ -85,17 +85,17 @@ export function QuestionCard({
         )}
 
         {question.type === 'conditional' && (
-          <div className="space-y-6">
+          <div className="space-y-5">
             <RadioGroup
               options={question.options}
               selectedValue={typeof value === 'string' ? value : null}
               onChange={onChange}
-              colorTheme="violet"
+              colorTheme="indigo"
             />
 
             {question.followUp && value === question.followUp.triggerValue && (
-              <div className="pt-6 border-t border-[var(--color-border-subtle)] space-y-4 animate-fadeIn">
-                <label className="block text-base font-bold text-[var(--color-text-primary)]">
+              <div className="pt-5 border-t border-[var(--color-border-subtle)] space-y-3">
+                <label className="block text-sm font-semibold text-[var(--color-text-primary)]">
                   {question.followUp.question.question}
                 </label>
                 <Input

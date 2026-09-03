@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
   --color-primary-soft: var(--color-primary-soft);
+
   
   --color-success: var(--color-success);
   --color-success-soft: var(--color-success-soft);
@@ -23,23 +26,23 @@
   --color-text-muted: var(--color-text-muted);
   --color-border-subtle: var(--color-border-subtle);
 
-  --font-sans: "Inter", "Plus Jakarta Sans", var(--font-geist-sans), sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
+  --font-sans: var(--font-geist-sans), "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 :root {
-  --color-primary: #6366F1;
-  --color-primary-hover: #4F46E5;
-  --color-primary-soft: #EEF2FF;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-soft: #EFF6FF;
   
-  --color-success: #22C55E;
-  --color-success-soft: #DCFCE7;
+  --color-success: #16A34A;
+  --color-success-soft: #F0FDF4;
   
-  --color-warm: #F59E0B;
-  --color-warm-soft: #FEF3C7;
+  --color-warm: #D97706;
+  --color-warm-soft: #FFFBEB;
   
-  --color-cyan: #06B6D4;
-  --color-cyan-soft: #CFFAFE;
+  --color-cyan: #0284C7;
+  --color-cyan-soft: #F0F9FF;
   
   --color-background-main: #F8FAFC;
   --color-surface: #FFFFFF;
@@ -47,7 +50,7 @@
   
   --color-text-primary: #0F172A;
   --color-text-secondary: #475569;
-  --color-text-muted: #94A3B8;
+  --color-text-muted: #64748B;
   --color-border-subtle: #E2E8F0;
 
   --background: #F8FAFC;
@@ -55,30 +58,30 @@
 }
 
 .dark {
-  --color-primary: #818CF8;
-  --color-primary-hover: #6366F1;
-  --color-primary-soft: rgba(99, 102, 241, 0.15);
+  --color-primary: #3B82F6;
+  --color-primary-hover: #2563EB;
+  --color-primary-soft: rgba(59, 130, 246, 0.15);
   
-  --color-success: #4ADE80;
+  --color-success: #22C55E;
   --color-success-soft: rgba(34, 197, 94, 0.15);
   
-  --color-warm: #FBBF24;
+  --color-warm: #F59E0B;
   --color-warm-soft: rgba(245, 158, 11, 0.15);
   
-  --color-cyan: #22D3EE;
-  --color-cyan-soft: rgba(6, 182, 212, 0.15);
+  --color-cyan: #38BDF8;
+  --color-cyan-soft: rgba(56, 189, 248, 0.15);
   
-  --color-background-main: #0F172A;
-  --color-surface: #1E293B;
-  --color-surface-soft: #334155;
+  --color-background-main: #0B0F19;
+  --color-surface: #111827;
+  --color-surface-soft: #1F2937;
   
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #CBD5E1;
-  --color-text-muted: #64748B;
-  --color-border-subtle: #334155;
+  --color-text-primary: #F9FAFB;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+  --color-border-subtle: #374151;
 
-  --background: #0F172A;
-  --foreground: #F8FAFC;
+  --background: #0B0F19;
+  --foreground: #F9FAFB;
 }
 
 body {
@@ -87,28 +90,36 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* Accessibility Focus Ring */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #CBD5E1;
+  border-radius: 3px;
 }
 .dark ::-webkit-scrollbar-thumb {
   background: #475569;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #94A3B8;
 }
 
-/* Base element styles based on design system */
+/* Headings and Typography */
 h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-primary);
   font-weight: 600;
@@ -120,15 +131,44 @@ p {
   line-height: 1.6;
 }
 
+/* Custom Utility Classes for EdTech SaaS UI */
 @layer utilities {
   .hero-gradient {
-    background: linear-gradient(135deg, var(--color-primary-soft), var(--color-surface), var(--color-background-main));
+    background: radial-gradient(circle at 50% 0%, var(--color-primary-soft) 0%, var(--color-background-main) 70%);
   }
   
   .glass-card {
     background: var(--color-surface);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--color-border-subtle);
   }
+
+  .card-interactive {
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+  }
+  .card-interactive:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+  }
+
+  .pill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
 }
+
+/* Reduced Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
