@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Check, AlertCircle, Circle } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 export interface QuestionStatus {
   id: string;
@@ -28,14 +28,14 @@ export function QuestionPalette({
   const unansweredCount = total - answeredCount - incompleteCount;
 
   return (
-    <div className="bg-[var(--color-surface)] rounded-2xl p-4 sm:p-5 border border-[var(--color-border-subtle)] shadow-2xs space-y-3 mb-4">
+    <div className="bg-[var(--color-surface)] rounded-2xl p-4 sm:p-5 border border-[var(--color-border-subtle)] space-y-3 mb-4">
       {/* Header & Counters */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--color-border-subtle)] pb-3">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">
             {title}
           </span>
-          <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 font-extrabold text-[11px] border border-blue-200 dark:border-blue-800">
+          <span className="px-2.5 py-0.5 rounded-full bg-[var(--color-primary-soft)] text-[var(--color-primary)] font-bold text-[11px] border border-indigo-200 dark:border-indigo-800/40">
             {answeredCount} / {total} Answered
           </span>
         </div>
@@ -53,7 +53,7 @@ export function QuestionPalette({
             </div>
           )}
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-700 inline-block border border-slate-400 dark:border-slate-600"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-surface-soft)] inline-block border border-[var(--color-border-subtle)]"></span>
             <span>Unanswered ({unansweredCount})</span>
           </div>
         </div>
@@ -66,16 +66,16 @@ export function QuestionPalette({
           const isAnswered = q.isAnswered;
           const isIncomplete = q.isIncomplete && !q.isAnswered;
 
-          let btnStyle = 'bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border-[var(--color-border-subtle)] hover:border-blue-400';
+          let btnStyle = 'bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border-[var(--color-border-subtle)] hover:border-indigo-400';
           
           if (isAnswered) {
-            btnStyle = 'bg-emerald-600 text-white font-bold border-emerald-700 dark:bg-emerald-500 dark:border-emerald-600 shadow-2xs';
+            btnStyle = 'bg-emerald-600 text-white font-bold border-emerald-700 dark:bg-emerald-500 dark:border-emerald-600 shadow-xs';
           } else if (isIncomplete) {
-            btnStyle = 'bg-amber-500 text-white font-bold border-amber-600 dark:bg-amber-600 shadow-2xs';
+            btnStyle = 'bg-amber-500 text-white font-bold border-amber-600 dark:bg-amber-600 shadow-xs';
           }
 
           if (isCurrent) {
-            btnStyle += ' ring-2 ring-blue-500 ring-offset-2 ring-offset-[var(--color-surface)] font-black scale-105';
+            btnStyle += ' ring-2 ring-indigo-500 ring-offset-2 ring-offset-[var(--color-surface)] font-black scale-105';
           }
 
           return (
@@ -88,12 +88,12 @@ export function QuestionPalette({
             >
               <span>{idx + 1}</span>
               {isAnswered && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[9px] shadow-2xs">
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[9px] shadow-xs">
                   <Check className="w-2.5 h-2.5 stroke-[3]" />
                 </span>
               )}
               {isIncomplete && (
-                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-amber-700 text-white flex items-center justify-center text-[9px] shadow-2xs">
+                <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-amber-700 text-white flex items-center justify-center text-[9px] shadow-xs">
                   !
                 </span>
               )}

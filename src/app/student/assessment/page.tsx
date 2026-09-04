@@ -6,7 +6,7 @@ import { assessmentQuestions, AssessmentQuestion } from '@/lib/data/assessment';
 import { AssessmentCard } from '@/components/student/AssessmentCard';
 import { QuestionPalette } from '@/components/student/QuestionPalette';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
-import { ArrowLeft, ArrowRight, Check, FastForward, AlertCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, FastForward, AlertCircle, Brain } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function StudentAssessmentPage() {
@@ -159,8 +159,8 @@ export default function StudentAssessmentPage() {
         <CompletionScreen
           studentName={student.name}
           isAllCompleted={true}
-          title="Assessment Completed"
-          subtitle="You've completed the thinking challenge section. Your answers have been recorded."
+          title="Thinking Challenge Complete!"
+          subtitle="You've completed the reasoning and thinking section. Your responses have been saved for counselor synthesis."
         />
       </div>
     );
@@ -179,8 +179,9 @@ export default function StudentAssessmentPage() {
             <span>Back to Portal</span>
           </button>
 
-          <div className="text-[var(--color-primary)] font-bold text-xs tracking-wider uppercase">
-            Explore Your Thinking
+          <div className="text-violet-600 dark:text-violet-400 font-bold text-xs tracking-wider uppercase flex items-center gap-1.5">
+            <Brain className="w-4 h-4" />
+            <span>Explore Your Thinking</span>
           </div>
         </div>
       </header>
@@ -192,7 +193,7 @@ export default function StudentAssessmentPage() {
           questionsStatus={questionsStatus}
           currentIndex={currentIndex}
           onSelectQuestion={handleSelectQuestion}
-          title="Thinking Challenge Question Navigation"
+          title="Thinking Challenge Navigation"
         />
 
         {/* Unanswered Questions Warning Banner */}
@@ -266,7 +267,7 @@ export default function StudentAssessmentPage() {
             type="button"
             onClick={handlePrev}
             disabled={currentIndex === 0 || isSubmitting}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${
+            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
               currentIndex === 0 || isSubmitting 
                 ? 'opacity-0 pointer-events-none' 
                 : 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)] cursor-pointer'
@@ -281,7 +282,7 @@ export default function StudentAssessmentPage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-xs font-medium bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
+                className="flex items-center gap-1 px-4 py-2.5 rounded-xl text-xs font-semibold bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-all cursor-pointer"
               >
                 <span>Answer Later / Skip</span>
                 <FastForward className="w-3.5 h-3.5" />
@@ -292,13 +293,13 @@ export default function StudentAssessmentPage() {
               type="button"
               onClick={currentIndex === totalQuestions - 1 ? handleSubmit : handleNext}
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-semibold bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xs cursor-pointer transition-colors"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 cursor-pointer transition-all active:scale-[0.98]"
             >
               <span>
                 {isSubmitting
                   ? 'Saving...'
                   : currentIndex === totalQuestions - 1
-                  ? 'Finish Assessment'
+                  ? 'Finish Section'
                   : 'Next Challenge'}
               </span>
               {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />)}

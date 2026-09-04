@@ -34,26 +34,29 @@ export function QuestionCard({
   }
 
   return (
-    <div className="bg-[var(--color-surface)] rounded-2xl p-4 sm:p-6 border border-[var(--color-border-subtle)] shadow-2xs space-y-5 transition-colors text-center max-w-2xl mx-auto">
+    <div className="bg-[var(--color-surface)] rounded-2xl p-5 sm:p-8 border border-[var(--color-border-subtle)] space-y-6 transition-colors text-center max-w-2xl mx-auto">
       
       {/* Header / Category & Question */}
-      <div className="flex flex-col items-center gap-1.5">
+      <div className="flex flex-col items-center gap-3">
         {question.icon && (
-          <div className="text-2xl sm:text-3xl mb-0.5">
+          <div className="w-12 h-12 rounded-xl bg-[var(--color-primary-soft)] border border-indigo-200 dark:border-indigo-800/40 flex items-center justify-center text-2xl">
             {question.icon}
           </div>
         )}
-        <div className="space-y-1">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-primary)] bg-[var(--color-primary-soft)] px-2.5 py-0.5 rounded-full">
+        <div className="space-y-2">
+          <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[var(--color-primary)] bg-[var(--color-primary-soft)] px-3 py-1 rounded-full">
             {question.category.replace('_', ' ')}
           </span>
-          <h2 className="text-lg sm:text-xl font-bold text-[var(--color-text-primary)] leading-snug">
+          <h2 className="text-xl sm:text-2xl font-[var(--font-heading)] text-[var(--color-text-primary)] leading-snug">
             {question.question}
           </h2>
+          <p className="text-xs text-[var(--color-text-muted)]">
+            There are no right or wrong answers. Choose what feels most like you.
+          </p>
         </div>
       </div>
 
-      {/* Render input by question type with compact spacing */}
+      {/* Render input by question type */}
       <div className="pt-1 w-full mx-auto text-left">
         {question.type === 'multi-select' && (
           <MultiSelect
@@ -66,7 +69,7 @@ export function QuestionCard({
         )}
 
         {question.type === 'single-select' && (
-          <div className="space-y-3">
+          <div className="space-y-4">
             <RadioGroup
               options={question.options}
               selectedValue={typeof value === 'string' ? value : null}
@@ -76,9 +79,9 @@ export function QuestionCard({
 
             {/* Proof/Example input when selected option asks for proof */}
             {selectedOptionProofPrompt && (
-              <div className="pt-3 border-t border-[var(--color-border-subtle)] space-y-2 mt-2">
-                <label className="block text-xs font-semibold text-blue-700 dark:text-blue-300 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+              <div className="pt-4 border-t border-[var(--color-border-subtle)] space-y-2.5 mt-2">
+                <label className="block text-xs font-semibold text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                   <span>{selectedOptionProofPrompt}</span>
                 </label>
                 <Input
@@ -94,7 +97,7 @@ export function QuestionCard({
         )}
 
         {question.type === 'scale' && (
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-2.5">
             {question.options.map((opt) => {
               const isSelected = value === opt.value;
               return (
@@ -102,11 +105,11 @@ export function QuestionCard({
                   key={opt.value}
                   type="button"
                   onClick={() => onChange(opt.value)}
-                  className={`p-3 rounded-xl border text-center font-medium transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
+                  className={`p-3.5 rounded-xl border text-center font-medium transition-all flex flex-col items-center justify-center gap-1.5 cursor-pointer ${
                     isSelected
-                      ? 'bg-blue-50/90 dark:bg-blue-950/70 text-blue-950 dark:text-blue-100 border-blue-500 dark:border-blue-400 font-semibold shadow-xs'
-                      : 'bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-700/80 hover:bg-blue-50/40 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-slate-600'
-                  } active:scale-[0.99]`}
+                      ? 'bg-[var(--color-primary-soft)] text-[var(--color-text-primary)] border-[var(--color-primary)] font-semibold shadow-sm'
+                      : 'bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border-[var(--color-border-subtle)] hover:bg-[var(--color-primary-soft)] hover:border-[var(--color-primary)]/40'
+                  } active:scale-[0.98]`}
                 >
                   {opt.icon && <span className="text-xl">{opt.icon}</span>}
                   <span className="text-xs font-semibold leading-snug">{opt.label}</span>
@@ -126,9 +129,9 @@ export function QuestionCard({
             />
 
             {question.followUp && value === question.followUp.triggerValue && (
-              <div className="pt-3 border-t border-[var(--color-border-subtle)] space-y-2">
+              <div className="pt-4 border-t border-[var(--color-border-subtle)] space-y-2.5">
                 <label className="block text-xs font-semibold text-[var(--color-text-primary)] flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
                   <span>{question.followUp.question.question}</span>
                 </label>
                 <Input

@@ -1,5 +1,8 @@
-import { Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
+'use client';
+
+import { Sparkles, CheckCircle2, ArrowRight, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 interface CompletionScreenProps {
   studentName?: string;
@@ -19,13 +22,18 @@ export function CompletionScreen({
   subtitle,
 }: CompletionScreenProps) {
   return (
-    <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-10 border border-[var(--color-border-subtle)] shadow-2xs text-center max-w-xl mx-auto space-y-6 transition-colors">
-      <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800/60 shadow-2xs">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="bg-[var(--color-surface)] rounded-2xl p-7 sm:p-10 border border-[var(--color-border-subtle)] shadow-lg shadow-indigo-500/5 text-center max-w-xl mx-auto space-y-6 transition-colors"
+    >
+      <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
         <CheckCircle2 className="w-8 h-8" />
       </div>
 
       <div className="space-y-2">
-        <h2 className="text-xl sm:text-2xl font-semibold text-[var(--color-text-primary)]">
+        <h2 className="text-xl sm:text-2xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
           {title || `Great Job, ${studentName}!`}
         </h2>
         <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-sm mx-auto">
@@ -36,27 +44,37 @@ export function CompletionScreen({
       {onNextJourney && nextJourneyTitle ? (
         <button
           onClick={onNextJourney}
-          className="w-full py-3 px-5 rounded-lg bg-[var(--color-primary)] text-white font-medium text-sm shadow-2xs hover:bg-[var(--color-primary-hover)] transition-colors flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm shadow-md shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
         >
           <span>Continue to {nextJourneyTitle}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       ) : isAllCompleted ? (
         <div className="space-y-6 pt-4 border-t border-[var(--color-border-subtle)]">
-          <div className="p-3.5 rounded-lg bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] text-xs font-medium flex items-center justify-center gap-2 border border-[var(--color-border-subtle)]">
-            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
-            <span>Next: Your educator can now add observation feedback.</span>
+          <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] text-xs font-medium flex items-center justify-center gap-2 border border-[var(--color-border-subtle)]">
+            <Heart className="w-4 h-4 text-violet-500 shrink-0" />
+            <span>Your educator can now add observation feedback to personalize your profile.</span>
           </div>
 
           <Link
             href="/student"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-xs shadow-md shadow-indigo-500/15 hover:from-indigo-500 hover:to-violet-500 transition-all"
           >
             <ArrowRight className="w-4 h-4" />
-            <span>Back to My Journey</span>
+            <span>Return to My Discovery Journey</span>
           </Link>
         </div>
-      ) : null}
-    </div>
+      ) : (
+        <div className="pt-2">
+          <Link
+            href="/student"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-xs shadow-md shadow-indigo-500/15 hover:from-indigo-500 hover:to-violet-500 transition-all"
+          >
+            <span>Back to My Journey</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      )}
+    </motion.div>
   );
 }
