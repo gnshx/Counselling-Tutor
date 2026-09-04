@@ -7,6 +7,7 @@ import { Header } from '@/components/teacher/Header';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { ArrowLeft, UserPlus, KeyRound, CheckCircle2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function AddStudentPage() {
   const [formData, setFormData] = useState({
@@ -65,34 +66,39 @@ export default function AddStudentPage() {
       <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
         </Link>
 
         {createdStudent ? (
-          <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-emerald-200 dark:border-emerald-800/60 shadow-2xs text-center space-y-6">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800/60">
-              <CheckCircle2 className="w-6 h-6" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-emerald-200 dark:border-emerald-800/60 shadow-xs text-center space-y-6"
+          >
+            <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800/60">
+              <CheckCircle2 className="w-7 h-7" />
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Student Profile Created</h2>
+              <h2 className="text-xl font-[var(--font-heading)] text-[var(--color-text-primary)]">Student Profile Created</h2>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 Provide this Access Code to <strong>{createdStudent.name}</strong> to begin their journey.
               </p>
             </div>
 
-            <div className="p-4 sm:p-5 rounded-xl bg-[var(--color-surface-soft)] text-indigo-600 dark:text-indigo-400 font-mono text-2xl sm:text-3xl font-bold tracking-widest border border-[var(--color-border-subtle)] flex items-center justify-center gap-3">
-              <KeyRound className="w-5 h-5 text-[var(--color-text-muted)] shrink-0" />
+            <div className="p-5 rounded-2xl bg-[var(--color-surface-soft)] text-[var(--color-primary)] font-mono text-2xl sm:text-3xl font-extrabold tracking-widest border border-indigo-200 dark:border-indigo-800/40 flex items-center justify-center gap-3">
+              <KeyRound className="w-6 h-6 text-[var(--color-text-muted)] shrink-0" />
               <span>{createdStudent.accessCode}</span>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button
                 variant="outline"
-                className="w-full text-xs"
+                className="w-full text-xs font-semibold rounded-xl"
                 onClick={() => {
                   setCreatedStudent(null);
                   setFormData({
@@ -108,22 +114,22 @@ export default function AddStudentPage() {
                 Add Another Student
               </Button>
               <Button
-                variant="primary"
-                className="w-full text-xs"
+                variant="gradient"
+                className="w-full text-xs font-semibold rounded-xl"
                 onClick={() => router.push('/dashboard')}
               >
                 Return to Dashboard
               </Button>
             </div>
-          </div>
+          </motion.div>
         ) : (
-          <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-6">
+          <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-xs space-y-6">
             <div className="flex items-center gap-3 border-b border-[var(--color-border-subtle)] pb-4">
-              <div className="w-9 h-9 rounded-lg bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center border border-[var(--color-primary)]/20">
-                <UserPlus className="w-4 h-4" />
+              <div className="w-10 h-10 rounded-xl bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center border border-indigo-200 dark:border-indigo-800/40">
+                <UserPlus className="w-5 h-5" />
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-[var(--color-text-primary)]">Add New Student Profile</h1>
+                <h1 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Add New Student Profile</h1>
                 <p className="text-xs text-[var(--color-text-secondary)]">Create a student record to generate an access login code</p>
               </div>
             </div>
@@ -153,7 +159,7 @@ export default function AddStudentPage() {
                   <select
                     value={formData.classGrade}
                     onChange={(e) => setFormData({ ...formData, classGrade: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] focus:outline-none transition-all cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs font-semibold focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 focus:outline-none transition-all cursor-pointer"
                   >
                     <option value="8">Class 8</option>
                     <option value="9">Class 9</option>
@@ -183,7 +189,7 @@ export default function AddStudentPage() {
                 <select
                   value={formData.familyIncome}
                   onChange={(e) => setFormData({ ...formData, familyIncome: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-lg border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs focus:ring-2 focus:ring-[var(--color-primary)]/20 focus:border-[var(--color-primary)] focus:outline-none transition-all cursor-pointer"
+                  className="w-full px-4 py-3 rounded-xl border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs font-semibold focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 focus:outline-none transition-all cursor-pointer"
                 >
                   <option value="">Select Income Range (Optional)</option>
                   <option value="Below ₹1 Lakh">Below ₹1 Lakh per year</option>
@@ -201,15 +207,15 @@ export default function AddStudentPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-1/2 text-xs"
+                  className="w-1/2 text-xs font-semibold rounded-xl"
                   onClick={() => router.push('/dashboard')}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  variant="primary"
-                  className="w-1/2 text-xs"
+                  variant="gradient"
+                  className="w-1/2 text-xs font-semibold rounded-xl"
                   isLoading={isLoading}
                 >
                   Create Student

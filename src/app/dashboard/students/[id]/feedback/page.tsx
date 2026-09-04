@@ -29,6 +29,7 @@ import {
   getQuestionnaireAnswerLabel,
   FormattedAssessmentData,
 } from '@/lib/utils/profile-formatter';
+import { motion } from 'framer-motion';
 
 interface StudentDetail {
   id: string;
@@ -188,7 +189,7 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[var(--color-background-main)]">
+      <div className="min-h-screen bg-[var(--color-background-main)] font-sans">
         <Header />
         <div className="max-w-4xl mx-auto p-12 text-center text-[var(--color-text-secondary)]">
           <div className="w-6 h-6 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
@@ -245,15 +246,15 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
     if (!qData) return null;
 
     return (
-      <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-2 shadow-2xs">
+      <div className="p-3.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-2 shadow-xs">
         <div className="text-xs font-semibold text-[var(--color-text-primary)] leading-snug flex items-start gap-1.5">
-          <span className="font-mono text-xs uppercase text-[var(--color-primary)] font-bold shrink-0">[{qData.qId.toUpperCase()}]</span>
+          <span className="font-mono text-[11px] uppercase text-[var(--color-primary)] font-bold shrink-0">[{qData.qId.toUpperCase()}]</span>
           <span>{qData.questionText}</span>
         </div>
         
         <div className="flex flex-wrap gap-1.5">
           {qData.pills.map((pill, i) => (
-            <span key={i} className="px-2.5 py-1 rounded-lg font-semibold text-xs bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-300/80 dark:border-slate-700">
+            <span key={i} className="px-2.5 py-1 rounded-lg font-semibold text-xs bg-[var(--color-surface-soft)] text-[var(--color-text-primary)] border border-[var(--color-border-subtle)]">
               {pill}
             </span>
           ))}
@@ -273,7 +274,7 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
   const renderObservationGuidanceBox = (title: string, criteriaList: string[]) => {
     return (
-      <div className="p-3.5 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 space-y-2 shadow-2xs">
+      <div className="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 space-y-2 shadow-xs">
         <div className="text-[11px] font-bold text-indigo-900 dark:text-indigo-200 uppercase tracking-wider flex items-center gap-1.5 border-b border-indigo-200/60 dark:border-indigo-800/40 pb-1.5">
           <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
           <span>Observation Focus Criteria</span>
@@ -414,20 +415,25 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
         <Link
           href={`/dashboard/students/${id}`}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Student Profile</span>
         </Link>
 
         {isSuccess ? (
-          <div className="max-w-2xl mx-auto bg-[var(--color-surface)] rounded-2xl p-8 sm:p-10 border border-emerald-200 dark:border-emerald-800/80 shadow-md text-center space-y-6">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800/80">
-              <CheckCircle2 className="w-7 h-7" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-2xl mx-auto bg-[var(--color-surface)] rounded-2xl p-8 sm:p-10 border border-emerald-200 dark:border-emerald-800/80 shadow-md text-center space-y-6"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200 dark:border-emerald-800/80">
+              <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Feedback Saved Successfully</h2>
+              <h2 className="text-2xl font-[var(--font-heading)] text-[var(--color-text-primary)]">Feedback Saved Successfully</h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-md mx-auto leading-relaxed">
                 Your educator observations and recommendations for <strong>{student?.name}</strong> have been securely recorded.
               </p>
@@ -438,33 +444,33 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
                 type="button"
                 variant="outline"
                 onClick={() => router.push(`/dashboard/students/${id}`)}
-                className="px-6 py-2.5 text-xs font-semibold"
+                className="px-6 py-2.5 text-xs font-semibold rounded-xl"
               >
                 View Student Profile
               </Button>
               <Button
                 type="button"
-                variant="primary"
+                variant="gradient"
                 onClick={() => router.push('/dashboard')}
-                className="px-6 py-2.5 text-xs font-semibold"
+                className="px-6 py-2.5 text-xs font-semibold rounded-xl"
               >
                 Return to Dashboard
               </Button>
             </div>
-          </div>
+          </motion.div>
         ) : (
           <div className="space-y-8">
-            <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-4">
+            <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-xs space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)]">
-                    Educator Feedback: {student?.name}
+                  <h1 className="text-xl sm:text-2xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                    Educator Observation Feedback: {student?.name}
                   </h1>
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-1 font-medium">
-                    Review {student?.name}&apos;s self-reported questionnaire answers alongside your observed assessment to guide their career journey.
+                  <p className="text-xs text-[var(--color-text-secondary)] mt-1 font-medium leading-relaxed">
+                    Side-by-side view of {student?.name}&apos;s self-reported questionnaire responses alongside your observation framework.
                   </p>
                 </div>
-                <div className="px-3.5 py-1.5 rounded-lg bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs font-semibold text-[var(--color-primary)] shrink-0 self-start sm:self-center">
+                <div className="px-3.5 py-1.5 rounded-xl bg-[var(--color-primary-soft)] border border-indigo-200 dark:border-indigo-800/40 text-xs font-bold text-[var(--color-primary)] shrink-0 self-start sm:self-center">
                   Class {student?.classGrade}
                 </div>
               </div>
@@ -472,8 +478,8 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="space-y-6">
-                <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">
-                  Behavioral & Competency Assessment (1-5 Rating)
+                <h2 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">
+                  Behavioral & Competency Assessment (1-5 Scale)
                 </h2>
 
                 {teacherFeedbackQuestions
@@ -488,7 +494,7 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
                         className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4 transition-colors"
                       >
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                          <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
+                          <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-xs">
                             <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
                               <span>{isGuidanceOnly ? 'Educator Guidance Criteria' : "Student's Stated Answer"}</span>
                               <span className={`w-2 h-2 rounded-full ${isGuidanceOnly ? 'bg-indigo-500' : 'bg-emerald-500'}`}></span>
@@ -513,7 +519,7 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
+                  <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-xs">
                     <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
                       <span>Student&apos;s Stated Answer</span>
                       <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -538,7 +544,7 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
+                  <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-xs">
                     <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
                       <span>Student&apos;s Stated Answer</span>
                       <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -548,7 +554,7 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
                   <div className="lg:col-span-7 space-y-3">
                     <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)] leading-snug">
-                      {ratingQuestionsCount + 2}. Which areas does the student appear most interested in? <span className="text-rose-500">*</span>
+                      {ratingQuestionsCount + 2}. Which career direction interest areas align best with this student? <span className="text-rose-500">*</span>
                     </label>
                     <MultiSelect
                       options={teacherFeedbackQuestions.find((q) => q.id === 'tf9')?.options || []}
@@ -563,7 +569,7 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
+                  <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-xs">
                     <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
                       <span>Student&apos;s Stated Answer</span>
                       <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -573,65 +579,50 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
                   <div className="lg:col-span-7 space-y-3">
                     <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)] leading-snug">
-                      {ratingQuestionsCount + 3}. What is the student&apos;s preferred working style based on your observations? <span className="text-rose-500">*</span>
+                      {ratingQuestionsCount + 3}. What working environment style suits this student best? <span className="text-rose-500">*</span>
                     </label>
                     <RadioGroup
                       options={teacherFeedbackQuestions.find((q) => q.id === 'tf10')?.options || []}
                       selectedValue={workingStyle}
                       onChange={setWorkingStyle}
+                      colorTheme="indigo"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)]">
-                    Educator Observations & Detailed Assessment (400–500 Words)
-                  </label>
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border self-start sm:self-auto ${
-                    (comment.trim() ? comment.trim().split(/\s+/).length : 0) > 500
-                      ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800'
-                      : 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800'
-                  }`}>
-                    {comment.trim() ? comment.trim().split(/\s+/).length : 0} / 500 words
-                  </span>
-                </div>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  Is there anything important about this student&apos;s strengths, proof of work, group collaboration, or future career interests that the questions did not capture?
-                </p>
+                <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)] leading-snug">
+                  {ratingQuestionsCount + 4}. Additional Counselor Notes & Recommendations (Optional)
+                </label>
                 <textarea
-                  rows={7}
-                  maxLength={3500}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Share detailed feedback, observations, project proof notes, and personalized career recommendations for the student (up to 400-500 words)..."
-                  className="w-full px-4 py-3 rounded-xl border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all placeholder:text-[var(--color-text-muted)]"
+                  placeholder="Share specific observations, strengths, or recommendations for future career counselling..."
+                  rows={4}
+                  className="w-full p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all resize-y"
                 />
-                <div className="flex justify-between items-center text-xs text-[var(--color-text-secondary)] font-medium">
-                  <span>Word count: {comment.trim() ? comment.trim().split(/\s+/).length : 0} / 500 words</span>
-                  <span>{comment.length} / 3500 characters</span>
-                </div>
               </div>
 
-              {error && <p className="text-sm font-semibold text-rose-500 text-center">{error}</p>}
+              {error && <p className="text-xs font-semibold text-rose-500 text-center">{error}</p>}
 
-              <div className="flex gap-4 pt-4 border-t border-[var(--color-border-subtle)]">
+              <div className="flex justify-end gap-4 pt-4 border-t border-[var(--color-border-subtle)]">
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-1/2 py-3 text-sm font-semibold"
                   onClick={() => router.push(`/dashboard/students/${id}`)}
+                  className="px-6 py-3 text-xs font-semibold rounded-xl"
+                  disabled={isSubmitting}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  variant="primary"
-                  className="w-1/2 py-3 text-sm font-semibold shadow-sm hover:shadow-md"
+                  variant="gradient"
                   isLoading={isSubmitting}
+                  className="px-8 py-3 text-xs font-semibold rounded-xl"
                 >
-                  Save & Submit Feedback
+                  Submit Educator Feedback
                 </Button>
               </div>
             </form>
@@ -641,3 +632,5 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
     </div>
   );
 }
+
+

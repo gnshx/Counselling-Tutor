@@ -86,7 +86,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[var(--color-background-main)]">
+      <div className="min-h-screen bg-[var(--color-background-main)] font-sans">
         <Header />
         <div className="max-w-4xl mx-auto p-12 text-center text-[var(--color-text-secondary)]">
           <div className="w-6 h-6 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
@@ -133,7 +133,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>
@@ -142,7 +142,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
           {student.feedbackStatus !== 'completed' && (
             <Link
               href={`/dashboard/students/${student.id}/feedback`}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-medium text-xs shadow-2xs transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all cursor-pointer"
             >
               <MessageSquarePlus className="w-4 h-4" />
               <span>Provide Educator Feedback</span>
@@ -151,14 +151,14 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Student Header Card */}
-        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-6 transition-colors">
+        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-xs space-y-6 transition-colors">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-[var(--color-border-subtle)] pb-6">
             <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-xl bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center text-2xl font-bold border border-[var(--color-primary)]/20 shadow-2xs shrink-0">
+              <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center text-2xl font-bold border border-indigo-200 dark:border-indigo-800/40 shadow-xs shrink-0 font-[var(--font-heading)]">
                 {student.name.charAt(0)}
               </div>
               <div>
-                <h1 className="text-2xl font-semibold text-[var(--color-text-primary)]">{student.name}</h1>
+                <h1 className="text-2xl font-[var(--font-heading)] text-[var(--color-text-primary)]">{student.name}</h1>
                 <div className="flex flex-wrap items-center gap-2.5 text-xs text-[var(--color-text-secondary)] mt-1.5 font-medium">
                   <span className="flex items-center gap-1 text-[var(--color-primary)] font-semibold">
                     <GraduationCap className="w-3.5 h-3.5" /> Class {student.classGrade}
@@ -179,7 +179,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               </div>
             </div>
 
-            <div className="px-4 py-2.5 rounded-lg bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs font-mono text-[var(--color-text-primary)] shrink-0 self-start sm:self-center">
+            <div className="px-4 py-2.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs font-mono text-[var(--color-text-primary)] shrink-0 self-start sm:self-center">
               Access Code: <strong className="text-[var(--color-primary)] font-bold">{student.accessCode}</strong>
             </div>
           </div>
@@ -204,7 +204,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
 
           {/* Progress Overview Section */}
           <div>
-            <h2 className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-3">Assessment Milestones</h2>
+            <h2 className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-3">Assessment Milestones</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
@@ -215,7 +215,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               </div>
               <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <Brain className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+                  <Brain className="w-4 h-4 text-violet-600 dark:text-violet-400" />
                   <span className="text-xs font-semibold text-[var(--color-text-primary)]">Thinking Challenge</span>
                 </div>
                 <StatusBadge status={student.assessmentStatus} />
@@ -232,14 +232,14 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Structured Student Discovery Section */}
-        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-6 transition-colors">
+        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-xs space-y-6 transition-colors">
           <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center border border-[var(--color-primary)]/20">
+              <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-soft)] text-[var(--color-primary)] flex items-center justify-center border border-indigo-200 dark:border-indigo-800/40">
                 <Compass className="w-4 h-4" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Student Discovery Profile</h2>
+                <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Student Discovery Profile</h2>
                 <p className="text-xs text-[var(--color-text-secondary)]">Self-reported interests, strengths, and career goals</p>
               </div>
             </div>
@@ -249,8 +249,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
           {questionnaireData ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Category 1: Passions & Curiosity */}
-              <div className="p-5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
-                <div className="flex items-center gap-2 text-[var(--color-primary)] font-semibold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
+              <div className="p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
+                <div className="flex items-center gap-2 text-[var(--color-primary)] font-bold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>Curiosity & Passions</span>
                 </div>
@@ -261,7 +261,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
                     {questionnaireData.passions.subjects.length > 0 ? (
                       <div className="flex flex-wrap gap-1.5">
                         {questionnaireData.passions.subjects.map((sub, i) => (
-                          <span key={i} className="px-2.5 py-1 rounded-lg bg-[var(--color-primary-soft)] text-[var(--color-primary)] font-medium text-xs border border-[var(--color-primary)]/20">
+                          <span key={i} className="px-2.5 py-1 rounded-lg bg-[var(--color-primary-soft)] text-[var(--color-primary)] font-semibold text-xs border border-indigo-200 dark:border-indigo-800/40">
                             {sub}
                           </span>
                         ))}
@@ -276,7 +276,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
                     {questionnaireData.passions.activities.length > 0 ? (
                       <div className="flex flex-wrap gap-1.5">
                         {questionnaireData.passions.activities.map((act, i) => (
-                          <span key={i} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-primary)] font-medium text-xs border border-[var(--color-border-subtle)]">
+                          <span key={i} className="px-2.5 py-1 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-primary)] font-semibold text-xs border border-[var(--color-border-subtle)]">
                             {act}
                           </span>
                         ))}
@@ -289,8 +289,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               </div>
 
               {/* Category 2: Superpowers & Strengths */}
-              <div className="p-5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
-                <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
+              <div className="p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
+                <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
                   <Star className="w-3.5 h-3.5" />
                   <span>Strengths & Attributes</span>
                 </div>
@@ -300,7 +300,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
                   {questionnaireData.talents.strengths.length > 0 ? (
                     <div className="flex flex-wrap gap-1.5">
                       {questionnaireData.talents.strengths.map((str, i) => (
-                        <span key={i} className="px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 font-medium text-xs border border-amber-200 dark:border-amber-800/60">
+                        <span key={i} className="px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 font-semibold text-xs border border-amber-200 dark:border-amber-800/60">
                           {str}
                         </span>
                       ))}
@@ -312,8 +312,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               </div>
 
               {/* Category 3: Work Style & Mindset */}
-              <div className="p-5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
-                <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400 font-semibold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
+              <div className="p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
+                <div className="flex items-center gap-2 text-violet-600 dark:text-violet-400 font-bold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
                   <Zap className="w-3.5 h-3.5" />
                   <span>Work Style & Mindset</span>
                 </div>
@@ -321,14 +321,14 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
                 <div className="space-y-3 text-xs">
                   <div>
                     <p className="text-xs font-medium text-[var(--color-text-secondary)] mb-1">Ideal Environment</p>
-                    <div className="p-2.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-medium text-[var(--color-text-primary)]">
+                    <div className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-medium text-[var(--color-text-primary)]">
                       {questionnaireData.style.environment}
                     </div>
                   </div>
 
                   <div>
                     <p className="text-xs font-medium text-[var(--color-text-secondary)] mb-1">Challenge Approach</p>
-                    <div className="p-2.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-medium text-[var(--color-text-primary)]">
+                    <div className="p-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-medium text-[var(--color-text-primary)]">
                       {questionnaireData.style.challengeApproach}
                     </div>
                   </div>
@@ -336,8 +336,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               </div>
 
               {/* Category 4: Future Career Aspirations */}
-              <div className="p-5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
-                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
+              <div className="p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
+                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
                   <Target className="w-3.5 h-3.5" />
                   <span>Career Aspirations</span>
                 </div>
@@ -348,67 +348,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
                     {questionnaireData.aspirations.careerPaths.length > 0 ? (
                       <div className="flex flex-wrap gap-1.5">
                         {questionnaireData.aspirations.careerPaths.map((cp, i) => (
-                          <span key={i} className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-medium text-xs border border-indigo-200 dark:border-indigo-800/60">
+                          <span key={i} className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-semibold text-xs border border-indigo-200 dark:border-indigo-800/60">
                             {cp}
-                          </span>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-xs text-[var(--color-text-muted)] italic">None specified</p>
-                    )}
-                  </div>
-
-                  {questionnaireData.aspirations.dreamRole && (
-                    <div>
-                      <p className="text-xs font-medium text-[var(--color-text-secondary)] mb-1">Dream Role Goal</p>
-                      <div className="p-2.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-medium text-[var(--color-text-primary)] flex flex-col gap-0.5 text-xs">
-                        <span>{questionnaireData.aspirations.dreamRole.choice}</span>
-                        {questionnaireData.aspirations.dreamRole.detail && (
-                          <span className="text-xs text-[var(--color-primary)] font-semibold">
-                            Note: &ldquo;{questionnaireData.aspirations.dreamRole.detail}&rdquo;
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {questionnaireData.aspirations.inspirations.length > 0 && (
-                    <div>
-                      <p className="text-xs font-medium text-[var(--color-text-secondary)] mb-1.5">Key Motivations</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {questionnaireData.aspirations.inspirations.map((insp, i) => (
-                          <span key={i} className="px-2 py-0.5 rounded-md bg-[var(--color-surface)] text-[var(--color-text-secondary)] text-xs border border-[var(--color-border-subtle)] font-medium">
-                            {insp}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Category 5: Growth Potential & Needed Guidance */}
-              <div className="md:col-span-2 p-5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
-                <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-xs uppercase tracking-wider border-b border-[var(--color-border-subtle)] pb-2.5">
-                  <Sun className="w-3.5 h-3.5" />
-                  <span>Growth Readiness & Desired Support</span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-xs font-medium text-[var(--color-text-secondary)] mb-1.5">Exploration Readiness</p>
-                    <div className="p-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] text-xs font-medium text-[var(--color-text-primary)]">
-                      {questionnaireData.growth.readiness}
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-medium text-[var(--color-text-secondary)] mb-1.5">Desired Support</p>
-                    {questionnaireData.growth.supportNeeds.length > 0 ? (
-                      <div className="flex flex-wrap gap-1.5">
-                        {questionnaireData.growth.supportNeeds.map((sup, i) => (
-                          <span key={i} className="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-medium text-xs border border-emerald-200 dark:border-emerald-800/60">
-                            {sup}
                           </span>
                         ))}
                       </div>
@@ -420,20 +361,20 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               </div>
             </div>
           ) : (
-            <p className="text-xs text-[var(--color-text-muted)] italic py-6 text-center">Discovery section not completed by student yet.</p>
+            <p className="text-xs text-[var(--color-text-muted)] italic py-6 text-center">Discovery questionnaire not completed by student yet.</p>
           )}
         </div>
 
-        {/* Structured Brain & Life Challenge (Assessment) Section */}
-        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-6 transition-colors">
+        {/* Aptitude & Reasoning Challenge Section */}
+        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-xs space-y-6 transition-colors">
           <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 flex items-center justify-center border border-sky-200 dark:border-sky-800/60">
+              <div className="w-9 h-9 rounded-xl bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400 flex items-center justify-center border border-violet-200 dark:border-violet-800/60">
                 <Brain className="w-4 h-4" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Thinking Challenge Breakdown</h2>
-                <p className="text-xs text-[var(--color-text-secondary)]">Category performance scores and question results</p>
+                <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Thinking Challenge Results</h2>
+                <p className="text-xs text-[var(--color-text-secondary)]">Logic, reasoning, and problem-solving metrics</p>
               </div>
             </div>
             <StatusBadge status={student.assessmentStatus} size="sm" />
@@ -441,72 +382,44 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
 
           {assessmentData ? (
             <div className="space-y-6">
-              {/* Overall Score Banner */}
-              <div className="p-4 rounded-xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center font-bold text-xl shadow-2xs">
-                    {assessmentData.percent}%
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-sky-950 dark:text-sky-100">Overall Aptitude Performance</h3>
-                    <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
-                      Answered {assessmentData.score} out of {assessmentData.totalQuestions} questions correctly
-                    </p>
+              <div className="p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <span className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider block">Overall Score</span>
+                  <div className="text-3xl font-[var(--font-heading)] text-[var(--color-text-primary)] mt-1">
+                    {assessmentData.score} / {assessmentData.totalQuestions} <span className="text-sm font-semibold text-[var(--color-text-secondary)]">({assessmentData.percent}%)</span>
                   </div>
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => setShowAssessmentQuestions(!showAssessmentQuestions)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-xs font-medium text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] shadow-2xs transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] text-xs font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-border-subtle)] transition-colors cursor-pointer"
                 >
-                  <span>{showAssessmentQuestions ? 'Hide Questions' : 'View Questions'}</span>
-                  {showAssessmentQuestions ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  <span>{showAssessmentQuestions ? 'Hide Breakdown' : 'View Question Breakdown'}</span>
+                  {showAssessmentQuestions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
               </div>
 
-              {/* 3 Category Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {assessmentData.categories.map((cat) => (
-                  <div key={cat.key} className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-[var(--color-text-primary)]">{cat.label}</span>
-                      <span className="font-bold text-[var(--color-primary)]">
-                        {cat.score} / {cat.total}
-                      </span>
-                    </div>
-
-                    <div className="w-full h-2 bg-[var(--color-surface)] rounded-full overflow-hidden border border-[var(--color-border-subtle)]">
-                      <div
-                        className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500"
-                        style={{ width: `${cat.percent}%` }}
-                      />
-                    </div>
-
-                    <p className="text-right text-xs text-[var(--color-text-secondary)] font-medium">{cat.percent}% Score</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Question Level Detailed List */}
+              {/* Collapsible Question Breakdown */}
               {showAssessmentQuestions && (
-                <div className="space-y-3 pt-4 border-t border-[var(--color-border-subtle)]">
-                  <h3 className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">Question Breakdown</h3>
+                <div className="space-y-3 pt-2">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">Question Breakdown</h3>
                   <div className="space-y-3">
                     {assessmentData.questionDetails.map((q, idx) => (
                       <div key={q.id} className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-2.5">
-                        <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-start justify-between gap-3">
                           <div>
-                            <span className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider">{q.categoryLabel}</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">{q.categoryLabel}</span>
                             <p className="text-xs font-semibold text-[var(--color-text-primary)] mt-0.5">
                               {idx + 1}. {q.question}
                             </p>
                           </div>
                           {q.isCorrect ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-medium border border-emerald-200 dark:border-emerald-800/60 shrink-0">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-semibold border border-emerald-200 dark:border-emerald-800/60 shrink-0">
                               <CheckCircle2 className="w-3.5 h-3.5" /> Correct
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-xs font-medium border border-rose-200 dark:border-rose-800/60 shrink-0">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-xs font-semibold border border-rose-200 dark:border-rose-800/60 shrink-0">
                               <XCircle className="w-3.5 h-3.5" /> Incorrect
                             </span>
                           )}
@@ -534,27 +447,27 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Educator Feedback Summary Section */}
-        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-5 transition-colors">
+        <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-xs space-y-5 transition-colors">
           <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center border border-amber-200 dark:border-amber-800/60">
+              <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center border border-amber-200 dark:border-amber-800/60">
                 <Award className="w-4 h-4" />
               </div>
-              <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Educator Guidance & Notes</h2>
+              <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Educator Guidance & Notes</h2>
             </div>
             <StatusBadge status={student.feedbackStatus} size="sm" />
           </div>
 
           {student.teacherFeedback ? (
             <div className="space-y-4 pt-1">
-              <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-200 text-xs font-medium flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-200 text-xs font-semibold flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>Educator Observations Complete</span>
                 </div>
                 <Link
                   href={`/dashboard/students/${student.id}/feedback`}
-                  className="text-xs font-semibold text-[var(--color-primary)] hover:underline"
+                  className="text-xs font-bold text-[var(--color-primary)] hover:underline"
                 >
                   Edit Observations
                 </Link>
@@ -562,7 +475,7 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
 
               {student.teacherFeedback.ratings && student.teacherFeedback.ratings.length > 0 && (
                 <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
-                  <span className="font-semibold text-xs text-[var(--color-text-secondary)] uppercase tracking-wider block">
+                  <span className="font-bold text-xs text-[var(--color-text-secondary)] uppercase tracking-wider block">
                     Observed Ratings & Behavioral Traits
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -570,9 +483,9 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
                       const qDef = teacherFeedbackQuestions.find((q) => q.id === rItem.questionId);
                       if (!qDef) return null;
                       return (
-                        <div key={rItem.questionId} className="p-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] flex items-center justify-between text-xs gap-2">
-                          <span className="font-medium text-[var(--color-text-primary)] leading-tight">{qDef.question}</span>
-                          <span className="px-2.5 py-1 rounded font-bold text-xs bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60 shrink-0">
+                        <div key={rItem.questionId} className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] flex items-center justify-between text-xs gap-2">
+                          <span className="font-semibold text-[var(--color-text-primary)] leading-tight">{qDef.question}</span>
+                          <span className="px-2.5 py-1 rounded-lg font-extrabold text-xs bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60 shrink-0">
                             {rItem.rating === 'N/O' ? 'N/O' : `${rItem.rating} / 5`}
                           </span>
                         </div>
@@ -583,8 +496,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               )}
 
               {student.teacherFeedback.strongestAreas && student.teacherFeedback.strongestAreas.length > 0 && (
-                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-1.5">
-                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block">Strongest Observed Areas</span>
+                <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-2">
+                  <span className="font-bold text-[var(--color-text-secondary)] uppercase tracking-wider block">Strongest Observed Areas</span>
                   <div className="flex flex-wrap gap-1.5">
                     {getTeacherAreaLabels('tf8', student.teacherFeedback.strongestAreas).map((label, i) => (
                       <span key={i} className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-semibold border border-indigo-200 dark:border-indigo-800/60">
@@ -596,8 +509,8 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               )}
 
               {student.teacherFeedback.interestedAreas && student.teacherFeedback.interestedAreas.length > 0 && (
-                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-1.5">
-                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block">Observed Interest Areas</span>
+                <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-2">
+                  <span className="font-bold text-[var(--color-text-secondary)] uppercase tracking-wider block">Observed Interest Areas</span>
                   <div className="flex flex-wrap gap-1.5">
                     {getTeacherAreaLabels('tf9', student.teacherFeedback.interestedAreas).map((label, i) => (
                       <span key={i} className="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-semibold border border-blue-200 dark:border-blue-800/60">
@@ -609,9 +522,9 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               )}
 
               {student.teacherFeedback.workingStyle && (
-                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-1">
-                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block">Observed Working Style</span>
-                  <div className="p-2.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-semibold text-[var(--color-text-primary)]">
+                <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-2">
+                  <span className="font-bold text-[var(--color-text-secondary)] uppercase tracking-wider block">Observed Working Style</span>
+                  <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-semibold text-[var(--color-text-primary)]">
                     {getTeacherWorkingStyleLabel(student.teacherFeedback.workingStyle)}
                   </div>
                 </div>
@@ -619,17 +532,17 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
 
               {student.teacherFeedback.comment && (
                 <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
-                  <p className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5">Educator Comment</p>
+                  <p className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5">Educator Comment</p>
                   <p className="text-xs font-medium text-[var(--color-text-primary)] leading-relaxed">{student.teacherFeedback.comment}</p>
                 </div>
               )}
             </div>
           ) : (
             <div className="text-center py-6 space-y-3">
-              <p className="text-xs text-[var(--color-text-secondary)]">Educator observations pending for this student.</p>
+              <p className="text-xs text-[var(--color-text-secondary)] font-medium">Educator observations pending for this student.</p>
               <Link
                 href={`/dashboard/students/${student.id}/feedback`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-medium text-xs shadow-2xs transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all"
               >
                 <MessageSquarePlus className="w-4 h-4" />
                 <span>Provide Observations Now</span>
