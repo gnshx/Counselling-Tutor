@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { assessmentQuestions, AssessmentQuestion } from '@/lib/data/assessment';
 import { AssessmentCard } from '@/components/student/AssessmentCard';
+import { QuestionPalette } from '@/components/student/QuestionPalette';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, FastForward, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function StudentAssessmentPage() {
@@ -16,6 +17,7 @@ export default function StudentAssessmentPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
+  const [showUnansweredWarning, setShowUnansweredWarning] = useState(false);
 
   useEffect(() => {
     const sessionStr = localStorage.getItem('student_session');
@@ -31,40 +33,94 @@ export default function StudentAssessmentPage() {
     }
   }, [router]);
 
+  // Load draft from localStorage when student session is ready
+  useEffect(() => {
+    if (!student?.id) return;
+    const draftKey = `draft_assessment_${student.id}`;
+    const saved = localStorage.getItem(draftKey);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.answers && typeof parsed.answers === 'object') {
+          setAnswers(parsed.answers);
+        }
+        if (typeof parsed.currentIndex === 'number' && parsed.currentIndex >= 0 && parsed.currentIndex < assessmentQuestions.length) {
+          setCurrentIndex(parsed.currentIndex);
+        }
+      } catch {
+        // Ignore parse error
+      }
+    }
+  }, [student?.id]);
+
+  // Auto-save draft on answers or index change
+  useEffect(() => {
+    if (!student?.id) return;
+    const draftKey = `draft_assessment_${student.id}`;
+    if (Object.keys(answers).length > 0) {
+      localStorage.setItem(draftKey, JSON.stringify({ answers, currentIndex }));
+    }
+  }, [answers, currentIndex, student?.id]);
+
   if (!student) return null;
 
   const currentQuestion: AssessmentQuestion = assessmentQuestions[currentIndex];
   const totalQuestions = assessmentQuestions.length;
   const selectedAnswer = answers[currentQuestion.id] || null;
-  const progressPercent = Math.round(((currentIndex) / totalQuestions) * 100);
+
+  // Compute status for all assessment questions
+  const questionsStatus = assessmentQuestions.map((q) => ({
+    id: q.id,
+    isAnswered: Boolean(answers[q.id]),
+  }));
+
+  const unansweredIndices = questionsStatus
+    .map((s, idx) => (!s.isAnswered ? idx : null))
+    .filter((v): v is number => v !== null);
 
   const handleSelectAnswer = (option: string) => {
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: option }));
+    setError('');
+    setShowUnansweredWarning(false);
+  };
+
+  const handleSelectQuestion = (idx: number) => {
+    setError('');
+    setShowUnansweredWarning(false);
+    setCurrentIndex(idx);
   };
 
   const handleNext = async () => {
-    if (!selectedAnswer) {
-      setError('Please choose an answer to proceed.');
-      return;
-    }
-
     setError('');
+    setShowUnansweredWarning(false);
+
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      await handleSubmit();
+      if (unansweredIndices.length > 0) {
+        setShowUnansweredWarning(true);
+      } else {
+        await handleSubmit();
+      }
     }
   };
 
   const handlePrev = () => {
     setError('');
+    setShowUnansweredWarning(false);
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
     }
   };
 
   const handleSubmit = async () => {
+    if (unansweredIndices.length > 0 && !showUnansweredWarning) {
+      setShowUnansweredWarning(true);
+      return;
+    }
+
     setIsSubmitting(true);
+    setError('');
     try {
       const formattedAnswers = Object.entries(answers).map(([questionId, selectedAnswer]) => ({
         questionId,
@@ -84,6 +140,8 @@ export default function StudentAssessmentPage() {
         return;
       }
 
+      // Clear draft on successful submission
+      localStorage.removeItem(`draft_assessment_${student.id}`);
       const updatedStudent = { ...student, assessmentStatus: 'completed' };
       localStorage.setItem('student_session', JSON.stringify(updatedStudent));
 
@@ -112,7 +170,7 @@ export default function StudentAssessmentPage() {
     <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] flex flex-col font-sans antialiased">
       {/* Header */}
       <header className="bg-[var(--color-surface)]/90 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20 transition-colors">
-        <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <button
             onClick={() => router.push('/student')}
             className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
@@ -121,37 +179,64 @@ export default function StudentAssessmentPage() {
             <span>Back to Portal</span>
           </button>
 
-          <div className="text-[var(--color-primary)] font-semibold text-xs tracking-wider uppercase">
+          <div className="text-[var(--color-primary)] font-bold text-xs tracking-wider uppercase">
             Explore Your Thinking
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-3xl w-full mx-auto px-4 py-8 flex-1 flex flex-col z-10">
-        {/* Progress header */}
-        <div className="mb-6">
-          <div className="flex justify-between text-xs font-semibold text-[var(--color-text-secondary)] mb-2">
-            <span>Challenge {currentIndex + 1} of {totalQuestions}</span>
-            <span className="text-[var(--color-primary)]">{progressPercent}%</span>
+      <main className="max-w-3xl w-full mx-auto px-4 py-6 flex-1 flex flex-col z-10">
+        {/* HackerRank-style Question Palette Bar */}
+        <QuestionPalette
+          questionsStatus={questionsStatus}
+          currentIndex={currentIndex}
+          onSelectQuestion={handleSelectQuestion}
+          title="Thinking Challenge Question Navigation"
+        />
+
+        {/* Unanswered Questions Warning Banner */}
+        {showUnansweredWarning && (
+          <div className="mb-4 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs space-y-2">
+            <div className="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-100">
+              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span>Unanswered Challenges Remaining ({unansweredIndices.length})</span>
+            </div>
+            <p className="leading-relaxed font-medium">
+              You have unanswered challenge questions remaining. Click any unanswered number below to complete it, or submit anyway.
+            </p>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {unansweredIndices.map((idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleSelectQuestion(idx)}
+                  className="px-2.5 py-1 rounded-lg bg-amber-200 dark:bg-amber-800 text-amber-950 dark:text-amber-100 font-extrabold text-xs hover:bg-amber-300 transition-colors"
+                >
+                  Jump to Q{idx + 1}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors ml-auto"
+              >
+                Submit Anyway
+              </button>
+            </div>
           </div>
-          <div className="w-full h-2 bg-[var(--color-surface-soft)] rounded-full overflow-hidden border border-[var(--color-border-subtle)]">
-            <div 
-              className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
+        )}
 
         {/* Question Container */}
-        <div className="flex-1 flex flex-col justify-center min-h-[380px]">
+        <div className="flex-1 flex flex-col justify-center min-h-[360px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.15 }}
               className="w-full"
             >
               <AssessmentCard
@@ -169,9 +254,9 @@ export default function StudentAssessmentPage() {
         </div>
 
         {/* Reassuring text */}
-        <div className="text-center mt-4 mb-8">
+        <div className="text-center mt-3 mb-6">
           <p className="text-xs text-[var(--color-text-muted)] font-medium">
-            Select your preferred answer for each scenario.
+            Click any challenge number above to switch back and forth freely.
           </p>
         </div>
 
@@ -191,19 +276,34 @@ export default function StudentAssessmentPage() {
             <span>Previous</span>
           </button>
 
-          <button
-            type="button"
-            onClick={handleNext}
-            disabled={!selectedAnswer || isSubmitting}
-            className={`flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-medium transition-colors ${
-              !selectedAnswer || isSubmitting
-                ? 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] cursor-not-allowed border border-[var(--color-border-subtle)]'
-                : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xs cursor-pointer'
-            }`}
-          >
-            <span>{isSubmitting ? 'Saving...' : currentIndex === totalQuestions - 1 ? 'Finish Assessment' : 'Next Challenge'}</span>
-            {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />)}
-          </button>
+          <div className="flex items-center gap-2">
+            {!selectedAnswer && currentIndex < totalQuestions - 1 && (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-xs font-medium bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
+              >
+                <span>Answer Later / Skip</span>
+                <FastForward className="w-3.5 h-3.5" />
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={currentIndex === totalQuestions - 1 ? handleSubmit : handleNext}
+              disabled={isSubmitting}
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-semibold bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xs cursor-pointer transition-colors"
+            >
+              <span>
+                {isSubmitting
+                  ? 'Saving...'
+                  : currentIndex === totalQuestions - 1
+                  ? 'Finish Assessment'
+                  : 'Next Challenge'}
+              </span>
+              {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />)}
+            </button>
+          </div>
         </div>
       </main>
     </div>

@@ -135,9 +135,9 @@ export const teacherFeedbackQuestions: TeacherFeedbackQuestion[] = [
   },
   {
     id: 'tf_comment',
-    question: "Is there anything important about this student's strengths or interests that the questions did not capture?",
+    question: "Educator Observations & Detailed Assessment (Up to 400–500 words)",
     type: 'text',
-    maxLength: 200,
+    maxLength: 3500,
     required: false,
   },
 ];

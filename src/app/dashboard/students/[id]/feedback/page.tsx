@@ -77,6 +77,43 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
     fetchStudent();
   }, [id]);
 
+  // Load saved draft on mount when student ID is ready
+  useEffect(() => {
+    if (!id) return;
+    const draftKey = `draft_teacher_feedback_${id}`;
+    const saved = localStorage.getItem(draftKey);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.ratings && typeof parsed.ratings === 'object') setRatings(parsed.ratings);
+        if (Array.isArray(parsed.strongestAreas)) setStrongestAreas(parsed.strongestAreas);
+        if (Array.isArray(parsed.interestedAreas)) setInterestedAreas(parsed.interestedAreas);
+        if (typeof parsed.workingStyle === 'string') setWorkingStyle(parsed.workingStyle);
+        if (typeof parsed.comment === 'string') setComment(parsed.comment);
+      } catch {
+        // Ignore parse error
+      }
+    }
+  }, [id]);
+
+  // Auto-save draft on any input change
+  useEffect(() => {
+    if (!id) return;
+    const draftKey = `draft_teacher_feedback_${id}`;
+    if (
+      Object.keys(ratings).length > 0 ||
+      strongestAreas.length > 0 ||
+      interestedAreas.length > 0 ||
+      workingStyle !== null ||
+      comment.trim() !== ''
+    ) {
+      localStorage.setItem(
+        draftKey,
+        JSON.stringify({ ratings, strongestAreas, interestedAreas, workingStyle, comment })
+      );
+    }
+  }, [id, ratings, strongestAreas, interestedAreas, workingStyle, comment]);
+
   const handleRatingChange = (qId: string, val: number | 'N/O') => {
     setRatings((prev) => ({ ...prev, [qId]: val }));
   };
@@ -139,6 +176,8 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
         return;
       }
 
+      // Clear saved draft on successful submission
+      localStorage.removeItem(`draft_teacher_feedback_${id}`);
       setIsSuccess(true);
     } catch {
       setError('Connection error. Please try again.');
@@ -202,68 +241,76 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
     };
   };
 
-  // Helper to render matched student question & answer blocks
-  const renderSingleQuestionBox = (qData: ReturnType<typeof getStudentQAnswer>, badgeColor = 'primary') => {
+  const renderSingleQuestionBox = (qData: ReturnType<typeof getStudentQAnswer>) => {
     if (!qData) return null;
 
-    const colorStyles: Record<string, string> = {
-      primary: 'text-blue-800 dark:text-blue-200 bg-blue-100 dark:bg-blue-900/60 border-blue-300 dark:border-blue-700/70',
-      amber: 'text-amber-900 dark:text-amber-200 bg-amber-100 dark:bg-amber-900/60 border-amber-300 dark:border-amber-700/70',
-      cyan: 'text-sky-900 dark:text-sky-200 bg-sky-100 dark:bg-sky-900/60 border-sky-300 dark:border-sky-700/70',
-      emerald: 'text-emerald-900 dark:text-emerald-200 bg-emerald-100 dark:bg-emerald-900/60 border-emerald-300 dark:border-emerald-700/70',
-      purple: 'text-purple-900 dark:text-purple-200 bg-purple-100 dark:bg-purple-900/60 border-purple-300 dark:border-purple-700/70',
-      rose: 'text-rose-900 dark:text-rose-200 bg-rose-100 dark:bg-rose-900/60 border-rose-300 dark:border-rose-700/70',
-      indigo: 'text-indigo-900 dark:text-indigo-200 bg-indigo-100 dark:bg-indigo-900/60 border-indigo-300 dark:border-indigo-700/70',
-    };
-
-    const style = colorStyles[badgeColor] || colorStyles.primary;
-
     return (
-      <div className="space-y-1.5">
-        <div className="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-relaxed flex items-start gap-1.5">
-          <span className="font-mono text-xs uppercase text-blue-600 dark:text-blue-400 font-bold shrink-0">[{qData.qId.toUpperCase()}]</span>
+      <div className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-2 shadow-2xs">
+        <div className="text-xs font-semibold text-[var(--color-text-primary)] leading-snug flex items-start gap-1.5">
+          <span className="font-mono text-xs uppercase text-[var(--color-primary)] font-bold shrink-0">[{qData.qId.toUpperCase()}]</span>
           <span>{qData.questionText}</span>
         </div>
-        <div className="flex flex-wrap gap-2 pt-1">
+        
+        <div className="flex flex-wrap gap-1.5">
           {qData.pills.map((pill, i) => (
-            <span key={i} className={`px-2.5 py-1 rounded-lg font-semibold text-xs border ${style}`}>
+            <span key={i} className="px-2.5 py-1 rounded-lg font-semibold text-xs bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-300/80 dark:border-slate-700">
               {pill}
             </span>
           ))}
-          {qData.detail && (
-            <span className="px-2.5 py-1 rounded-lg font-semibold text-xs bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-600">
-              Detail: {qData.detail}
-            </span>
-          )}
         </div>
+
+        {qData.detail && (
+          <div className="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border border-amber-200 dark:border-amber-800/70 text-xs space-y-0.5 mt-1.5">
+            <span className="font-bold text-[11px] uppercase tracking-wider text-amber-800 dark:text-amber-300 block">
+              Student Proof / Real Example:
+            </span>
+            <p className="font-medium italic leading-relaxed">&ldquo;{qData.detail}&rdquo;</p>
+          </div>
+        )}
       </div>
     );
   };
 
-  // Render matched student answers per teacher feedback question
+  const renderObservationGuidanceBox = (title: string, criteriaList: string[]) => {
+    return (
+      <div className="p-3.5 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/60 space-y-2 shadow-2xs">
+        <div className="text-[11px] font-bold text-indigo-900 dark:text-indigo-200 uppercase tracking-wider flex items-center gap-1.5 border-b border-indigo-200/60 dark:border-indigo-800/40 pb-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+          <span>Observation Focus Criteria</span>
+        </div>
+        <p className="text-xs font-bold text-indigo-950 dark:text-indigo-100">{title}</p>
+        <ul className="text-xs text-indigo-900/90 dark:text-indigo-200/90 space-y-1 list-disc list-inside leading-relaxed font-medium">
+          {criteriaList.map((item, idx) => (
+            <li key={idx}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   const renderMatchedStudentAnswers = (tfId: string) => {
     switch (tfId) {
-      case 'tf1': // Interests match
+      case 'tf1':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q1'), 'primary')}
-            {renderSingleQuestionBox(getStudentQAnswer('q2'), 'indigo')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q1'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q2'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q6'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q7'))}
           </div>
         );
-
-      case 'tf2': // Strengths match
+      case 'tf2':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q3'), 'amber')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q3'))}
           </div>
         );
-
-      case 'tf3': // Problem solving
+      case 'tf3':
         return (
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {assessmentData ? (
-              <div className="p-3 rounded-xl bg-sky-100/80 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-800/80 space-y-1">
-                <div className="text-xs font-bold text-sky-800 dark:text-sky-300 flex items-center gap-1.5">
+              <div className="p-3 rounded-xl bg-sky-50 dark:bg-sky-950/50 border border-sky-200 dark:border-sky-800/70 space-y-1">
+                <div className="text-xs font-bold text-sky-900 dark:text-sky-200 flex items-center gap-1.5">
                   <Brain className="w-4 h-4 text-sky-600 dark:text-sky-400" />
                   <span>Aptitude Challenge Score:</span>
                 </div>
@@ -272,103 +319,87 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
                 </div>
               </div>
             ) : null}
-            {renderSingleQuestionBox(getStudentQAnswer('q5'), 'cyan')}
+            {renderSingleQuestionBox(getStudentQAnswer('q5'))}
           </div>
         );
-
-      case 'tf4': // Independent learning
+      case 'tf4':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q4'), 'purple')}
-            {renderSingleQuestionBox(getStudentQAnswer('q5'), 'cyan')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q4'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q5'))}
           </div>
         );
-
-      case 'tf5': // Teamwork
+      case 'tf5':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q4'), 'emerald')}
-            {renderSingleQuestionBox(getStudentQAnswer('q3'), 'amber')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q4'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q3'))}
           </div>
         );
-
-      case 'tf6': // Communication
+      case 'tf6':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q3'), 'amber')}
-            {renderSingleQuestionBox(getStudentQAnswer('q2'), 'indigo')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q3'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q2'))}
           </div>
         );
-
-      case 'tf7': // Persistence
+      case 'tf7':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q5'), 'cyan')}
-            {renderSingleQuestionBox(getStudentQAnswer('q9'), 'rose')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q5'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q9'))}
           </div>
         );
-
-      case 'tf_sincerity': // Sincerity & Dedication
+      case 'tf_sincerity':
+        return renderObservationGuidanceBox('Sincerity & Dedication Criteria:', [
+          'Genuine effort and earnestness in class assignments and projects.',
+          'Honesty, authenticity, and taking personal ownership of learning.',
+          'Sustained focus without requiring continuous teacher intervention.',
+        ]);
+      case 'tf_attendance':
+        return renderObservationGuidanceBox('Attendance & Punctuality Criteria:', [
+          'Regularity in class attendance with minimal unexcused absences.',
+          'Arriving on time for classes, laboratory sessions, and group activities.',
+          'Timely submission of homework, projects, and lab reports.',
+        ]);
+      case 'tf_discipline':
+        return renderObservationGuidanceBox('Classroom Conduct & Discipline Criteria:', [
+          'Adherence to school policies, classroom decorum, and instructions.',
+          'Maintaining self-control during independent work and group activities.',
+          'Respectful, non-disruptive behavior towards teachers and classmates.',
+        ]);
+      case 'tf_respect':
+        return renderObservationGuidanceBox('Interpersonal Respect Criteria:', [
+          'Polite tone, active listening, and courteous speech with teachers and staff.',
+          'Openness to constructive feedback, advice, and guidance.',
+          'Empathy, inclusion, and kindness towards peers of all backgrounds.',
+        ]);
+      case 'tf_cleanliness':
+        return renderObservationGuidanceBox('Workplace Neatness & Hygiene Criteria:', [
+          'Keeping study desk, laboratory bench, and workspace organized.',
+          'Careful handling and neat presentation of books, notebooks, and equipment.',
+          'Personal hygiene, tidy uniform/attire, and pride in neat work.',
+        ]);
+      case 'tf8':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q5'), 'cyan')}
-            {renderSingleQuestionBox(getStudentQAnswer('q9'), 'rose')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q3'))}
           </div>
         );
-
-      case 'tf_attendance': // Attendance & Punctuality
+      case 'tf9':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q9'), 'emerald')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q1'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q6'))}
+            {renderSingleQuestionBox(getStudentQAnswer('q7'))}
           </div>
         );
-
-      case 'tf_discipline': // Obedience & Discipline
+      case 'tf10':
         return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q4'), 'purple')}
-            {renderSingleQuestionBox(getStudentQAnswer('q5'), 'cyan')}
+          <div className="space-y-2.5">
+            {renderSingleQuestionBox(getStudentQAnswer('q4'))}
           </div>
         );
-
-      case 'tf_respect': // Respect
-        return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q3'), 'amber')}
-            {renderSingleQuestionBox(getStudentQAnswer('q4'), 'emerald')}
-          </div>
-        );
-
-      case 'tf_cleanliness': // Cleanliness
-        return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q3'), 'amber')}
-          </div>
-        );
-
-      case 'tf8': // Strongest areas (observed vs claimed)
-        return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q3'), 'amber')}
-          </div>
-        );
-
-      case 'tf9': // Interested areas (observed vs claimed)
-        return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q1'), 'primary')}
-            {renderSingleQuestionBox(getStudentQAnswer('q6'), 'indigo')}
-            {renderSingleQuestionBox(getStudentQAnswer('q7'), 'purple')}
-          </div>
-        );
-
-      case 'tf10': // Preferred working style
-        return (
-          <div className="space-y-3">
-            {renderSingleQuestionBox(getStudentQAnswer('q4'), 'emerald')}
-          </div>
-        );
-
       default:
         return null;
     }
@@ -398,78 +429,94 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Feedback Saved Successfully</h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-md mx-auto leading-relaxed">
-                Educator observation feedback for <strong>{student?.name}</strong> has been saved.
+                Your educator observations and recommendations for <strong>{student?.name}</strong> have been securely recorded.
               </p>
             </div>
 
-            <div className="pt-3 flex flex-col sm:flex-row justify-center gap-4">
-              <Button variant="outline" className="text-sm px-5 py-2.5" onClick={() => router.push(`/dashboard/students/${id}`)}>
+            <div className="flex gap-4 justify-center pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push(`/dashboard/students/${id}`)}
+                className="px-6 py-2.5 text-xs font-semibold"
+              >
                 View Student Profile
               </Button>
-              <Button variant="primary" className="text-sm px-5 py-2.5" onClick={() => router.push('/dashboard')}>
+              <Button
+                type="button"
+                variant="primary"
+                onClick={() => router.push('/dashboard')}
+                className="px-6 py-2.5 text-xs font-semibold"
+              >
                 Return to Dashboard
               </Button>
             </div>
           </div>
         ) : (
-          <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-10 border border-[var(--color-border-subtle)] shadow-sm space-y-8">
-            {/* Header Banner */}
-            <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-200 dark:border-blue-800/80">
-                  <MessageSquarePlus className="w-6 h-6" />
-                </div>
+          <div className="space-y-8">
+            <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-2xs space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)]">Educator Feedback Assessment</h1>
-                  <p className="text-sm text-[var(--color-text-secondary)] mt-0.5">
-                    Evaluating <strong>{student?.name}</strong> (Class {student?.classGrade}) • Access Code: <strong className="text-blue-600 dark:text-blue-400 font-mono">{student?.accessCode}</strong>
+                  <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)]">
+                    Educator Feedback: {student?.name}
+                  </h1>
+                  <p className="text-xs text-[var(--color-text-secondary)] mt-1 font-medium">
+                    Review {student?.name}&apos;s self-reported questionnaire answers alongside your observed assessment to guide their career journey.
                   </p>
+                </div>
+                <div className="px-3.5 py-1.5 rounded-lg bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs font-semibold text-[var(--color-primary)] shrink-0 self-start sm:self-center">
+                  Class {student?.classGrade}
                 </div>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="p-4 rounded-xl bg-blue-50/80 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-semibold">
-                <span className="text-blue-900 dark:text-blue-200 font-bold uppercase tracking-wider">Side-by-Side Assessment (Student Self-Report vs Educator Observation)</span>
-                <span className="text-blue-700 dark:text-blue-300 font-medium">1 = Very Low, 5 = Excellent, N/O = Not Observed</span>
+              <div className="space-y-6">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">
+                  Behavioral & Competency Assessment (1-5 Rating)
+                </h2>
+
+                {teacherFeedbackQuestions
+                  .filter((q) => q.type === 'rating')
+                  .map((q, idx) => {
+                    const studentContent = renderMatchedStudentAnswers(q.id);
+                    const isGuidanceOnly = ['tf_sincerity', 'tf_attendance', 'tf_discipline', 'tf_respect', 'tf_cleanliness'].includes(q.id);
+
+                    return (
+                      <div
+                        key={q.id}
+                        className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4 transition-colors"
+                      >
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                          <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
+                            <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
+                              <span>{isGuidanceOnly ? 'Educator Guidance Criteria' : "Student's Stated Answer"}</span>
+                              <span className={`w-2 h-2 rounded-full ${isGuidanceOnly ? 'bg-indigo-500' : 'bg-emerald-500'}`}></span>
+                            </div>
+                            {studentContent}
+                          </div>
+
+                          <div className="lg:col-span-7 space-y-4">
+                            <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)] leading-snug">
+                              {idx + 1}. {q.question} <span className="text-rose-500">*</span>
+                            </label>
+                            <RatingScale
+                              value={ratings[q.id]}
+                              onChange={(val) => handleRatingChange(q.id, val)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
 
-              {/* Rating Questions (Side-by-Side) */}
-              {teacherFeedbackQuestions
-                .filter((q) => q.type === 'rating')
-                .map((q, idx) => (
-                  <div key={q.id} className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                      {/* Left Column: Matched Student Question & Answer (5 cols) */}
-                      <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
-                        <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
-                          <span>Student&apos;s Stated Answer</span>
-                          <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                        </div>
-                        {renderMatchedStudentAnswers(q.id)}
-                      </div>
-
-                      {/* Right Column: Teacher Rating (7 cols) */}
-                      <div className="lg:col-span-7 space-y-3">
-                        <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)] leading-snug">
-                          {idx + 1}. {q.question} <span className="text-rose-500">*</span>
-                        </label>
-                        <RatingScale
-                          value={ratings[q.id] ?? null}
-                          onChange={(val) => handleRatingChange(q.id, val)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-              {/* Question: Strongest Areas (Side-by-Side) */}
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                   <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
                     <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
                       <span>Student&apos;s Stated Answer</span>
-                      <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                     </div>
                     {renderMatchedStudentAnswers('tf8')}
                   </div>
@@ -489,13 +536,12 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
                 </div>
               </div>
 
-              {/* Question: Interested Areas (Side-by-Side) */}
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                   <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
                     <div className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-2">
                       <span>Student&apos;s Stated Answer</span>
-                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                     </div>
                     {renderMatchedStudentAnswers('tf9')}
                   </div>
@@ -515,7 +561,6 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
                 </div>
               </div>
 
-              {/* Question: Preferred Working Style (Side-by-Side) */}
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                   <div className="lg:col-span-5 p-5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border-subtle)] space-y-3 shadow-2xs">
@@ -528,35 +573,45 @@ export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: 
 
                   <div className="lg:col-span-7 space-y-3">
                     <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)] leading-snug">
-                      {ratingQuestionsCount + 3}. What is the student&apos;s preferred working style based on your observation? <span className="text-rose-500">*</span>
+                      {ratingQuestionsCount + 3}. What is the student&apos;s preferred working style based on your observations? <span className="text-rose-500">*</span>
                     </label>
                     <RadioGroup
                       options={teacherFeedbackQuestions.find((q) => q.id === 'tf10')?.options || []}
                       selectedValue={workingStyle}
                       onChange={setWorkingStyle}
-                      colorTheme="indigo"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Optional Comment */}
               <div className="p-6 sm:p-7 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] space-y-3">
-                <label className="block text-sm font-semibold text-[var(--color-text-primary)]">
-                  Optional Educator Comment (Max 200 characters)
-                </label>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <label className="block text-sm sm:text-base font-semibold text-[var(--color-text-primary)]">
+                    Educator Observations & Detailed Assessment (400–500 Words)
+                  </label>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border self-start sm:self-auto ${
+                    (comment.trim() ? comment.trim().split(/\s+/).length : 0) > 500
+                      ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800'
+                      : 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800'
+                  }`}>
+                    {comment.trim() ? comment.trim().split(/\s+/).length : 0} / 500 words
+                  </span>
+                </div>
                 <p className="text-xs text-[var(--color-text-secondary)]">
-                  Is there anything important about this student&apos;s strengths or interests that the questions did not capture?
+                  Is there anything important about this student&apos;s strengths, proof of work, group collaboration, or future career interests that the questions did not capture?
                 </p>
                 <textarea
-                  rows={3}
-                  maxLength={200}
+                  rows={7}
+                  maxLength={3500}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Type any additional observations..."
+                  placeholder="Share detailed feedback, observations, project proof notes, and personalized career recommendations for the student (up to 400-500 words)..."
                   className="w-full px-4 py-3 rounded-xl border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all placeholder:text-[var(--color-text-muted)]"
                 />
-                <div className="text-right text-xs text-[var(--color-text-secondary)] font-medium">{comment.length} / 200</div>
+                <div className="flex justify-between items-center text-xs text-[var(--color-text-secondary)] font-medium">
+                  <span>Word count: {comment.trim() ? comment.trim().split(/\s+/).length : 0} / 500 words</span>
+                  <span>{comment.length} / 3500 characters</span>
+                </div>
               </div>
 
               {error && <p className="text-sm font-semibold text-rose-500 text-center">{error}</p>}

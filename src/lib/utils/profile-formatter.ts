@@ -1,5 +1,6 @@
 import { questionnaireQuestions } from '@/lib/data/questionnaire';
 import { assessmentQuestions } from '@/lib/data/assessment';
+import { teacherFeedbackQuestions } from '@/lib/data/teacher-feedback';
 
 export interface FormattedQuestionnaireData {
   passions: {
@@ -47,11 +48,27 @@ export interface FormattedAssessmentData {
   }>;
 }
 
+export function getTeacherWorkingStyleLabel(val?: string | null): string {
+  if (!val) return 'Not assessed';
+  const tf10 = teacherFeedbackQuestions.find((q) => q.id === 'tf10');
+  const opt = tf10?.options?.find((o) => o.value === val);
+  return opt ? opt.label : val;
+}
+
+export function getTeacherAreaLabels(qId: 'tf8' | 'tf9', values?: string[] | null): string[] {
+  if (!values || !Array.isArray(values)) return [];
+  const qDef = teacherFeedbackQuestions.find((q) => q.id === qId);
+  return values.map((v) => {
+    const opt = qDef?.options?.find((o) => o.value === v);
+    return opt ? opt.label : v.replace(/_/g, ' ');
+  });
+}
+
 export function getQuestionnaireAnswerLabel(qId: string, ans: any): { label: string; detail?: string } {
   const question = questionnaireQuestions.find((q) => q.id === qId);
   if (!question) return { label: String(ans) };
 
-  // Handle conditional answer with object: { choice: 'yes_know_one', detail: 'Software Engineer' }
+  // Handle conditional/proof answer with object: { choice: 'with_group', detail: 'Science fair project' }
   if (ans && typeof ans === 'object' && !Array.isArray(ans)) {
     const choice = ans.choice || ans.value;
     const detail = ans.detail;
@@ -102,11 +119,21 @@ export function formatQuestionnaireResponse(responses: Array<{ questionId: strin
     const ans = responseMap.get(qId);
     if (!ans) return 'Not answered';
     const question = questionnaireQuestions.find((q) => q.id === qId);
-    if (question && 'options' in question) {
-      const opt = question.options.find((o) => o.value === ans);
-      if (opt) return opt.label;
+    let choiceVal = ans;
+    let detailVal: string | undefined;
+
+    if (typeof ans === 'object' && ans !== null && !Array.isArray(ans)) {
+      choiceVal = ans.choice || ans.value;
+      detailVal = ans.detail;
     }
-    return String(ans);
+
+    if (question && 'options' in question) {
+      const opt = question.options.find((o) => o.value === choiceVal);
+      if (opt) {
+        return detailVal ? `${opt.label} (Example: "${detailVal}")` : opt.label;
+      }
+    }
+    return String(choiceVal);
   };
 
   // q7 dream role

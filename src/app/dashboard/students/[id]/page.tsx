@@ -31,6 +31,8 @@ import {
 import {
   formatQuestionnaireResponse,
   formatAssessmentResponse,
+  getTeacherWorkingStyleLabel,
+  getTeacherAreaLabels,
   FormattedQuestionnaireData,
   FormattedAssessmentData,
 } from '@/lib/utils/profile-formatter';
@@ -581,12 +583,12 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               )}
 
               {student.teacherFeedback.strongestAreas && student.teacherFeedback.strongestAreas.length > 0 && (
-                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs">
-                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block mb-1.5">Strongest Observed Areas</span>
+                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-1.5">
+                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block">Strongest Observed Areas</span>
                   <div className="flex flex-wrap gap-1.5">
-                    {student.teacherFeedback.strongestAreas.map((area, i) => (
-                      <span key={i} className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-medium border border-indigo-200 dark:border-indigo-800/60 capitalize">
-                        {area.replace('_', ' ')}
+                    {getTeacherAreaLabels('tf8', student.teacherFeedback.strongestAreas).map((label, i) => (
+                      <span key={i} className="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-semibold border border-indigo-200 dark:border-indigo-800/60">
+                        {label}
                       </span>
                     ))}
                   </div>
@@ -594,12 +596,12 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               )}
 
               {student.teacherFeedback.interestedAreas && student.teacherFeedback.interestedAreas.length > 0 && (
-                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs">
-                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block mb-1.5">Observed Interest Areas</span>
+                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-1.5">
+                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block">Observed Interest Areas</span>
                   <div className="flex flex-wrap gap-1.5">
-                    {student.teacherFeedback.interestedAreas.map((area, i) => (
-                      <span key={i} className="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-medium border border-blue-200 dark:border-blue-800/60 capitalize">
-                        {area.replace('_', ' ')}
+                    {getTeacherAreaLabels('tf9', student.teacherFeedback.interestedAreas).map((label, i) => (
+                      <span key={i} className="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-semibold border border-blue-200 dark:border-blue-800/60">
+                        {label}
                       </span>
                     ))}
                   </div>
@@ -607,9 +609,11 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
               )}
 
               {student.teacherFeedback.workingStyle && (
-                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs">
-                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block mb-1">Observed Working Style</span>
-                  <span className="font-semibold text-[var(--color-text-primary)] capitalize">{student.teacherFeedback.workingStyle}</span>
+                <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs space-y-1">
+                  <span className="font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider block">Observed Working Style</span>
+                  <div className="p-2.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-semibold text-[var(--color-text-primary)]">
+                    {getTeacherWorkingStyleLabel(student.teacherFeedback.workingStyle)}
+                  </div>
                 </div>
               )}
 
