@@ -6,8 +6,9 @@ import { questionnaireQuestions, QuestionnaireQuestion } from '@/lib/data/questi
 import { QuestionCard } from '@/components/student/QuestionCard';
 import { QuestionPalette } from '@/components/student/QuestionPalette';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
-import { ArrowLeft, ArrowRight, Check, Sparkles, FastForward, AlertCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Sparkles, FastForward, AlertCircle, Eye, CheckCircle2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/Button';
 
 export default function StudentQuestionnairePage() {
   const router = useRouter();
@@ -15,10 +16,11 @@ export default function StudentQuestionnairePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [followUpAnswers, setFollowUpAnswers] = useState<Record<string, string>>({});
+  const [visitedQuestions, setVisitedQuestions] = useState<Set<number>>(new Set([0]));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
-  const [showUnansweredWarning, setShowUnansweredWarning] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const sessionStr = localStorage.getItem('student_session');
@@ -51,26 +53,41 @@ export default function StudentQuestionnairePage() {
         if (typeof parsed.currentIndex === 'number' && parsed.currentIndex >= 0 && parsed.currentIndex < questionnaireQuestions.length) {
           setCurrentIndex(parsed.currentIndex);
         }
+        if (Array.isArray(parsed.visited)) {
+          setVisitedQuestions(new Set(parsed.visited));
+        }
       } catch {
         // Ignore parse error
       }
     }
   }, [student?.id]);
 
+  // Track visited questions whenever currentIndex changes
+  useEffect(() => {
+    setVisitedQuestions((prev) => new Set(prev).add(currentIndex));
+  }, [currentIndex]);
+
   // Auto-save draft on answers, followUpAnswers, or index change
   useEffect(() => {
     if (!student?.id) return;
     const draftKey = `draft_questionnaire_${student.id}`;
-    if (Object.keys(answers).length > 0 || Object.keys(followUpAnswers).length > 0) {
-      localStorage.setItem(draftKey, JSON.stringify({ answers, followUpAnswers, currentIndex }));
+    if (Object.keys(answers).length > 0 || Object.keys(followUpAnswers).length > 0 || visitedQuestions.size > 1) {
+      localStorage.setItem(
+        draftKey,
+        JSON.stringify({
+          answers,
+          followUpAnswers,
+          currentIndex,
+          visited: Array.from(visitedQuestions),
+        })
+      );
     }
-  }, [answers, followUpAnswers, currentIndex, student?.id]);
+  }, [answers, followUpAnswers, currentIndex, visitedQuestions, student?.id]);
 
   if (!student) return null;
 
   const currentQuestion: QuestionnaireQuestion = questionnaireQuestions[currentIndex];
   const totalQuestions = questionnaireQuestions.length;
-  const progressPercent = Math.round(((currentIndex) / totalQuestions) * 100);
 
   // Compute status for every question (Answered / Incomplete / Unanswered)
   const questionsStatus = questionnaireQuestions.map((q) => {
@@ -107,6 +124,9 @@ export default function StudentQuestionnairePage() {
   });
 
   const answeredCount = questionsStatus.filter((s) => s.isAnswered).length;
+  const leftCount = totalQuestions - answeredCount;
+  const visitedCount = visitedQuestions.size;
+
   const unansweredIndices = questionsStatus
     .map((s, idx) => (!s.isAnswered ? idx : null))
     .filter((v): v is number => v !== null);
@@ -114,65 +134,70 @@ export default function StudentQuestionnairePage() {
   const handleAnswerChange = (val: any) => {
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: val }));
     setError('');
-    setShowUnansweredWarning(false);
   };
 
   const handleFollowUpChange = (val: string) => {
     setFollowUpAnswers((prev) => ({ ...prev, [currentQuestion.id]: val }));
     setError('');
-    setShowUnansweredWarning(false);
-  };
-
-  const isCurrentAnswered = () => {
-    return questionsStatus[currentIndex]?.isAnswered;
   };
 
   const handleSelectQuestion = (idx: number) => {
     setError('');
-    setShowUnansweredWarning(false);
     setCurrentIndex(idx);
   };
 
-  const handleNext = async () => {
+  const handleNext = () => {
     setError('');
-    setShowUnansweredWarning(false);
-
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      // Last question reached
-      if (unansweredIndices.length > 0) {
-        setShowUnansweredWarning(true);
-      } else {
-        await handleSubmit();
-      }
+      setShowConfirmModal(true);
     }
   };
 
   const handlePrev = () => {
     setError('');
-    setShowUnansweredWarning(false);
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
     }
   };
 
-  const handleSubmit = async () => {
-    if (unansweredIndices.length > 0 && !showUnansweredWarning) {
-      setShowUnansweredWarning(true);
-      return;
-    }
+  const handleOpenSubmitModal = () => {
+    setError('');
+    setShowConfirmModal(true);
+  };
 
+  const performFinalSubmission = async () => {
     setIsSubmitting(true);
     setError('');
     try {
-      const formattedResponses = Object.entries(answers).map(([questionId, answer]) => ({
-        questionId,
-        answer:
-          followUpAnswers[questionId]
-            ? { choice: answer, detail: followUpAnswers[questionId] }
-            : answer,
-      }));
+      const formattedResponses = Object.entries(answers).map(([questionId, rawVal]) => {
+        let answerData: any = rawVal;
+        const qDef = questionnaireQuestions.find((q) => q.id === questionId);
+
+        let needsDetail = false;
+        if (qDef?.type === 'conditional' && qDef.followUp && rawVal === qDef.followUp.triggerValue) {
+          needsDetail = true;
+        }
+        if (qDef?.type === 'single-select' && typeof rawVal === 'string') {
+          const selectedOpt = qDef.options.find((opt) => opt.value === rawVal);
+          if (selectedOpt?.proofPrompt || qDef.proofPrompt) {
+            needsDetail = true;
+          }
+        }
+
+        if (needsDetail && followUpAnswers[questionId]) {
+          answerData = {
+            choice: rawVal,
+            detail: followUpAnswers[questionId],
+          };
+        }
+
+        return {
+          questionId,
+          answer: answerData,
+        };
+      });
 
       const res = await fetch(`/api/student/${student.id}/questionnaire`, {
         method: 'POST',
@@ -184,6 +209,7 @@ export default function StudentQuestionnairePage() {
         const data = await res.json();
         setError(data.error || 'Something didn\'t go as planned. Please try again.');
         setIsSubmitting(false);
+        setShowConfirmModal(false);
         return;
       }
 
@@ -192,9 +218,11 @@ export default function StudentQuestionnairePage() {
       const updatedStudent = { ...student, questionnaireStatus: 'completed' };
       localStorage.setItem('student_session', JSON.stringify(updatedStudent));
 
+      setShowConfirmModal(false);
       setIsCompleted(true);
     } catch {
       setError('Something didn\'t go as planned. Please try again.');
+      setShowConfirmModal(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -202,23 +230,25 @@ export default function StudentQuestionnairePage() {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-[var(--color-background-main)] flex flex-col justify-center px-4 py-6">
+      <div className="min-h-screen bg-[var(--color-background-main)] flex flex-col justify-center px-4 py-8">
         <CompletionScreen
           studentName={student.name}
-          onNextJourney={() => router.push('/student/assessment')}
-          nextJourneyTitle="Explore Your Thinking"
-          title="Section Completed"
-          subtitle="You've completed the self-discovery questionnaire. Your responses have been saved."
+          isAllCompleted={false}
+          title="Discovery Questionnaire Complete!"
+          subtitle="Your interests and aspirations have been safely recorded. You can now complete the thinking challenge or wait for counselor review."
         />
       </div>
     );
   }
 
+  const currentAnswer = answers[currentQuestion.id];
+  const currentFollowUp = followUpAnswers[currentQuestion.id] || '';
+
   return (
     <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] flex flex-col font-sans antialiased">
       {/* Header */}
       <header className="bg-[var(--color-surface)]/90 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20 transition-colors">
-        <div className="max-w-4xl mx-auto px-4 h-13 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <button
             onClick={() => router.push('/student')}
             className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
@@ -228,93 +258,60 @@ export default function StudentQuestionnairePage() {
           </button>
 
           <div className="text-[var(--color-primary)] font-bold text-xs tracking-wider uppercase flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Discover Yourself</span>
+            <Sparkles className="w-4 h-4" />
+            <span>Discover Your Interests</span>
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="max-w-4xl w-full mx-auto px-4 py-3 sm:py-4 flex-1 flex flex-col justify-between z-10">
-        {/* HackerRank-style Question Palette Bar */}
+      <main className="max-w-3xl w-full mx-auto px-4 py-6 flex-1 flex flex-col z-10">
+        {/* Question Palette Bar */}
         <QuestionPalette
           questionsStatus={questionsStatus}
           currentIndex={currentIndex}
           onSelectQuestion={handleSelectQuestion}
-          title="Self-Discovery Questionnaire Navigation"
+          title="Discovery Questionnaire Navigation"
         />
 
-        {/* Unanswered Questions Warning Banner */}
-        {showUnansweredWarning && (
-          <div className="mb-4 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs space-y-2">
-            <div className="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-100">
-              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span>Unanswered Questions Remaining ({unansweredIndices.length})</span>
-            </div>
-            <p className="leading-relaxed font-medium">
-              You have not answered all questions yet. Click on any unanswered question number below to complete it, or submit anyway.
-            </p>
-            <div className="flex flex-wrap gap-2 pt-1">
-              {unansweredIndices.map((idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => handleSelectQuestion(idx)}
-                  className="px-2.5 py-1 rounded-lg bg-amber-200 dark:bg-amber-800 text-amber-950 dark:text-amber-100 font-extrabold text-xs hover:bg-amber-300 transition-colors"
-                >
-                  Jump to Q{idx + 1}
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors ml-auto"
-              >
-                Submit Anyway
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Question Container */}
-        <div className="flex-1 flex flex-col justify-center my-auto">
+        <div className="flex-1 flex flex-col justify-center min-h-[360px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, x: 15 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -15 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.15 }}
               className="w-full"
             >
               <QuestionCard
                 question={currentQuestion}
-                value={answers[currentQuestion.id]}
+                value={currentAnswer}
                 onChange={handleAnswerChange}
-                followUpValue={followUpAnswers[currentQuestion.id]}
+                followUpValue={currentFollowUp}
                 onFollowUpChange={handleFollowUpChange}
               />
             </motion.div>
           </AnimatePresence>
 
-          {error && <p className="text-xs font-semibold text-rose-500 text-center mt-2">{error}</p>}
+          {error && <p className="text-xs font-semibold text-rose-500 text-center mt-4">{error}</p>}
         </div>
 
         {/* Reassuring text */}
-        <div className="text-center my-2">
-          <p className="text-[11px] text-[var(--color-text-muted)] font-medium">
-            Click any question number above to jump back and forth freely. Save genuine examples to highlight your strengths.
+        <div className="text-center mt-3 mb-6">
+          <p className="text-xs text-[var(--color-text-muted)] font-medium">
+            Click any question number above to switch back and forth freely.
           </p>
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between gap-4 pt-3 border-t border-[var(--color-border-subtle)]">
+        <div className="flex items-center justify-between gap-4 pt-4 border-t border-[var(--color-border-subtle)]">
           <button
             type="button"
             onClick={handlePrev}
             disabled={currentIndex === 0 || isSubmitting}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${
+            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
               currentIndex === 0 || isSubmitting 
                 ? 'opacity-0 pointer-events-none' 
                 : 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)] cursor-pointer'
@@ -325,11 +322,11 @@ export default function StudentQuestionnairePage() {
           </button>
 
           <div className="flex items-center gap-2">
-            {!isCurrentAnswered() && currentIndex < totalQuestions - 1 && (
+            {!questionsStatus[currentIndex].isAnswered && currentIndex < totalQuestions - 1 && (
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center gap-1 px-3.5 py-2 rounded-lg text-xs font-medium bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
+                className="flex items-center gap-1 px-4 py-2.5 rounded-xl text-xs font-semibold bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-all cursor-pointer"
               >
                 <span>Answer Later / Skip</span>
                 <FastForward className="w-3.5 h-3.5" />
@@ -338,22 +335,139 @@ export default function StudentQuestionnairePage() {
 
             <button
               type="button"
-              onClick={currentIndex === totalQuestions - 1 ? handleSubmit : handleNext}
+              onClick={currentIndex === totalQuestions - 1 ? handleOpenSubmitModal : handleNext}
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-xs font-semibold bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xs cursor-pointer transition-colors"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 cursor-pointer transition-all active:scale-[0.98]"
             >
               <span>
-                {isSubmitting
-                  ? 'Saving...'
-                  : currentIndex === totalQuestions - 1
-                  ? 'Finish Section'
-                  : 'Next Question'}
+                {currentIndex === totalQuestions - 1 ? 'Finish & Submit' : 'Next Question'}
               </span>
-              {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />)}
+              {currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
             </button>
           </div>
         </div>
       </main>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-[var(--color-surface)] rounded-2xl p-6 max-w-lg w-full border border-[var(--color-border-subtle)] shadow-2xl space-y-6"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-200 dark:border-indigo-800">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[var(--color-text-primary)]">Ready to Submit Discovery Questionnaire?</h3>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Please review your question completion summary</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowConfirmModal(false)}
+                className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] p-1 rounded-lg transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Stats Summary Cards */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 text-center space-y-1">
+                <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 text-xs font-bold">
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Visited</span>
+                </div>
+                <p className="text-xl font-bold text-blue-900 dark:text-blue-100">
+                  {visitedCount} <span className="text-xs text-blue-600/80 font-normal">/ {totalQuestions}</span>
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-center space-y-1">
+                <div className="flex items-center justify-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Answered</span>
+                </div>
+                <p className="text-xl font-bold text-emerald-900 dark:text-emerald-100">
+                  {answeredCount} <span className="text-xs text-emerald-600/80 font-normal">/ {totalQuestions}</span>
+                </p>
+              </div>
+
+              <div className={`p-3.5 rounded-xl border text-center space-y-1 ${
+                leftCount > 0 
+                  ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-100'
+                  : 'bg-slate-100 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+              }`}>
+                <div className={`flex items-center justify-center gap-1 text-xs font-bold ${leftCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500'}`}>
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  <span>Left</span>
+                </div>
+                <p className="text-xl font-bold">
+                  {leftCount} <span className="text-xs opacity-75 font-normal">/ {totalQuestions}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Left Unanswered Warning & Jump Links */}
+            {leftCount > 0 ? (
+              <div className="p-3.5 rounded-xl bg-amber-50/80 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 space-y-2">
+                <p className="text-xs font-semibold text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>You have {leftCount} unanswered question{leftCount === 1 ? '' : 's'}:</span>
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {unansweredIndices.map((idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setShowConfirmModal(false);
+                        handleSelectQuestion(idx);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-amber-200 dark:bg-amber-800 text-amber-950 dark:text-amber-100 font-bold text-xs hover:bg-amber-300 transition-colors cursor-pointer"
+                    >
+                      Jump to Q{idx + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-xs font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Great job! You have answered all {totalQuestions} questions.</span>
+              </div>
+            )}
+
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed text-center">
+              Are you sure you want to submit your responses? Once submitted, your answers will be recorded for counselor review.
+            </p>
+
+            <div className="flex gap-3 justify-end pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2.5 text-xs font-semibold rounded-xl"
+                disabled={isSubmitting}
+              >
+                Go Back & Review
+              </Button>
+              <button
+                type="button"
+                onClick={performFinalSubmission}
+                disabled={isSubmitting}
+                className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isSubmitting ? 'Submitting...' : 'Yes, Confirm & Submit'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

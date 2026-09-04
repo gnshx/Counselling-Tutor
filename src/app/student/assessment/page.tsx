@@ -6,18 +6,20 @@ import { assessmentQuestions, AssessmentQuestion } from '@/lib/data/assessment';
 import { AssessmentCard } from '@/components/student/AssessmentCard';
 import { QuestionPalette } from '@/components/student/QuestionPalette';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
-import { ArrowLeft, ArrowRight, Check, FastForward, AlertCircle, Brain } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, FastForward, AlertCircle, Brain, Eye, CheckCircle2, HelpCircle, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/Button';
 
 export default function StudentAssessmentPage() {
   const router = useRouter();
   const [student, setStudent] = useState<{ id: string; name: string } | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [visitedQuestions, setVisitedQuestions] = useState<Set<number>>(new Set([0]));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [isCompleted, setIsCompleted] = useState(false);
-  const [showUnansweredWarning, setShowUnansweredWarning] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const sessionStr = localStorage.getItem('student_session');
@@ -47,20 +49,35 @@ export default function StudentAssessmentPage() {
         if (typeof parsed.currentIndex === 'number' && parsed.currentIndex >= 0 && parsed.currentIndex < assessmentQuestions.length) {
           setCurrentIndex(parsed.currentIndex);
         }
+        if (Array.isArray(parsed.visited)) {
+          setVisitedQuestions(new Set(parsed.visited));
+        }
       } catch {
         // Ignore parse error
       }
     }
   }, [student?.id]);
 
-  // Auto-save draft on answers or index change
+  // Track visited questions whenever currentIndex changes
+  useEffect(() => {
+    setVisitedQuestions((prev) => new Set(prev).add(currentIndex));
+  }, [currentIndex]);
+
+  // Auto-save draft on answers, visited or index change
   useEffect(() => {
     if (!student?.id) return;
     const draftKey = `draft_assessment_${student.id}`;
-    if (Object.keys(answers).length > 0) {
-      localStorage.setItem(draftKey, JSON.stringify({ answers, currentIndex }));
+    if (Object.keys(answers).length > 0 || visitedQuestions.size > 1) {
+      localStorage.setItem(
+        draftKey,
+        JSON.stringify({
+          answers,
+          currentIndex,
+          visited: Array.from(visitedQuestions),
+        })
+      );
     }
-  }, [answers, currentIndex, student?.id]);
+  }, [answers, currentIndex, visitedQuestions, student?.id]);
 
   if (!student) return null;
 
@@ -74,6 +91,10 @@ export default function StudentAssessmentPage() {
     isAnswered: Boolean(answers[q.id]),
   }));
 
+  const answeredCount = Object.keys(answers).length;
+  const leftCount = totalQuestions - answeredCount;
+  const visitedCount = visitedQuestions.size;
+
   const unansweredIndices = questionsStatus
     .map((s, idx) => (!s.isAnswered ? idx : null))
     .filter((v): v is number => v !== null);
@@ -81,44 +102,35 @@ export default function StudentAssessmentPage() {
   const handleSelectAnswer = (option: string) => {
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: option }));
     setError('');
-    setShowUnansweredWarning(false);
   };
 
   const handleSelectQuestion = (idx: number) => {
     setError('');
-    setShowUnansweredWarning(false);
     setCurrentIndex(idx);
   };
 
-  const handleNext = async () => {
+  const handleNext = () => {
     setError('');
-    setShowUnansweredWarning(false);
-
     if (currentIndex < totalQuestions - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      if (unansweredIndices.length > 0) {
-        setShowUnansweredWarning(true);
-      } else {
-        await handleSubmit();
-      }
+      setShowConfirmModal(true);
     }
   };
 
   const handlePrev = () => {
     setError('');
-    setShowUnansweredWarning(false);
     if (currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
     }
   };
 
-  const handleSubmit = async () => {
-    if (unansweredIndices.length > 0 && !showUnansweredWarning) {
-      setShowUnansweredWarning(true);
-      return;
-    }
+  const handleOpenSubmitModal = () => {
+    setError('');
+    setShowConfirmModal(true);
+  };
 
+  const performFinalSubmission = async () => {
     setIsSubmitting(true);
     setError('');
     try {
@@ -137,6 +149,7 @@ export default function StudentAssessmentPage() {
         const data = await res.json();
         setError(data.error || 'Something didn\'t go as planned. Please try again.');
         setIsSubmitting(false);
+        setShowConfirmModal(false);
         return;
       }
 
@@ -145,9 +158,11 @@ export default function StudentAssessmentPage() {
       const updatedStudent = { ...student, assessmentStatus: 'completed' };
       localStorage.setItem('student_session', JSON.stringify(updatedStudent));
 
+      setShowConfirmModal(false);
       setIsCompleted(true);
     } catch {
       setError('Something didn\'t go as planned. Please try again.');
+      setShowConfirmModal(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -195,39 +210,6 @@ export default function StudentAssessmentPage() {
           onSelectQuestion={handleSelectQuestion}
           title="Thinking Challenge Navigation"
         />
-
-        {/* Unanswered Questions Warning Banner */}
-        {showUnansweredWarning && (
-          <div className="mb-4 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs space-y-2">
-            <div className="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-100">
-              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-              <span>Unanswered Challenges Remaining ({unansweredIndices.length})</span>
-            </div>
-            <p className="leading-relaxed font-medium">
-              You have unanswered challenge questions remaining. Click any unanswered number below to complete it, or submit anyway.
-            </p>
-            <div className="flex flex-wrap gap-2 pt-1">
-              {unansweredIndices.map((idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => handleSelectQuestion(idx)}
-                  className="px-2.5 py-1 rounded-lg bg-amber-200 dark:bg-amber-800 text-amber-950 dark:text-amber-100 font-extrabold text-xs hover:bg-amber-300 transition-colors"
-                >
-                  Jump to Q{idx + 1}
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition-colors ml-auto"
-              >
-                Submit Anyway
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Question Container */}
         <div className="flex-1 flex flex-col justify-center min-h-[360px]">
@@ -291,22 +273,139 @@ export default function StudentAssessmentPage() {
 
             <button
               type="button"
-              onClick={currentIndex === totalQuestions - 1 ? handleSubmit : handleNext}
+              onClick={currentIndex === totalQuestions - 1 ? handleOpenSubmitModal : handleNext}
               disabled={isSubmitting}
               className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 cursor-pointer transition-all active:scale-[0.98]"
             >
               <span>
-                {isSubmitting
-                  ? 'Saving...'
-                  : currentIndex === totalQuestions - 1
-                  ? 'Finish Section'
-                  : 'Next Challenge'}
+                {currentIndex === totalQuestions - 1 ? 'Finish & Submit' : 'Next Challenge'}
               </span>
-              {!isSubmitting && (currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />)}
+              {currentIndex === totalQuestions - 1 ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
             </button>
           </div>
         </div>
       </main>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-[var(--color-surface)] rounded-2xl p-6 max-w-lg w-full border border-[var(--color-border-subtle)] shadow-2xl space-y-6"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-200 dark:border-indigo-800">
+                  <Brain className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[var(--color-text-primary)]">Ready to Submit Your Exam?</h3>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Please review your question completion summary</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowConfirmModal(false)}
+                className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] p-1 rounded-lg transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Stats Summary Cards */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 text-center space-y-1">
+                <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 text-xs font-bold">
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>Visited</span>
+                </div>
+                <p className="text-xl font-bold text-blue-900 dark:text-blue-100">
+                  {visitedCount} <span className="text-xs text-blue-600/80 font-normal">/ {totalQuestions}</span>
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-center space-y-1">
+                <div className="flex items-center justify-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Answered</span>
+                </div>
+                <p className="text-xl font-bold text-emerald-900 dark:text-emerald-100">
+                  {answeredCount} <span className="text-xs text-emerald-600/80 font-normal">/ {totalQuestions}</span>
+                </p>
+              </div>
+
+              <div className={`p-3.5 rounded-xl border text-center space-y-1 ${
+                leftCount > 0 
+                  ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-100'
+                  : 'bg-slate-100 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+              }`}>
+                <div className={`flex items-center justify-center gap-1 text-xs font-bold ${leftCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500'}`}>
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  <span>Left</span>
+                </div>
+                <p className="text-xl font-bold">
+                  {leftCount} <span className="text-xs opacity-75 font-normal">/ {totalQuestions}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Left Unanswered Warning & Jump Links */}
+            {leftCount > 0 ? (
+              <div className="p-3.5 rounded-xl bg-amber-50/80 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 space-y-2">
+                <p className="text-xs font-semibold text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>You have {leftCount} unanswered challenge question{leftCount === 1 ? '' : 's'}:</span>
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {unansweredIndices.map((idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setShowConfirmModal(false);
+                        handleSelectQuestion(idx);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-amber-200 dark:bg-amber-800 text-amber-950 dark:text-amber-100 font-bold text-xs hover:bg-amber-300 transition-colors cursor-pointer"
+                    >
+                      Jump to Q{idx + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-xs font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Great job! You have answered all {totalQuestions} questions.</span>
+              </div>
+            )}
+
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed text-center">
+              Are you sure you want to submit your responses? Once submitted, your answers will be recorded for counselor review.
+            </p>
+
+            <div className="flex gap-3 justify-end pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowConfirmModal(false)}
+                className="px-4 py-2.5 text-xs font-semibold rounded-xl"
+                disabled={isSubmitting}
+              >
+                Go Back & Review
+              </Button>
+              <button
+                type="button"
+                onClick={performFinalSubmission}
+                disabled={isSubmitting}
+                className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isSubmitting ? 'Submitting...' : 'Yes, Confirm & Submit'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
