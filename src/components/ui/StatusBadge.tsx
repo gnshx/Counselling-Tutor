@@ -41,7 +41,7 @@ export function StatusBadge({ status, label, size = 'md' }: StatusBadgeProps) {
   };
 
   const config = getStatusConfig();
-  const sizeClasses = size === 'sm' ? 'px-2 py-0.5 text-xs font-medium gap-1.5' : 'px-2.5 py-1 text-xs font-medium gap-2';
+  const sizeClasses = size === 'sm' ? 'px-2.5 py-0.5 text-[11px] font-semibold gap-1.5' : 'px-3 py-1 text-xs font-semibold gap-2';
 
   return (
     <span className={`inline-flex items-center rounded-full border transition-colors ${config.bg} ${sizeClasses}`}>

@@ -30,8 +30,8 @@ export function RatingScale({ value, onChange, disabled = false }: RatingScalePr
               isSelected
                 ? opt.value === 'N/O'
                   ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 border-slate-400 dark:border-slate-500 shadow-xs font-bold'
-                  : 'bg-blue-600 text-white border-blue-600 dark:bg-blue-600 dark:border-blue-500 shadow-sm font-bold ring-2 ring-blue-500/20'
-                : 'bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border-slate-200 dark:border-slate-700/80 hover:bg-blue-50/60 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-slate-600'
+                  : 'bg-gradient-to-br from-indigo-600 to-violet-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20 font-bold ring-2 ring-indigo-500/30'
+                : 'bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] hover:bg-[var(--color-primary-soft)] hover:border-indigo-300 dark:hover:border-indigo-700'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]'}`}
           >
             <span className="text-base sm:text-lg font-bold leading-none">{opt.label}</span>
@@ -40,8 +40,8 @@ export function RatingScale({ value, onChange, disabled = false }: RatingScalePr
                 isSelected
                   ? opt.value === 'N/O'
                     ? 'text-slate-800 dark:text-slate-200'
-                    : 'text-blue-100'
-                  : 'text-slate-500 dark:text-slate-400'
+                    : 'text-indigo-100'
+                  : 'text-[var(--color-text-muted)]'
               }`}
             >
               {opt.desc}
@@ -52,4 +52,3 @@ export function RatingScale({ value, onChange, disabled = false }: RatingScalePr
     </div>
   );
 }
-
