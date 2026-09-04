@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { Compass, Sparkles, Brain, ArrowRight, CheckCircle2, LogOut, MessageCircle, Clock } from 'lucide-react';
+import { Compass, Brain, ArrowRight, CheckCircle2, LogOut, Heart, Clock, Search, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface StudentSession {
   id: string;
@@ -73,184 +74,231 @@ export default function StudentPortalPage() {
   if (isFeedbackDone) completedSteps++;
   const progressPercent = Math.round((completedSteps / 3) * 100);
 
+  const journeySteps = [
+    {
+      num: 1,
+      title: 'Discover Yourself',
+      desc: 'Share your interests, passions, and natural strengths through visual, thoughtful questions.',
+      icon: <Search className="w-5 h-5" />,
+      done: isQuestionnaireDone,
+      href: '/student/questionnaire',
+      unlocked: true,
+      buttonText: 'Begin Discovery',
+      colorClass: 'indigo',
+    },
+    {
+      num: 2,
+      title: 'Explore How You Think',
+      desc: 'Engage with real-world scenarios that reveal your unique reasoning and decision-making style.',
+      icon: <Brain className="w-5 h-5" />,
+      done: isAssessmentDone,
+      href: '/student/assessment',
+      unlocked: isQuestionnaireDone,
+      buttonText: 'Start Thinking Challenge',
+      colorClass: 'violet',
+    },
+    {
+      num: 3,
+      title: 'Counselor Guidance',
+      desc: isFeedbackDone
+        ? 'Your counselor has reviewed everything and shared their personalized observations.'
+        : 'Your educator will review your responses and add their perspective — sit tight!',
+      icon: <Heart className="w-5 h-5" />,
+      done: isFeedbackDone,
+      href: '#',
+      unlocked: false,
+      buttonText: 'Awaiting Counselor',
+      colorClass: 'emerald',
+    },
+  ];
+
+  const colorMap: Record<string, { bg: string; text: string; border: string; softBg: string }> = {
+    indigo: {
+      bg: 'bg-indigo-50 dark:bg-indigo-950/40',
+      text: 'text-indigo-600 dark:text-indigo-400',
+      border: 'border-indigo-200 dark:border-indigo-800/50',
+      softBg: 'bg-indigo-500',
+    },
+    violet: {
+      bg: 'bg-violet-50 dark:bg-violet-950/40',
+      text: 'text-violet-600 dark:text-violet-400',
+      border: 'border-violet-200 dark:border-violet-800/50',
+      softBg: 'bg-violet-500',
+    },
+    emerald: {
+      bg: 'bg-emerald-50 dark:bg-emerald-950/40',
+      text: 'text-emerald-600 dark:text-emerald-400',
+      border: 'border-emerald-200 dark:border-emerald-800/50',
+      softBg: 'bg-emerald-500',
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans antialiased">
+    <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)]">
       {/* Header */}
-      <header className="bg-[var(--color-surface)]/90 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20 transition-colors">
+      <header className="bg-[var(--color-surface)]/90 backdrop-blur-md border-b border-[var(--color-border-subtle)] sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-[var(--color-primary-soft)] border border-[var(--color-primary)]/20 flex items-center justify-center">
-              <Compass className="w-5 h-5 text-[var(--color-primary)]" />
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white">
+              <Compass className="w-5 h-5 stroke-[2.5]" />
             </div>
-            <span className="font-semibold text-lg tracking-tight text-[var(--color-text-primary)]">
-              Career<span className="text-[var(--color-primary)] font-bold">Discovery</span>
+            <span className="font-[var(--font-heading)] text-lg tracking-tight text-[var(--color-text-primary)]">
+              Career<span className="text-gradient">Discovery</span>
             </span>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
-
             <button
               onClick={handleLogout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span>Exit Portal</span>
+              <span>Exit</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Main Container */}
-      <main className="max-w-4xl w-full mx-auto px-4 py-8 sm:py-12 flex-1 flex flex-col z-10">
+      {/* Main */}
+      <main className="max-w-4xl w-full mx-auto px-4 py-8 sm:py-12 flex-1 flex flex-col">
         {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[var(--color-text-primary)] mb-1">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-10"
+        >
+          <h1 className="text-2xl sm:text-3xl font-[var(--font-heading)] text-[var(--color-text-primary)] mb-2">
             {greeting}, {student.name.split(' ')[0]}
           </h1>
           <p className="text-sm text-[var(--color-text-secondary)]">
-            Explore your interests and complete your career discovery steps.
+            {progressPercent === 100
+              ? 'All steps complete — your career discovery profile is ready!'
+              : 'This is your space to explore who you are. There are no right or wrong answers.'}
           </p>
-        </div>
+        </motion.div>
 
         {/* Progress Card */}
-        <div className="bg-[var(--color-surface)] rounded-xl p-6 border border-[var(--color-border-subtle)] shadow-2xs mb-8">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider">Overall Progress</h2>
-            <span className="text-xs font-semibold text-[var(--color-primary)]">{completedSteps} of 3 completed ({progressPercent}%)</span>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-[var(--color-surface)] rounded-2xl p-6 border border-[var(--color-border-subtle)] mb-8"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
+              <h2 className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">Your Journey</h2>
+            </div>
+            <span className="text-xs font-bold text-[var(--color-primary)]">{completedSteps} of 3 steps</span>
           </div>
 
-          <div className="w-full h-2.5 bg-[var(--color-surface-soft)] rounded-full mb-3 overflow-hidden border border-[var(--color-border-subtle)]">
-            <div
-              className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${progressPercent}%` }}
+          <div className="w-full h-2.5 bg-[var(--color-surface-soft)] rounded-full overflow-hidden border border-[var(--color-border-subtle)]">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPercent}%` }}
+              transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+              className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full"
             />
           </div>
 
-          <p className="text-xs text-[var(--color-text-secondary)] font-medium">
-            {progressPercent === 100
-              ? 'All student and educator steps are complete.'
-              : 'Complete all steps to finish your career discovery profile.'}
-          </p>
-        </div>
+          {/* Step indicators */}
+          <div className="flex items-center justify-between mt-4">
+            {journeySteps.map((step) => (
+              <div key={step.num} className="flex items-center gap-1.5">
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                  step.done
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] border border-[var(--color-border-subtle)]'
+                }`}>
+                  {step.done ? <CheckCircle2 className="w-3 h-3" /> : step.num}
+                </div>
+                <span className={`text-[11px] font-semibold hidden sm:block ${step.done ? 'text-emerald-600 dark:text-emerald-400' : 'text-[var(--color-text-muted)]'}`}>
+                  {step.title}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
-        {/* Journey Cards Container */}
+        {/* Journey Cards */}
         <div className="space-y-4">
-          {/* Card 1 — Discover Yourself */}
-          <div className="bg-[var(--color-surface)] rounded-xl p-5 sm:p-6 border border-[var(--color-border-subtle)] shadow-2xs transition-colors">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className={`w-11 h-11 rounded-lg flex items-center justify-center shrink-0 border ${
-                  isQuestionnaireDone
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60 text-emerald-600 dark:text-emerald-400'
-                    : 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400'
-                }`}>
-                  <Compass className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">1. Discover Yourself</h3>
-                  <p className="text-[var(--color-text-secondary)] text-xs max-w-md">Explore your interests, preferences, values, and aspirations.</p>
-                </div>
-              </div>
+          {journeySteps.map((step, i) => {
+            const colors = colorMap[step.colorClass];
+            const isLocked = !step.unlocked && !step.done;
 
-              <div className="w-full sm:w-auto shrink-0">
-                {isQuestionnaireDone ? (
-                  <div className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-medium text-xs px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Completed</span>
+            return (
+              <motion.div
+                key={step.num}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
+                className={`bg-[var(--color-surface)] rounded-2xl p-6 border border-[var(--color-border-subtle)] transition-all ${
+                  isLocked ? 'opacity-50' : ''
+                }`}
+              >
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${
+                      step.done
+                        ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/50 text-emerald-600 dark:text-emerald-400'
+                        : `${colors.bg} ${colors.border} ${colors.text}`
+                    }`}>
+                      {step.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-base font-[var(--font-heading)] text-[var(--color-text-primary)] mb-0.5">
+                        {step.title}
+                      </h3>
+                      <p className="text-[var(--color-text-secondary)] text-xs max-w-md leading-relaxed">{step.desc}</p>
+                    </div>
                   </div>
-                ) : (
-                  <Link
-                    href="/student/questionnaire"
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-medium text-xs transition-colors shadow-2xs cursor-pointer"
-                  >
-                    <span>Start Questionnaire</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
 
-          {/* Card 2 — Explore Your Thinking */}
-          <div className={`bg-[var(--color-surface)] rounded-xl p-5 sm:p-6 border border-[var(--color-border-subtle)] shadow-2xs transition-colors ${
-            !isQuestionnaireDone ? 'opacity-60' : ''
-          }`}>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className={`w-11 h-11 rounded-lg flex items-center justify-center shrink-0 border ${
-                  isAssessmentDone
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60 text-emerald-600 dark:text-emerald-400'
-                    : 'bg-sky-50 dark:bg-sky-950/40 border-sky-200 dark:border-sky-800/60 text-sky-600 dark:text-sky-400'
-                }`}>
-                  <Brain className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">2. Explore Your Thinking</h3>
-                  <p className="text-[var(--color-text-secondary)] text-xs max-w-md">Try scenario challenges covering reasoning and decision making.</p>
-                </div>
-              </div>
-
-              <div className="w-full sm:w-auto shrink-0">
-                {isAssessmentDone ? (
-                  <div className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-medium text-xs px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Completed</span>
+                  <div className="w-full sm:w-auto shrink-0">
+                    {step.done ? (
+                      <div className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-semibold text-xs px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>Completed</span>
+                      </div>
+                    ) : step.num === 3 ? (
+                      <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-4 py-2 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)]">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>Awaiting Counselor</span>
+                      </div>
+                    ) : step.unlocked ? (
+                      <Link
+                        href={step.href}
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs transition-all shadow-md shadow-indigo-500/15 cursor-pointer active:scale-[0.98]"
+                      >
+                        <span>{step.buttonText}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    ) : (
+                      <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-4 py-2 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)] cursor-not-allowed">
+                        <span>Complete previous step first</span>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <Link
-                    href={isQuestionnaireDone ? "/student/assessment" : "#"}
-                    className={`w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg font-medium text-xs transition-colors ${
-                      isQuestionnaireDone
-                        ? 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-2xs cursor-pointer'
-                        : 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] border border-[var(--color-border-subtle)] cursor-not-allowed'
-                    }`}
-                  >
-                    <span>{isQuestionnaireDone ? 'Start Challenge' : 'Complete Step 1 First'}</span>
-                    {isQuestionnaireDone && <ArrowRight className="w-3.5 h-3.5" />}
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3 — Counselor Insight */}
-          <div className="bg-[var(--color-surface)] rounded-xl p-5 sm:p-6 border border-[var(--color-border-subtle)] shadow-2xs transition-colors">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className={`w-11 h-11 rounded-lg flex items-center justify-center shrink-0 border ${
-                  isFeedbackDone
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60 text-emerald-600 dark:text-emerald-400'
-                    : 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/60 text-amber-600 dark:text-amber-400'
-                }`}>
-                  <MessageCircle className="w-5 h-5" />
                 </div>
-                <div>
-                  <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">3. Educator Observations</h3>
-                  <p className="text-[var(--color-text-secondary)] text-xs max-w-md">
-                    {isFeedbackDone
-                      ? 'Your educator has completed their review and submitted recommendations.'
-                      : 'Your educator will review your responses and add observation notes.'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-full sm:w-auto shrink-0">
-                {isFeedbackDone ? (
-                  <div className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-medium text-xs px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Completed</span>
-                  </div>
-                ) : (
-                  <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-3 py-1.5 bg-[var(--color-surface-soft)] rounded-lg border border-[var(--color-border-subtle)]">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>Pending Educator</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* Encouragement Message */}
+        {progressPercent < 100 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="mt-8 text-center"
+          >
+            <p className="text-xs text-[var(--color-text-muted)] italic">
+              Remember — these are clues about who you are, not limits on who you can become.
+            </p>
+          </motion.div>
+        )}
       </main>
     </div>
   );
