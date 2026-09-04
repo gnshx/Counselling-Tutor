@@ -133,7 +133,7 @@ export const questionnaireQuestions: QuestionnaireQuestion[] = [
       },
       {
         value: 'both',
-        label: 'A healthy mix of both!',
+        label: 'A healthy mix of both (Group Work & Solo Work)',
         icon: '⚖️',
         proofPrompt: 'Give an example of a project you did (group or solo):',
       },

@@ -50,6 +50,11 @@ export interface FormattedAssessmentData {
 
 export function getTeacherWorkingStyleLabel(val?: string | null): string {
   if (!val) return 'Not assessed';
+  if (val === 'both') return 'Comfortable with both (Group Work & Solo Work)';
+  if (val === 'independent') return 'Mostly independent (Solo Work)';
+  if (val === 'group_based') return 'Mostly group-based (Team Collaboration)';
+  if (val === 'depends') return 'Depends on the task context';
+  if (val === 'not_enough') return 'Not enough observation';
   const tf10 = teacherFeedbackQuestions.find((q) => q.id === 'tf10');
   const opt = tf10?.options?.find((o) => o.value === val);
   return opt ? opt.label : val;
