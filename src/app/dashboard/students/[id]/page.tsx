@@ -92,7 +92,6 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
         <Header />
         <div className="max-w-4xl mx-auto p-12 text-center text-[var(--color-text-secondary)]">
           <div className="w-6 h-6 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-          <p className="text-xs font-medium">Loading student profile...</p>
           <p className="text-xs font-medium">
             {language === 'hi' ? 'विद्यार्थी प्रोफ़ाइल लोड हो रहा है...' : 'Loading student profile...'}
           </p>
@@ -106,12 +105,10 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
       <div className="min-h-screen bg-[var(--color-background-main)] font-sans antialiased">
         <Header />
         <div className="max-w-4xl mx-auto p-12 text-center text-[var(--color-text-secondary)]">
-          <p className="text-sm font-medium">Student profile not found.</p>
           <p className="text-sm font-medium">
             {language === 'hi' ? 'विद्यार्थी प्रोफ़ाइल नहीं मिली।' : 'Student profile not found.'}
           </p>
           <Link href="/dashboard" className="text-xs text-[var(--color-primary)] font-semibold hover:underline mt-2 inline-block">
-            Return to Dashboard
             {language === 'hi' ? 'डैशबोर्ड पर लौटें' : 'Return to Dashboard'}
           </Link>
         </div>

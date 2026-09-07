@@ -20,7 +20,6 @@ export default function Home() {
   const handleStudentAccess = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!accessCode.trim()) {
-      setError('Please enter your 8-character access code.');
       setError(
         language === 'hi'
           ? 'कृपया अपना 8-अक्षरों का एक्सेस कोड दर्ज करें।'
@@ -40,7 +39,6 @@ export default function Home() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Access code not recognized.');
         setError(
           data.error ||
             (language === 'hi' ? 'एक्सेस कोड मान्य नहीं है।' : 'Access code not recognized.')
@@ -52,7 +50,6 @@ export default function Home() {
       localStorage.setItem('student_session', JSON.stringify(data.student));
       router.push('/student');
     } catch {
-      setError('Something didn\'t go as planned. Please try again.');
       setError(
         language === 'hi'
           ? 'कुछ गलत हो गया। कृपया पुन: प्रयास करें।'
@@ -80,7 +77,6 @@ export default function Home() {
               <Compass className="w-5 h-5 stroke-[2.5]" />
             </div>
             <span className="font-[var(--font-heading)] text-xl tracking-tight text-[var(--color-text-primary)]">
-              Career<span className="text-gradient font-bold">Discovery</span>
               {language === 'hi' ? 'करियर ' : 'Career'}
               <span className="text-gradient font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>
             </span>
@@ -94,7 +90,6 @@ export default function Home() {
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] transition-all cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4 text-indigo-500" />
-              <span>Educator Portal</span>
               <span>{language === 'hi' ? 'शिक्षक पोर्टल' : 'Educator Portal'}</span>
             </Link>
           </div>
@@ -117,13 +112,10 @@ export default function Home() {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary-soft)] border border-indigo-200 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Guided Career Discovery Platform</span>
                 <span>{language === 'hi' ? 'करियर खोज एवं परामर्श मार्गदर्शक' : 'Guided Career Discovery Platform'}</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-[var(--font-heading)] tracking-tight text-[var(--color-text-primary)] leading-[1.15]">
-                Discover what makes{' '}
-                <span className="text-gradient">you, you.</span>
                 {language === 'hi' ? (
                   <>
                     पहचानें अपनी <span className="text-gradient">असली क्षमता।</span>
@@ -136,8 +128,6 @@ export default function Home() {
               </h1>
 
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                A calm, encouraging journey to explore your natural interests,
-                strengths, and thinking style — guided by your counselor every step of the way.
                 {language === 'hi'
                   ? 'अपनी स्वाभाविक रुचियों, खूबियों और सोच को पहचानने की एक सहज एवं शांत यात्रा — हर कदम पर शिक्षक और परामर्शदाता के मार्गदर्शन के साथ।'
                   : 'A calm, encouraging journey to explore your natural interests, strengths, and thinking style — guided by your counselor every step of the way.'}
@@ -148,7 +138,6 @@ export default function Home() {
                   onClick={scrollToAccess}
                   className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                 >
-                  Begin Your Journey
                   {language === 'hi' ? 'अपनी यात्रा शुरू करें' : 'Begin Your Journey'}
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -172,8 +161,6 @@ export default function Home() {
                     <GraduationCap className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Student Access</h2>
-                    <p className="text-xs text-[var(--color-text-muted)]">Enter your personal access code</p>
                     <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">
                       {language === 'hi' ? 'विद्यार्थी प्रवेश' : 'Student Access'}
                     </h2>

@@ -249,7 +249,6 @@ export default function StudentAssessmentPage() {
         {/* Reassuring text */}
         <div className="text-center mt-3 mb-6">
           <p className="text-xs text-[var(--color-text-muted)] font-medium">
-            Click any challenge number above to switch back and forth freely.
             {language === 'hi'
               ? 'आगे-पीछे जाने के लिए ऊपर दिए गए किसी भी प्रश्न संख्या पर क्लिक करें।'
               : 'Click any challenge number above to switch back and forth freely.'}
@@ -269,7 +268,6 @@ export default function StudentAssessmentPage() {
             }`}
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Previous</span>
             <span>{language === 'hi' ? 'पिछला' : 'Previous'}</span>
           </button>
 
@@ -280,7 +278,6 @@ export default function StudentAssessmentPage() {
                 onClick={handleNext}
                 className="flex items-center gap-1 px-4 py-2.5 rounded-xl text-xs font-semibold bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-all cursor-pointer"
               >
-                <span>Answer Later / Skip</span>
                 <span>{language === 'hi' ? 'बाद में उत्तर दें / आगे बढ़ें' : 'Answer Later / Skip'}</span>
                 <FastForward className="w-3.5 h-3.5" />
               </button>
@@ -293,7 +290,6 @@ export default function StudentAssessmentPage() {
               className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 cursor-pointer transition-all active:scale-[0.98]"
             >
               <span>
-                {currentIndex === totalQuestions - 1 ? 'Finish & Submit' : 'Next Challenge'}
                 {currentIndex === totalQuestions - 1
                   ? language === 'hi'
                     ? 'पूरा करें और जमा करें'
@@ -322,8 +318,6 @@ export default function StudentAssessmentPage() {
                   <Brain className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[var(--color-text-primary)]">Ready to Submit Your Exam?</h3>
-                  <p className="text-xs text-[var(--color-text-secondary)]">Please review your question completion summary</p>
                   <h3 className="text-base font-bold text-[var(--color-text-primary)]">
                     {language === 'hi' ? 'क्या आप आकलन जमा करने के लिए तैयार हैं?' : 'Ready to Submit Your Exam?'}
                   </h3>
@@ -348,7 +342,6 @@ export default function StudentAssessmentPage() {
               <div className="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/60 text-center space-y-1">
                 <div className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 text-xs font-bold">
                   <Eye className="w-3.5 h-3.5" />
-                  <span>Visited</span>
                   <span>{language === 'hi' ? 'देखे गए' : 'Visited'}</span>
                 </div>
                 <p className="text-xl font-bold text-blue-900 dark:text-blue-100">
@@ -359,7 +352,6 @@ export default function StudentAssessmentPage() {
               <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-center space-y-1">
                 <div className="flex items-center justify-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Answered</span>
                   <span>{language === 'hi' ? 'उत्तर दिए गए' : 'Answered'}</span>
                 </div>
                 <p className="text-xl font-bold text-emerald-900 dark:text-emerald-100">
@@ -374,7 +366,6 @@ export default function StudentAssessmentPage() {
               }`}>
                 <div className={`flex items-center justify-center gap-1 text-xs font-bold ${leftCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500'}`}>
                   <AlertCircle className="w-3.5 h-3.5" />
-                  <span>Left</span>
                   <span>{language === 'hi' ? 'शेष' : 'Left'}</span>
                 </div>
                 <p className="text-xl font-bold">
@@ -388,7 +379,6 @@ export default function StudentAssessmentPage() {
               <div className="p-3.5 rounded-xl bg-amber-50/80 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 space-y-2">
                 <p className="text-xs font-semibold text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
                   <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  <span>You have {leftCount} unanswered challenge question{leftCount === 1 ? '' : 's'}:</span>
                   <span>
                     {language === 'hi'
                       ? `आपके पास ${leftCount} अनुत्तरित चुनौती प्रश्न ${leftCount === 1 ? 'है' : 'हैं'}:`
@@ -406,7 +396,6 @@ export default function StudentAssessmentPage() {
                       }}
                       className="px-2.5 py-1 rounded-lg bg-amber-200 dark:bg-amber-800 text-amber-950 dark:text-amber-100 font-bold text-xs hover:bg-amber-300 transition-colors cursor-pointer"
                     >
-                      Jump to Q{idx + 1}
                       {language === 'hi' ? `प्रश्न ${idx + 1} पर जाएँ` : `Jump to Q${idx + 1}`}
                     </button>
                   ))}
@@ -415,7 +404,6 @@ export default function StudentAssessmentPage() {
             ) : (
               <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-xs font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Great job! You have answered all {totalQuestions} questions.</span>
                 <span>
                   {language === 'hi'
                     ? `बहुत खूब! आपने सभी ${totalQuestions} प्रश्नों के उत्तर दे दिए हैं।`
@@ -425,7 +413,6 @@ export default function StudentAssessmentPage() {
             )}
 
             <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed text-center">
-              Are you sure you want to submit your responses? Once submitted, your answers will be recorded for counselor review.
               {language === 'hi'
                 ? 'क्या आप सुनिश्चित हैं कि आप अपने उत्तर जमा करना चाहते हैं? एक बार जमा करने के बाद, आपके उत्तर परामर्शदाता के विश्लेषण के लिए दर्ज हो जाएँगे।'
                 : 'Are you sure you want to submit your responses? Once submitted, your answers will be recorded for counselor review.'}
@@ -439,7 +426,6 @@ export default function StudentAssessmentPage() {
                 className="px-4 py-2.5 text-xs font-semibold rounded-xl"
                 disabled={isSubmitting}
               >
-                Go Back & Review
                 {language === 'hi' ? 'वापस जाएँ और समीक्षा करें' : 'Go Back & Review'}
               </Button>
               <button
@@ -448,7 +434,6 @@ export default function StudentAssessmentPage() {
                 disabled={isSubmitting}
                 className="px-6 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/20 transition-all cursor-pointer disabled:opacity-50"
               >
-                {isSubmitting ? 'Submitting...' : 'Yes, Confirm & Submit'}
                 {isSubmitting
                   ? language === 'hi'
                     ? 'जमा किया जा रहा है...'

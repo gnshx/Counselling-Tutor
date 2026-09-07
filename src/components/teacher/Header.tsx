@@ -47,7 +47,6 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
             </div>
             <div>
               <h1 className="font-[var(--font-heading)] text-base leading-tight text-[var(--color-text-primary)]">
-                Career<span className="text-gradient font-bold">Discovery</span> <span className="text-[var(--color-text-muted)] font-normal text-xs sm:text-sm">| Educator Portal</span>
                 {language === 'hi' ? 'करियर ' : 'Career'}
                 <span className="text-gradient font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>{' '}
                 <span className="text-[var(--color-text-muted)] font-normal text-xs sm:text-sm">

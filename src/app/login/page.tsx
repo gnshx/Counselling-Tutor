@@ -47,7 +47,6 @@ export default function AuthPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Invalid email or password');
         setError(data.error || (language === 'hi' ? 'अमान्य ईमेल या पासवर्ड' : 'Invalid email or password'));
         setIsLoading(false);
         return;
@@ -55,7 +54,6 @@ export default function AuthPage() {
 
       router.push('/dashboard');
     } catch {
-      setError('Connection error. Please try again.');
       setError(language === 'hi' ? 'कनेक्शन त्रुटि। कृपया पुन: प्रयास करें।' : 'Connection error. Please try again.');
       setIsLoading(false);
     }
@@ -66,7 +64,6 @@ export default function AuthPage() {
     setError('');
 
     if (!name.trim() || !signupEmail.trim() || !signupPassword) {
-      setError('Please enter your full name, email, and password.');
       setError(
         language === 'hi'
           ? 'कृपया अपना पूरा नाम, ईमेल और पासवर्ड दर्ज करें।'
@@ -76,7 +73,6 @@ export default function AuthPage() {
     }
 
     if (signupPassword.length < 6) {
-      setError('Password must be at least 6 characters.');
       setError(
         language === 'hi'
           ? 'पासवर्ड कम से कम 6 अक्षरों का होना चाहिए।'
@@ -86,7 +82,6 @@ export default function AuthPage() {
     }
 
     if (signupPassword !== confirmPassword) {
-      setError('Passwords do not match.');
       setError(language === 'hi' ? 'पासवर्ड मेल नहीं खाते।' : 'Passwords do not match.');
       return;
     }
@@ -106,7 +101,6 @@ export default function AuthPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Failed to create account.');
         setError(data.error || (language === 'hi' ? 'खाता बनाने में विफल।' : 'Failed to create account.'));
         setIsLoading(false);
         return;
@@ -114,7 +108,6 @@ export default function AuthPage() {
 
       router.push('/dashboard');
     } catch {
-      setError('Connection error. Please try again.');
       setError(language === 'hi' ? 'कनेक्शन त्रुटि। कृपया पुन: प्रयास करें।' : 'Connection error. Please try again.');
       setIsLoading(false);
     }
@@ -135,7 +128,6 @@ export default function AuthPage() {
               <Compass className="w-5 h-5 stroke-[2.5]" />
             </div>
             <span className="font-[var(--font-heading)] text-lg tracking-tight text-[var(--color-text-primary)]">
-              Career<span className="text-blue-500 font-bold">Discovery</span>
               {language === 'hi' ? 'करियर ' : 'Career'}
               <span className="text-blue-500 font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>
             </span>
@@ -145,7 +137,6 @@ export default function AuthPage() {
             <LanguageToggle />
             <ThemeToggle />
             <Link href="/" className="text-xs font-semibold text-[var(--color-text-secondary)] hover:text-blue-500 transition-colors">
-              ← Student Access
               {language === 'hi' ? '← विद्यार्थी प्रवेश' : '← Student Access'}
             </Link>
           </div>

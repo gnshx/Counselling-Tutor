@@ -169,7 +169,6 @@ export default function StudentPortalPage() {
               <Compass className="w-5 h-5 stroke-[2.5]" />
             </div>
             <span className="font-[var(--font-heading)] text-lg tracking-tight text-[var(--color-text-primary)]">
-              Career<span className="text-gradient">Discovery</span>
               {language === 'hi' ? 'करियर ' : 'Career'}
               <span className="text-gradient">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>
             </span>
@@ -183,7 +182,6 @@ export default function StudentPortalPage() {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span>Exit</span>
               <span>{language === 'hi' ? 'लॉगआउट' : 'Exit'}</span>
             </button>
           </div>
@@ -223,12 +221,10 @@ export default function StudentPortalPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
-              <h2 className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">Your Journey</h2>
               <h2 className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">
                 {language === 'hi' ? 'आपकी यात्रा' : 'Your Journey'}
               </h2>
             </div>
-            <span className="text-xs font-bold text-[var(--color-primary)]">{completedSteps} of 3 steps</span>
             <span className="text-xs font-bold text-[var(--color-primary)]">
               {language === 'hi' ? `3 में से ${completedSteps} चरण पूर्ण` : `${completedSteps} of 3 steps`}
             </span>
@@ -299,13 +295,11 @@ export default function StudentPortalPage() {
                     {step.done ? (
                       <div className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-semibold text-xs px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
                         <CheckCircle2 className="w-4 h-4" />
-                        <span>Completed</span>
                         <span>{language === 'hi' ? 'पूर्ण' : 'Completed'}</span>
                       </div>
                     ) : step.num === 3 ? (
                       <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-4 py-2 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)]">
                         <Clock className="w-3.5 h-3.5" />
-                        <span>Awaiting Counselor</span>
                         <span>{language === 'hi' ? 'परामर्शदाता की प्रतीक्षा' : 'Awaiting Counselor'}</span>
                       </div>
                     ) : step.unlocked ? (
@@ -318,7 +312,6 @@ export default function StudentPortalPage() {
                       </Link>
                     ) : (
                       <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-4 py-2 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)] cursor-not-allowed">
-                        <span>Complete previous step first</span>
                         <span>{language === 'hi' ? 'पहले पिछला चरण पूरा करें' : 'Complete previous step first'}</span>
                       </div>
                     )}
@@ -338,7 +331,6 @@ export default function StudentPortalPage() {
             className="mt-8 text-center"
           >
             <p className="text-xs text-[var(--color-text-muted)] italic">
-              Remember — these are clues about who you are, not limits on who you can become.
               {language === 'hi'
                 ? 'याद रखें — ये आपके बारे में संकेत हैं, आप क्या बन सकते हैं इस पर कोई सीमा नहीं।'
                 : 'Remember — these are clues about who you are, not limits on who you can become.'}

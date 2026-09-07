@@ -29,7 +29,6 @@ export default function AddStudentPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.dob || !formData.classGrade) {
-      setError('Student name, date of birth, and class/grade are required.');
       setError(
         language === 'hi'
           ? 'विद्यार्थी का नाम, जन्म तिथि और कक्षा अनिवार्य हैं।'
@@ -50,7 +49,6 @@ export default function AddStudentPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Failed to create student');
         setError(data.error || (language === 'hi' ? 'विद्यार्थी बनाने में त्रुटि' : 'Failed to create student'));
         setIsLoading(false);
         return;
@@ -61,7 +59,6 @@ export default function AddStudentPage() {
         accessCode: data.student.accessCode,
       });
     } catch {
-      setError('Connection error. Please try again.');
       setError(language === 'hi' ? 'कनेक्शन त्रुटि। कृपया पुनः प्रयास करें।' : 'Connection error. Please try again.');
     } finally {
       setIsLoading(false);
@@ -78,7 +75,6 @@ export default function AddStudentPage() {
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Dashboard</span>
           <span>{language === 'hi' ? 'डैशबोर्ड पर वापस जाएँ' : 'Back to Dashboard'}</span>
         </Link>
 
@@ -94,12 +90,10 @@ export default function AddStudentPage() {
             </div>
 
             <div className="space-y-1">
-              <h2 className="text-xl font-[var(--font-heading)] text-[var(--color-text-primary)]">Student Profile Created</h2>
               <h2 className="text-xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
                 {language === 'hi' ? 'विद्यार्थी प्रोफ़ाइल बन गई है' : 'Student Profile Created'}
               </h2>
               <p className="text-xs text-[var(--color-text-secondary)]">
-                Provide this Access Code to <strong>{createdStudent.name}</strong> to begin their journey.
                 {language === 'hi' ? (
                   <>यह एक्सेस कोड <strong>{createdStudent.name}</strong> को उनकी यात्रा शुरू करने के लिए दें।</>
                 ) : (
@@ -129,7 +123,6 @@ export default function AddStudentPage() {
                   });
                 }}
               >
-                Add Another Student
                 {language === 'hi' ? 'अन्य विद्यार्थी जोड़ें' : 'Add Another Student'}
               </Button>
               <Button
@@ -137,7 +130,6 @@ export default function AddStudentPage() {
                 className="w-full text-xs font-semibold rounded-xl"
                 onClick={() => router.push('/dashboard')}
               >
-                Return to Dashboard
                 {language === 'hi' ? 'डैशबोर्ड पर लौटें' : 'Return to Dashboard'}
               </Button>
             </div>
@@ -149,8 +141,6 @@ export default function AddStudentPage() {
                 <UserPlus className="w-5 h-5" />
               </div>
               <div>
-                <h1 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Add New Student Profile</h1>
-                <p className="text-xs text-[var(--color-text-secondary)]">Create a student record to generate an access login code</p>
                 <h1 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">
                   {language === 'hi' ? 'नया विद्यार्थी प्रोफ़ाइल जोड़ें' : 'Add New Student Profile'}
                 </h1>
