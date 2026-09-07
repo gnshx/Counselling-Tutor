@@ -33,6 +33,8 @@ const themeScript = `
   })();
 `;
 
+import { LanguageProvider } from "@/lib/context/LanguageContext";
+
 export default function RootLayout({
   children,
 }: {
@@ -47,7 +49,9 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   );
 }

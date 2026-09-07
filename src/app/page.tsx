@@ -5,12 +5,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, ShieldCheck, Compass, Brain, Users, CheckCircle, Shield, GraduationCap, Sparkles, Heart, Search } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { useLanguage } from '@/lib/context/LanguageContext';
 import { motion } from 'framer-motion';
 
 export default function Home() {
   const [accessCode, setAccessCode] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { language } = useLanguage();
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -18,6 +21,11 @@ export default function Home() {
     e.preventDefault();
     if (!accessCode.trim()) {
       setError('Please enter your 8-character access code.');
+      setError(
+        language === 'hi'
+          ? 'कृपया अपना 8-अक्षरों का एक्सेस कोड दर्ज करें।'
+          : 'Please enter your 8-character access code.'
+      );
       return;
     }
     setError('');
@@ -33,6 +41,10 @@ export default function Home() {
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || 'Access code not recognized.');
+        setError(
+          data.error ||
+            (language === 'hi' ? 'एक्सेस कोड मान्य नहीं है।' : 'Access code not recognized.')
+        );
         setIsLoading(false);
         return;
       }
@@ -41,6 +53,11 @@ export default function Home() {
       router.push('/student');
     } catch {
       setError('Something didn\'t go as planned. Please try again.');
+      setError(
+        language === 'hi'
+          ? 'कुछ गलत हो गया। कृपया पुन: प्रयास करें।'
+          : "Something didn't go as planned. Please try again."
+      );
       setIsLoading(false);
     }
   };
@@ -64,10 +81,13 @@ export default function Home() {
             </div>
             <span className="font-[var(--font-heading)] text-xl tracking-tight text-[var(--color-text-primary)]">
               Career<span className="text-gradient font-bold">Discovery</span>
+              {language === 'hi' ? 'करियर ' : 'Career'}
+              <span className="text-gradient font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>
             </span>
           </div>
 
           <div className="flex items-center gap-3">
+            <LanguageToggle />
             <ThemeToggle />
             <Link
               href="/login"
@@ -75,6 +95,7 @@ export default function Home() {
             >
               <ShieldCheck className="w-4 h-4 text-indigo-500" />
               <span>Educator Portal</span>
+              <span>{language === 'hi' ? 'शिक्षक पोर्टल' : 'Educator Portal'}</span>
             </Link>
           </div>
         </div>
@@ -97,16 +118,29 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary-soft)] border border-indigo-200 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Guided Career Discovery Platform</span>
+                <span>{language === 'hi' ? 'करियर खोज एवं परामर्श मार्गदर्शक' : 'Guided Career Discovery Platform'}</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-[var(--font-heading)] tracking-tight text-[var(--color-text-primary)] leading-[1.15]">
                 Discover what makes{' '}
                 <span className="text-gradient">you, you.</span>
+                {language === 'hi' ? (
+                  <>
+                    पहचानें अपनी <span className="text-gradient">असली क्षमता।</span>
+                  </>
+                ) : (
+                  <>
+                    Discover what makes <span className="text-gradient">you, you.</span>
+                  </>
+                )}
               </h1>
 
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 A calm, encouraging journey to explore your natural interests,
                 strengths, and thinking style — guided by your counselor every step of the way.
+                {language === 'hi'
+                  ? 'अपनी स्वाभाविक रुचियों, खूबियों और सोच को पहचानने की एक सहज एवं शांत यात्रा — हर कदम पर शिक्षक और परामर्शदाता के मार्गदर्शन के साथ।'
+                  : 'A calm, encouraging journey to explore your natural interests, strengths, and thinking style — guided by your counselor every step of the way.'}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-1">
@@ -115,6 +149,7 @@ export default function Home() {
                   className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                 >
                   Begin Your Journey
+                  {language === 'hi' ? 'अपनी यात्रा शुरू करें' : 'Begin Your Journey'}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -139,11 +174,19 @@ export default function Home() {
                   <div>
                     <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Student Access</h2>
                     <p className="text-xs text-[var(--color-text-muted)]">Enter your personal access code</p>
+                    <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                      {language === 'hi' ? 'विद्यार्थी प्रवेश' : 'Student Access'}
+                    </h2>
+                    <p className="text-xs text-[var(--color-text-muted)]">
+                      {language === 'hi' ? 'अपना व्यक्तिगत एक्सेस कोड दर्ज करें' : 'Enter your personal access code'}
+                    </p>
                   </div>
                 </div>
 
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                  Your educator has provided you with a unique code. Enter it below to start discovering your strengths and interests.
+                  {language === 'hi'
+                    ? 'आपके शिक्षक ने आपको एक विशिष्ट कोड प्रदान किया है। अपनी रुचियों और क्षमताओं को जानने के लिए इसे नीचे दर्ज करें।'
+                    : 'Your educator has provided you with a unique code. Enter it below to start discovering your strengths and interests.'}
                 </p>
 
                 <form onSubmit={handleStudentAccess} className="space-y-4">
@@ -154,7 +197,7 @@ export default function Home() {
                       maxLength={8}
                       value={accessCode}
                       onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
-                      placeholder="Enter your code"
+                      placeholder={language === 'hi' ? 'अपना कोड दर्ज करें' : 'Enter your code'}
                       className="w-full px-4 py-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-center font-mono text-xl font-bold tracking-[0.3em] text-[var(--color-text-primary)] uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all placeholder:tracking-normal placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:text-[var(--color-text-muted)]"
                     />
                     {error && (
@@ -168,7 +211,15 @@ export default function Home() {
                     disabled={isLoading}
                     className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]"
                   >
-                    <span>{isLoading ? 'Preparing your journey...' : 'Continue to Portal'}</span>
+                    <span>
+                      {isLoading
+                        ? language === 'hi'
+                          ? 'तैयारी की जा रही है...'
+                          : 'Preparing your journey...'
+                        : language === 'hi'
+                        ? 'पोर्टल पर आगे बढ़ें'
+                        : 'Continue to Portal'}
+                    </span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
@@ -187,9 +238,13 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="text-center mb-16 space-y-4"
             >
-              <h2 className="text-2xl sm:text-4xl font-[var(--font-heading)] text-[var(--color-text-primary)]">Your Discovery Journey</h2>
+              <h2 className="text-2xl sm:text-4xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                {language === 'hi' ? 'आपकी खोज-यात्रा' : 'Your Discovery Journey'}
+              </h2>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)] max-w-lg mx-auto">
-                Three thoughtful steps to understand yourself better — no right or wrong answers, just genuine exploration.
+                {language === 'hi'
+                  ? 'स्वयं को बेहतर समझने के लिए तीन आसान चरण — कोई सही या गलत उत्तर नहीं, केवल वास्तविक आत्म-अन्वेषण।'
+                  : 'Three thoughtful steps to understand yourself better — no right or wrong answers, just genuine exploration.'}
               </p>
             </motion.div>
 
@@ -198,22 +253,31 @@ export default function Home() {
                 {
                   icon: <Search className="w-6 h-6" />,
                   step: '01',
-                  title: 'Discover Yourself',
-                  desc: 'Share your interests, passions, and natural strengths through thoughtful, visual questions.',
+                  title: language === 'hi' ? 'स्वयं को जानें' : 'Discover Yourself',
+                  desc:
+                    language === 'hi'
+                      ? 'विचारशील एवं दृश्य प्रश्नों के माध्यम से अपनी रुचियों, पसंद और प्राकृतिक खूबियों को साझा करें।'
+                      : 'Share your interests, passions, and natural strengths through thoughtful, visual questions.',
                   color: 'indigo',
                 },
                 {
                   icon: <Brain className="w-6 h-6" />,
                   step: '02',
-                  title: 'Explore How You Think',
-                  desc: 'Engage with real-world scenarios that reveal your unique problem-solving and reasoning style.',
+                  title: language === 'hi' ? 'अपनी सोच और क्षमताओं को जानें' : 'Explore How You Think',
+                  desc:
+                    language === 'hi'
+                      ? 'वास्तविक जीवन की परिस्थितियों से जुड़ें जो आपकी समस्या-समाधान और तर्कशक्ति की अनूठी शैली को दर्शाती हैं।'
+                      : 'Engage with real-world scenarios that reveal your unique problem-solving and reasoning style.',
                   color: 'violet',
                 },
                 {
                   icon: <Heart className="w-6 h-6" />,
                   step: '03',
-                  title: 'Counselor Guidance',
-                  desc: 'Your educator reviews everything and adds their personal insights to guide your career path.',
+                  title: language === 'hi' ? 'परामर्शदाता मार्गदर्शन' : 'Counselor Guidance',
+                  desc:
+                    language === 'hi'
+                      ? 'आपके शिक्षक सभी उत्तरों की समीक्षा करते हैं और आपके करियर पथ को सही दिशा देने के लिए अपने व्यक्तिगत विचार जोड़ते हैं।'
+                      : 'Your educator reviews everything and adds their personal insights to guide your career path.',
                   color: 'emerald',
                 },
               ].map((item, i) => (

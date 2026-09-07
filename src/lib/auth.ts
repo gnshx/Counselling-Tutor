@@ -41,25 +41,5 @@ export async function getAuthTeacher(): Promise<TokenPayload | null> {
   } catch {
     // Cookie reading error ignore
   }
-
-  // 2. DEMO / OPEN BYPASS MODE: Fallback to default active teacher so guests & friends can view dashboard directly
-  try {
-    const defaultTeacher = await prisma.teacher.findFirst();
-    if (defaultTeacher) {
-      return {
-        teacherId: defaultTeacher.id,
-        email: defaultTeacher.email,
-        name: defaultTeacher.name,
-      };
-    }
-  } catch {
-    // Fallback if DB fetch fails
-  }
-
-  // Fallback static teacher ID
-  return {
-    teacherId: 'cmtd999cs000013c8pid5u6c5',
-    email: 'teacher@school.com',
-    name: 'Demo Teacher',
-  };
+  return null;
 }

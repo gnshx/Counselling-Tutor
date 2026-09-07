@@ -8,8 +8,10 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { ArrowLeft, UserPlus, KeyRound, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 export default function AddStudentPage() {
+  const { language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     dob: '',
@@ -28,6 +30,11 @@ export default function AddStudentPage() {
     e.preventDefault();
     if (!formData.name.trim() || !formData.dob || !formData.classGrade) {
       setError('Student name, date of birth, and class/grade are required.');
+      setError(
+        language === 'hi'
+          ? 'विद्यार्थी का नाम, जन्म तिथि और कक्षा अनिवार्य हैं।'
+          : 'Student name, date of birth, and class/grade are required.'
+      );
       return;
     }
 
@@ -44,6 +51,7 @@ export default function AddStudentPage() {
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || 'Failed to create student');
+        setError(data.error || (language === 'hi' ? 'विद्यार्थी बनाने में त्रुटि' : 'Failed to create student'));
         setIsLoading(false);
         return;
       }
@@ -54,6 +62,7 @@ export default function AddStudentPage() {
       });
     } catch {
       setError('Connection error. Please try again.');
+      setError(language === 'hi' ? 'कनेक्शन त्रुटि। कृपया पुनः प्रयास करें।' : 'Connection error. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -70,6 +79,7 @@ export default function AddStudentPage() {
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
+          <span>{language === 'hi' ? 'डैशबोर्ड पर वापस जाएँ' : 'Back to Dashboard'}</span>
         </Link>
 
         {createdStudent ? (
@@ -85,8 +95,16 @@ export default function AddStudentPage() {
 
             <div className="space-y-1">
               <h2 className="text-xl font-[var(--font-heading)] text-[var(--color-text-primary)]">Student Profile Created</h2>
+              <h2 className="text-xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                {language === 'hi' ? 'विद्यार्थी प्रोफ़ाइल बन गई है' : 'Student Profile Created'}
+              </h2>
               <p className="text-xs text-[var(--color-text-secondary)]">
                 Provide this Access Code to <strong>{createdStudent.name}</strong> to begin their journey.
+                {language === 'hi' ? (
+                  <>यह एक्सेस कोड <strong>{createdStudent.name}</strong> को उनकी यात्रा शुरू करने के लिए दें।</>
+                ) : (
+                  <>Provide this Access Code to <strong>{createdStudent.name}</strong> to begin their journey.</>
+                )}
               </p>
             </div>
 
@@ -112,6 +130,7 @@ export default function AddStudentPage() {
                 }}
               >
                 Add Another Student
+                {language === 'hi' ? 'अन्य विद्यार्थी जोड़ें' : 'Add Another Student'}
               </Button>
               <Button
                 variant="gradient"
@@ -119,6 +138,7 @@ export default function AddStudentPage() {
                 onClick={() => router.push('/dashboard')}
               >
                 Return to Dashboard
+                {language === 'hi' ? 'डैशबोर्ड पर लौटें' : 'Return to Dashboard'}
               </Button>
             </div>
           </motion.div>
@@ -131,21 +151,29 @@ export default function AddStudentPage() {
               <div>
                 <h1 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">Add New Student Profile</h1>
                 <p className="text-xs text-[var(--color-text-secondary)]">Create a student record to generate an access login code</p>
+                <h1 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                  {language === 'hi' ? 'नया विद्यार्थी प्रोफ़ाइल जोड़ें' : 'Add New Student Profile'}
+                </h1>
+                <p className="text-xs text-[var(--color-text-secondary)]">
+                  {language === 'hi'
+                    ? 'लॉगिन एक्सेस कोड जनरेट करने के लिए विद्यार्थी का विवरण दर्ज करें'
+                    : 'Create a student record to generate an access login code'}
+                </p>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
-                label="Student Full Name"
+                label={language === 'hi' ? 'विद्यार्थी का पूरा नाम' : 'Student Full Name'}
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="e.g. Rahul Kumar"
+                placeholder={language === 'hi' ? 'उदा. राहुल कुमार' : 'e.g. Rahul Kumar'}
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Input
-                  label="Date of Birth"
+                  label={language === 'hi' ? 'जन्म तिथि' : 'Date of Birth'}
                   type="date"
                   required
                   value={formData.dob}
@@ -154,50 +182,50 @@ export default function AddStudentPage() {
 
                 <div className="w-full space-y-1.5">
                   <label className="block text-xs font-semibold text-[var(--color-text-secondary)]">
-                    Class / Grade <span className="text-rose-500">*</span>
+                    {language === 'hi' ? 'कक्षा / श्रेणी' : 'Class / Grade'} <span className="text-rose-500">*</span>
                   </label>
                   <select
                     value={formData.classGrade}
                     onChange={(e) => setFormData({ ...formData, classGrade: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs font-semibold focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 focus:outline-none transition-all cursor-pointer"
                   >
-                    <option value="8">Class 8</option>
-                    <option value="9">Class 9</option>
-                    <option value="10">Class 10</option>
+                    <option value="8">{language === 'hi' ? 'कक्षा 8' : 'Class 8'}</option>
+                    <option value="9">{language === 'hi' ? 'कक्षा 9' : 'Class 9'}</option>
+                    <option value="10">{language === 'hi' ? 'कक्षा 10' : 'Class 10'}</option>
                   </select>
                 </div>
               </div>
 
               <Input
-                label="School Name (Optional)"
+                label={language === 'hi' ? 'विद्यालय का नाम (वैकल्पिक)' : 'School Name (Optional)'}
                 value={formData.school}
                 onChange={(e) => setFormData({ ...formData, school: e.target.value })}
-                placeholder="e.g. Government Higher Secondary School"
+                placeholder={language === 'hi' ? 'उदा. राजकीय उच्चतर माध्यमिक विद्यालय' : 'e.g. Government Higher Secondary School'}
               />
 
               <Input
-                label="Parent / Guardian Job / Occupation"
+                label={language === 'hi' ? 'अभिभावक का व्यवसाय / पेशा' : 'Parent / Guardian Job / Occupation'}
                 value={formData.parentJob}
                 onChange={(e) => setFormData({ ...formData, parentJob: e.target.value })}
-                placeholder="e.g. Teacher, Farmer, Engineer, Shopkeeper, Private Service..."
+                placeholder={language === 'hi' ? 'उदा. शिक्षक, किसान, इंजीनियर, दुकानदार, निजी सेवा...' : 'e.g. Teacher, Farmer, Engineer, Shopkeeper, Private Service...'}
               />
 
               <div className="w-full space-y-1.5">
                 <label className="block text-xs font-semibold text-[var(--color-text-secondary)]">
-                  Family Annual Income Range
+                  {language === 'hi' ? 'पारिवारिक वार्षिक आय सीमा' : 'Family Annual Income Range'}
                 </label>
                 <select
                   value={formData.familyIncome}
                   onChange={(e) => setFormData({ ...formData, familyIncome: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl border bg-[var(--color-surface)] text-[var(--color-text-primary)] border-[var(--color-border-subtle)] text-xs font-semibold focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 focus:outline-none transition-all cursor-pointer"
                 >
-                  <option value="">Select Income Range (Optional)</option>
-                  <option value="Below ₹1 Lakh">Below ₹1 Lakh per year</option>
-                  <option value="₹1 Lakh - ₹3 Lakhs">₹1 Lakh - ₹3 Lakhs per year</option>
-                  <option value="₹3 Lakhs - ₹6 Lakhs">₹3 Lakhs - ₹6 Lakhs per year</option>
-                  <option value="₹6 Lakhs - ₹10 Lakhs">₹6 Lakhs - ₹10 Lakhs per year</option>
-                  <option value="Above ₹10 Lakhs">Above ₹10 Lakhs per year</option>
-                  <option value="Prefer not to say">Prefer not to say</option>
+                  <option value="">{language === 'hi' ? 'आय सीमा चुनें (वैकल्पिक)' : 'Select Income Range (Optional)'}</option>
+                  <option value="Below ₹1 Lakh">{language === 'hi' ? '₹1 लाख से कम प्रति वर्ष' : 'Below ₹1 Lakh per year'}</option>
+                  <option value="₹1 Lakh - ₹3 Lakhs">{language === 'hi' ? '₹1 लाख - ₹3 लाख प्रति वर्ष' : '₹1 Lakh - ₹3 Lakhs per year'}</option>
+                  <option value="₹3 Lakhs - ₹6 Lakhs">{language === 'hi' ? '₹3 लाख - ₹6 लाख प्रति वर्ष' : '₹3 Lakhs - ₹6 Lakhs per year'}</option>
+                  <option value="₹6 Lakhs - ₹10 Lakhs">{language === 'hi' ? '₹6 लाख - ₹10 लाख प्रति वर्ष' : '₹6 Lakhs - ₹10 Lakhs per year'}</option>
+                  <option value="Above ₹10 Lakhs">{language === 'hi' ? '₹10 लाख से अधिक प्रति वर्ष' : 'Above ₹10 Lakhs per year'}</option>
+                  <option value="Prefer not to say">{language === 'hi' ? 'बताना नहीं चाहते' : 'Prefer not to say'}</option>
                 </select>
               </div>
 
@@ -210,7 +238,7 @@ export default function AddStudentPage() {
                   className="w-1/2 text-xs font-semibold rounded-xl"
                   onClick={() => router.push('/dashboard')}
                 >
-                  Cancel
+                  {language === 'hi' ? 'रद्द करें' : 'Cancel'}
                 </Button>
                 <Button
                   type="submit"
@@ -218,7 +246,7 @@ export default function AddStudentPage() {
                   className="w-1/2 text-xs font-semibold rounded-xl"
                   isLoading={isLoading}
                 >
-                  Create Student
+                  {language === 'hi' ? 'विद्यार्थी जोड़ें' : 'Create Student'}
                 </Button>
               </div>
             </form>

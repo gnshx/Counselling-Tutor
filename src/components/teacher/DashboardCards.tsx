@@ -1,6 +1,7 @@
 import React from 'react';
 import { Users, FileQuestion, Brain, Clock, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface StatsProps {
   totalStudents: number;
@@ -17,34 +18,36 @@ export function DashboardCards({
   pendingFeedback,
   allCompleted,
 }: StatsProps) {
+  const { language } = useLanguage();
+
   const cards = [
     {
-      label: 'Total Students',
+      label: language === 'hi' ? 'कुल विद्यार्थी' : 'Total Students',
       value: totalStudents,
       icon: <Users className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />,
       iconBg: 'bg-indigo-50 dark:bg-indigo-950/50 border-indigo-200 dark:border-indigo-800/60',
     },
     {
-      label: 'Discovery Done',
+      label: language === 'hi' ? 'खोज पूर्ण' : 'Discovery Done',
       value: `${questionnaireCompleted}/${totalStudents}`,
       icon: <FileQuestion className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
       iconBg: 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-800/60',
     },
     {
-      label: 'Challenge Done',
+      label: language === 'hi' ? 'चुनौती पूर्ण' : 'Challenge Done',
       value: `${assessmentCompleted}/${totalStudents}`,
       icon: <Brain className="w-4 h-4 text-violet-600 dark:text-violet-400" />,
       iconBg: 'bg-violet-50 dark:bg-violet-950/50 border-violet-200 dark:border-violet-800/60',
     },
     {
-      label: 'Pending Review',
+      label: language === 'hi' ? 'समीक्षा लंबित' : 'Pending Review',
       value: pendingFeedback,
       icon: <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />,
       iconBg: 'bg-amber-50 dark:bg-amber-950/50 border-amber-200 dark:border-amber-800/60',
-      badge: pendingFeedback > 0 ? 'Action needed' : undefined,
+      badge: pendingFeedback > 0 ? (language === 'hi' ? 'समीक्षा आवश्यक' : 'Action needed') : undefined,
     },
     {
-      label: 'Fully Complete',
+      label: language === 'hi' ? 'सम्पूर्ण पूर्ण' : 'Fully Complete',
       value: allCompleted,
       icon: <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />,
       iconBg: 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-800/60',

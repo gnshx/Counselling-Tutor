@@ -48,28 +48,58 @@ export interface FormattedAssessmentData {
   }>;
 }
 
-export function getTeacherWorkingStyleLabel(val?: string | null): string {
-  if (!val) return 'Not assessed';
-  if (val === 'both') return 'Comfortable with both (Group Work & Solo Work)';
-  if (val === 'independent') return 'Mostly independent (Solo Work)';
-  if (val === 'group_based') return 'Mostly group-based (Team Collaboration)';
-  if (val === 'depends') return 'Depends on the task context';
-  if (val === 'not_enough') return 'Not enough observation';
+export function getTeacherWorkingStyleLabel(val?: string | null, lang: 'en' | 'hi' = 'en'): string {
+  if (!val) return lang === 'hi' ? 'मूल्यांकन नहीं हुआ' : 'Not assessed';
+  if (val === 'both') {
+    return lang === 'hi'
+      ? 'दोनों में सहज (समूह कार्य एवं व्यक्तिगत कार्य)'
+      : 'Comfortable with both (Group Work & Solo Work)';
+  }
+  if (val === 'independent') {
+    return lang === 'hi'
+      ? 'अधिकतर व्यक्तिगत रूप से (स्वतंत्र कार्य)'
+      : 'Mostly independent (Solo Work)';
+  }
+  if (val === 'group_based') {
+    return lang === 'hi'
+      ? 'अधिकतर समूह-आधारित (टीम सहयोग)'
+      : 'Mostly group-based (Team Collaboration)';
+  }
+  if (val === 'depends') {
+    return lang === 'hi'
+      ? 'कार्य के संदर्भ पर निर्भर करता है'
+      : 'Depends on the task context';
+  }
+  if (val === 'not_enough') {
+    return lang === 'hi'
+      ? 'पर्याप्त अवलोकन उपलब्ध नहीं'
+      : 'Not enough observation';
+  }
   const tf10 = teacherFeedbackQuestions.find((q) => q.id === 'tf10');
   const opt = tf10?.options?.find((o) => o.value === val);
-  return opt ? opt.label : val;
+  if (opt) {
+    return lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label;
+  }
+  return val;
 }
 
-export function getTeacherAreaLabels(qId: 'tf8' | 'tf9', values?: string[] | null): string[] {
+export function getTeacherAreaLabels(qId: 'tf8' | 'tf9', values?: string[] | null, lang: 'en' | 'hi' = 'en'): string[] {
   if (!values || !Array.isArray(values)) return [];
   const qDef = teacherFeedbackQuestions.find((q) => q.id === qId);
   return values.map((v) => {
     const opt = qDef?.options?.find((o) => o.value === v);
-    return opt ? opt.label : v.replace(/_/g, ' ');
+    if (opt) {
+      return lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label;
+    }
+    return v.replace(/_/g, ' ');
   });
 }
 
-export function getQuestionnaireAnswerLabel(qId: string, ans: any): { label: string; detail?: string } {
+export function getQuestionnaireAnswerLabel(
+  qId: string,
+  ans: any,
+  lang: 'en' | 'hi' = 'en'
+): { label: string; detail?: string } {
   const question = questionnaireQuestions.find((q) => q.id === qId);
   if (!question) return { label: String(ans) };
 
@@ -79,7 +109,8 @@ export function getQuestionnaireAnswerLabel(qId: string, ans: any): { label: str
     const detail = ans.detail;
     if ('options' in question) {
       const opt = question.options.find((o) => o.value === choice);
-      return { label: opt ? opt.label : String(choice), detail };
+      const label = opt ? (lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label) : String(choice);
+      return { label, detail };
     }
     return { label: String(choice), detail };
   }
@@ -88,7 +119,7 @@ export function getQuestionnaireAnswerLabel(qId: string, ans: any): { label: str
     const labels = ans.map((a) => {
       if ('options' in question) {
         const opt = question.options.find((o) => o.value === a);
-        return opt ? opt.label : a;
+        return opt ? (lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label) : a;
       }
       return a;
     });
@@ -97,13 +128,18 @@ export function getQuestionnaireAnswerLabel(qId: string, ans: any): { label: str
 
   if (typeof ans === 'string' && 'options' in question) {
     const opt = question.options.find((o) => o.value === ans);
-    if (opt) return { label: opt.label };
+    if (opt) {
+      return { label: lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label };
+    }
   }
 
   return { label: String(ans) };
 }
 
-export function formatQuestionnaireResponse(responses: Array<{ questionId: string; answer: any }>): FormattedQuestionnaireData {
+export function formatQuestionnaireResponse(
+  responses: Array<{ questionId: string; answer: any }>,
+  lang: 'en' | 'hi' = 'en'
+): FormattedQuestionnaireData {
   const responseMap = new Map<string, any>();
   responses.forEach((r) => responseMap.set(r.questionId, r.answer));
 
@@ -116,13 +152,13 @@ export function formatQuestionnaireResponse(responses: Array<{ questionId: strin
     const list = Array.isArray(ans) ? ans : [ans];
     return list.map((val) => {
       const opt = question.options.find((o) => o.value === val);
-      return opt ? opt.label : String(val);
+      return opt ? (lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label) : String(val);
     });
   };
 
   const getSingleLabel = (qId: string): string => {
     const ans = responseMap.get(qId);
-    if (!ans) return 'Not answered';
+    if (!ans) return lang === 'hi' ? 'उत्तर नहीं दिया' : 'Not answered';
     const question = questionnaireQuestions.find((q) => q.id === qId);
     let choiceVal = ans;
     let detailVal: string | undefined;
@@ -135,7 +171,10 @@ export function formatQuestionnaireResponse(responses: Array<{ questionId: strin
     if (question && 'options' in question) {
       const opt = question.options.find((o) => o.value === choiceVal);
       if (opt) {
-        return detailVal ? `${opt.label} (Example: "${detailVal}")` : opt.label;
+        const text = lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label;
+        return detailVal
+          ? `${text} (${lang === 'hi' ? 'उदा.' : 'Example'}: "${detailVal}")`
+          : text;
       }
     }
     return String(choiceVal);
@@ -143,13 +182,13 @@ export function formatQuestionnaireResponse(responses: Array<{ questionId: strin
 
   // q7 dream role
   const q7Ans = responseMap.get('q7');
-  let dreamRoleObj = { choice: 'Not answered', detail: undefined as string | undefined };
+  let dreamRoleObj = { choice: lang === 'hi' ? 'उत्तर नहीं दिया' : 'Not answered', detail: undefined as string | undefined };
   if (q7Ans) {
     if (typeof q7Ans === 'object' && !Array.isArray(q7Ans)) {
-      const parsed = getQuestionnaireAnswerLabel('q7', q7Ans.choice || q7Ans.value);
+      const parsed = getQuestionnaireAnswerLabel('q7', q7Ans.choice || q7Ans.value, lang);
       dreamRoleObj = { choice: parsed.label, detail: q7Ans.detail };
     } else {
-      const parsed = getQuestionnaireAnswerLabel('q7', q7Ans);
+      const parsed = getQuestionnaireAnswerLabel('q7', q7Ans, lang);
       dreamRoleObj = { choice: parsed.label, detail: undefined };
     }
   }
@@ -178,11 +217,14 @@ export function formatQuestionnaireResponse(responses: Array<{ questionId: strin
   };
 }
 
-export function formatAssessmentResponse(assessmentResponse: {
-  score: number;
-  totalQuestions: number;
-  responses?: Array<{ questionId: string; selectedAnswer: string; isCorrect: boolean }>;
-}): FormattedAssessmentData {
+export function formatAssessmentResponse(
+  assessmentResponse: {
+    score: number;
+    totalQuestions: number;
+    responses?: Array<{ questionId: string; selectedAnswer: string; isCorrect: boolean }>;
+  },
+  lang: 'en' | 'hi' = 'en'
+): FormattedAssessmentData {
   const score = assessmentResponse.score || 0;
   const totalQuestions = assessmentResponse.totalQuestions || 15;
   const percent = Math.round((score / totalQuestions) * 100);
@@ -192,15 +234,35 @@ export function formatAssessmentResponse(assessmentResponse: {
   responses.forEach((r) => responseMap.set(r.questionId, r));
 
   const categoryTotals: Record<string, { label: string; score: number; total: number }> = {
-    general_awareness: { label: '🌍 General Awareness', score: 0, total: 0 },
-    basic_aptitude: { label: '🧮 Basic Aptitude', score: 0, total: 0 },
-    practical_decision_making: { label: '💡 Practical Decision Making', score: 0, total: 0 },
+    general_awareness: {
+      label: lang === 'hi' ? '🌍 सामान्य जागरूकता' : '🌍 General Awareness',
+      score: 0,
+      total: 0,
+    },
+    basic_aptitude: {
+      label: lang === 'hi' ? '🧮 बुनियादी अभिरुचि एवं योग्यता' : '🧮 Basic Aptitude',
+      score: 0,
+      total: 0,
+    },
+    practical_decision_making: {
+      label: lang === 'hi' ? '💡 व्यावहारिक निर्णय क्षमता' : '💡 Practical Decision Making',
+      score: 0,
+      total: 0,
+    },
   };
 
   const questionDetails = assessmentQuestions.map((q) => {
     const userResp = responseMap.get(q.id);
-    const selectedAnswer = userResp ? userResp.selectedAnswer : 'Not answered';
-    const isCorrect = userResp ? userResp.isCorrect : selectedAnswer === q.correctAnswer;
+    const selectedAnswerRaw = userResp ? userResp.selectedAnswer : (lang === 'hi' ? 'उत्तर नहीं दिया' : 'Not answered');
+    const isCorrect = userResp ? userResp.isCorrect : selectedAnswerRaw === q.correctAnswer;
+
+    let displaySelected = selectedAnswerRaw;
+    if (lang === 'hi' && userResp) {
+      const optIdx = q.options.indexOf(userResp.selectedAnswer);
+      if (optIdx !== -1 && q.optionsHi && q.optionsHi[optIdx]) {
+        displaySelected = q.optionsHi[optIdx];
+      }
+    }
 
     if (categoryTotals[q.category]) {
       categoryTotals[q.category].total += 1;
@@ -211,10 +273,10 @@ export function formatAssessmentResponse(assessmentResponse: {
 
     return {
       id: q.id,
-      question: q.question,
-      categoryLabel: q.categoryLabel,
-      selectedAnswer,
-      correctAnswer: q.correctAnswer,
+      question: lang === 'hi' && q.questionHi ? q.questionHi : q.question,
+      categoryLabel: lang === 'hi' && q.categoryLabelHi ? q.categoryLabelHi : q.categoryLabel,
+      selectedAnswer: displaySelected,
+      correctAnswer: lang === 'hi' && q.correctAnswerHi ? q.correctAnswerHi : q.correctAnswer,
       isCorrect,
     };
   });

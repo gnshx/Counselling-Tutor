@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface StatusBadgeProps {
   status: 'completed' | 'in_progress' | 'not_started' | 'review_needed' | string;
@@ -7,6 +8,8 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, label, size = 'md' }: StatusBadgeProps) {
+  const { language } = useLanguage();
+
   const getStatusConfig = () => {
     switch (status) {
       case 'completed':
@@ -14,20 +17,20 @@ export function StatusBadge({ status, label, size = 'md' }: StatusBadgeProps) {
         return {
           bg: 'bg-emerald-50 text-emerald-700 border-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/60',
           dot: 'bg-emerald-500',
-          text: label || 'Completed',
+          text: label || (language === 'hi' ? 'पूर्ण' : 'Completed'),
         };
       case 'review_needed':
         return {
           bg: 'bg-indigo-50 text-indigo-700 border-indigo-200/80 dark:bg-indigo-950/40 dark:text-indigo-300 dark:border-indigo-800/60',
           dot: 'bg-indigo-500',
-          text: label || 'Review needed',
+          text: label || (language === 'hi' ? 'समीक्षा आवश्यक' : 'Review needed'),
         };
       case 'in_progress':
       case 'In Progress':
         return {
           bg: 'bg-amber-50 text-amber-700 border-amber-200/80 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/60',
           dot: 'bg-amber-500',
-          text: label || 'In progress',
+          text: label || (language === 'hi' ? 'प्रगति पर' : 'In progress'),
         };
       case 'not_started':
       case 'Not Started':
@@ -35,7 +38,7 @@ export function StatusBadge({ status, label, size = 'md' }: StatusBadgeProps) {
         return {
           bg: 'bg-slate-100 text-slate-600 border-slate-200/80 dark:bg-slate-800/60 dark:text-slate-400 dark:border-slate-700',
           dot: 'bg-slate-400 dark:bg-slate-500',
-          text: label || 'Not started',
+          text: label || (language === 'hi' ? 'प्रारंभ नहीं' : 'Not started'),
         };
     }
   };

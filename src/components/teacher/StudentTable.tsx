@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { StatusBadge } from '../ui/StatusBadge';
 import { KeyRound, Eye, MessageSquarePlus, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 export interface StudentListItem {
   id: string;
@@ -27,6 +28,8 @@ interface StudentTableProps {
 }
 
 export function StudentTable({ students }: StudentTableProps) {
+  const { language } = useLanguage();
+
   const computeOverallStatus = (s: StudentListItem) => {
     const qDone = s.questionnaireStatus === 'completed';
     const aDone = s.assessmentStatus === 'completed';
@@ -45,8 +48,14 @@ export function StudentTable({ students }: StudentTableProps) {
           <KeyRound className="w-6 h-6" />
         </div>
         <h3 className="text-base font-[var(--font-heading)] text-[var(--color-text-primary)] mb-1">No students found</h3>
+        <h3 className="text-base font-[var(--font-heading)] text-[var(--color-text-primary)] mb-1">
+          {language === 'hi' ? 'कोई विद्यार्थी नहीं मिला' : 'No students found'}
+        </h3>
         <p className="text-xs text-[var(--color-text-secondary)] max-w-md mx-auto mb-4">
           Add your first student to generate an access code and start their career discovery journey.
+          {language === 'hi'
+            ? 'एक्सेस कोड जनरेट करने और करियर खोज यात्रा शुरू करने के लिए अपना पहला विद्यार्थी जोड़ें।'
+            : 'Add your first student to generate an access code and start their career discovery journey.'}
         </p>
       </div>
     );
@@ -65,6 +74,13 @@ export function StudentTable({ students }: StudentTableProps) {
               <th className="py-4 px-4 text-center">Feedback</th>
               <th className="py-4 px-4 text-center">Status</th>
               <th className="py-4 px-4 sm:px-5 text-right">Actions</th>
+              <th className="py-4 px-4 sm:px-5">{language === 'hi' ? 'विद्यार्थी जानकारी' : 'Student Info'}</th>
+              <th className="py-4 px-4">{language === 'hi' ? 'एक्सेस कोड' : 'Access Code'}</th>
+              <th className="py-4 px-4 text-center">{language === 'hi' ? 'खोज यात्रा' : 'Discovery'}</th>
+              <th className="py-4 px-4 text-center">{language === 'hi' ? 'चुनौती' : 'Challenge'}</th>
+              <th className="py-4 px-4 text-center">{language === 'hi' ? 'प्रतिक्रिया' : 'Feedback'}</th>
+              <th className="py-4 px-4 text-center">{language === 'hi' ? 'स्थिति' : 'Status'}</th>
+              <th className="py-4 px-4 sm:px-5 text-right">{language === 'hi' ? 'कार्य' : 'Actions'}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--color-border-subtle)] text-sm">
@@ -90,8 +106,12 @@ export function StudentTable({ students }: StudentTableProps) {
                     <div className="font-semibold text-[var(--color-text-primary)]">{student.name}</div>
                     <div className="text-xs text-[var(--color-text-secondary)] flex items-center gap-1.5 mt-0.5 font-normal">
                       <span className="font-semibold text-[var(--color-primary)]">Class {student.classGrade}</span>
+                      <span className="font-semibold text-[var(--color-primary)]">
+                        {language === 'hi' ? 'कक्षा' : 'Class'} {student.classGrade}
+                      </span>
                       <span>•</span>
                       <span>DOB: {formattedDob}</span>
+                      <span>{language === 'hi' ? 'जन्म: ' : 'DOB: '}{formattedDob}</span>
                     </div>
                   </td>
 
@@ -132,12 +152,14 @@ export function StudentTable({ students }: StudentTableProps) {
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>Profile</span>
+                        <span>{language === 'hi' ? 'प्रोफ़ाइल' : 'Profile'}</span>
                       </Link>
 
                       {isFeedbackDone ? (
                         <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60">
                           <CheckCircle className="w-3.5 h-3.5" />
                           <span>Submitted</span>
+                          <span>{language === 'hi' ? 'दर्ज' : 'Submitted'}</span>
                         </span>
                       ) : (
                         <Link
@@ -150,6 +172,15 @@ export function StudentTable({ students }: StudentTableProps) {
                         >
                           <MessageSquarePlus className="w-3.5 h-3.5" />
                           <span>{isFeedbackReady ? 'Add Feedback' : 'Wait...'}</span>
+                          <span>
+                            {isFeedbackReady
+                              ? language === 'hi'
+                                ? 'प्रतिक्रिया दें'
+                                : 'Add Feedback'
+                              : language === 'hi'
+                              ? 'प्रतीक्षा करें...'
+                              : 'Wait...'}
+                          </span>
                         </Link>
                       )}
                     </div>

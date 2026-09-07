@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LogOut, UserCheck, GraduationCap, AlertCircle, X, Compass } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { useLanguage } from '@/lib/context/LanguageContext';
 import { Button } from '@/components/ui/Button';
 
 interface HeaderProps {
@@ -14,6 +16,7 @@ interface HeaderProps {
 
 export function Header({ teacherName = 'Teacher', schoolName, onLogout }: HeaderProps) {
   const router = useRouter();
+  const { language } = useLanguage();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -45,6 +48,11 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
             <div>
               <h1 className="font-[var(--font-heading)] text-base leading-tight text-[var(--color-text-primary)]">
                 Career<span className="text-gradient font-bold">Discovery</span> <span className="text-[var(--color-text-muted)] font-normal text-xs sm:text-sm">| Educator Portal</span>
+                {language === 'hi' ? 'करियर ' : 'Career'}
+                <span className="text-gradient font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>{' '}
+                <span className="text-[var(--color-text-muted)] font-normal text-xs sm:text-sm">
+                  | {language === 'hi' ? 'शिक्षक पोर्टल' : 'Educator Portal'}
+                </span>
               </h1>
               {schoolName && <p className="text-xs text-[var(--color-text-secondary)] font-normal">{schoolName}</p>}
             </div>
@@ -53,19 +61,23 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs text-[var(--color-text-secondary)]">
               <UserCheck className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Logged in as <strong className="text-[var(--color-text-primary)] font-semibold">{teacherName}</strong></span>
+              <span>
+                {language === 'hi' ? 'लॉग इन:' : 'Logged in as'}{' '}
+                <strong className="text-[var(--color-text-primary)] font-semibold">{teacherName}</strong>
+              </span>
             </div>
 
+            <LanguageToggle />
             <ThemeToggle />
 
             <button
               type="button"
               onClick={() => setShowLogoutModal(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
-              title="Log out"
+              title={language === 'hi' ? 'लॉगआउट' : 'Log out'}
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Logout</span>
+              <span className="hidden sm:inline">{language === 'hi' ? 'लॉगआउट' : 'Logout'}</span>
             </button>
           </div>
         </div>

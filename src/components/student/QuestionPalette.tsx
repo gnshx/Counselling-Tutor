@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Check } from 'lucide-react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 export interface QuestionStatus {
   id: string;
@@ -22,10 +23,22 @@ export function QuestionPalette({
   onSelectQuestion,
   title = 'Question Navigation',
 }: QuestionPaletteProps) {
+  const { language } = useLanguage();
   const total = questionsStatus.length;
   const answeredCount = questionsStatus.filter((q) => q.isAnswered).length;
   const incompleteCount = questionsStatus.filter((q) => q.isIncomplete && !q.isAnswered).length;
   const unansweredCount = total - answeredCount - incompleteCount;
+
+  let displayTitle = title;
+  if (language === 'hi') {
+    if (title === 'Discovery Questionnaire Navigation') {
+      displayTitle = 'करियर खोज प्रश्नावली नेविगेशन';
+    } else if (title === 'Aptitude Challenge Navigation') {
+      displayTitle = 'अभिरुचि चुनौती नेविगेशन';
+    } else if (title === 'Question Navigation') {
+      displayTitle = 'प्रश्न नेविगेशन';
+    }
+  }
 
   return (
     <div className="bg-[var(--color-surface)] rounded-2xl p-4 sm:p-5 border border-[var(--color-border-subtle)] space-y-3 mb-4">
@@ -33,10 +46,12 @@ export function QuestionPalette({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[var(--color-border-subtle)] pb-3">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)]">
-            {title}
+            {displayTitle}
           </span>
           <span className="px-2.5 py-0.5 rounded-full bg-[var(--color-primary-soft)] text-[var(--color-primary)] font-bold text-[11px] border border-indigo-200 dark:border-indigo-800/40">
-            {answeredCount} / {total} Answered
+            {language === 'hi'
+              ? `${answeredCount} / ${total} उत्तर दिए गए`
+              : `${answeredCount} / ${total} Answered`}
           </span>
         </div>
 
@@ -44,17 +59,17 @@ export function QuestionPalette({
         <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold text-[var(--color-text-secondary)]">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
-            <span>Answered ({answeredCount})</span>
+            <span>{language === 'hi' ? `उत्तर दिए गए (${answeredCount})` : `Answered (${answeredCount})`}</span>
           </div>
           {incompleteCount > 0 && (
             <div className="flex items-center gap-1.5">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
-              <span>Needs Proof ({incompleteCount})</span>
+              <span>{language === 'hi' ? `प्रमाण शेष (${incompleteCount})` : `Needs Proof (${incompleteCount})`}</span>
             </div>
           )}
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-[var(--color-surface-soft)] inline-block border border-[var(--color-border-subtle)]"></span>
-            <span>Unanswered ({unansweredCount})</span>
+            <span>{language === 'hi' ? `उत्तर शेष (${unansweredCount})` : `Unanswered (${unansweredCount})`}</span>
           </div>
         </div>
       </div>

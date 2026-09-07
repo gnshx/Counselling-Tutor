@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { useLanguage } from '@/lib/context/LanguageContext';
 import { Compass, Brain, ArrowRight, CheckCircle2, LogOut, Heart, Clock, Search, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -18,7 +20,8 @@ interface StudentSession {
 
 export default function StudentPortalPage() {
   const [student, setStudent] = useState<StudentSession | null>(null);
-  const [greeting, setGreeting] = useState('Good day');
+  const [timePeriod, setTimePeriod] = useState<'morning' | 'afternoon' | 'evening'>('morning');
+  const { language } = useLanguage();
   const router = useRouter();
 
   useEffect(() => {
@@ -32,9 +35,9 @@ export default function StudentPortalPage() {
       setStudent(parsed);
 
       const hour = new Date().getHours();
-      if (hour < 12) setGreeting('Good morning');
-      else if (hour < 18) setGreeting('Good afternoon');
-      else setGreeting('Good evening');
+      if (hour < 12) setTimePeriod('morning');
+      else if (hour < 18) setTimePeriod('afternoon');
+      else setTimePeriod('evening');
 
       // Fetch latest student status from DB to ensure teacher feedback status is up-to-date
       fetch(`/api/student/${parsed.id}/status`)
@@ -64,6 +67,19 @@ export default function StudentPortalPage() {
 
   if (!student) return null;
 
+  const greeting =
+    language === 'hi'
+      ? timePeriod === 'morning'
+        ? 'शुभ प्रभात'
+        : timePeriod === 'afternoon'
+        ? 'शुभ दोपहर'
+        : 'शुभ संध्या'
+      : timePeriod === 'morning'
+      ? 'Good morning'
+      : timePeriod === 'afternoon'
+      ? 'Good afternoon'
+      : 'Good evening';
+
   const isQuestionnaireDone = student.questionnaireStatus === 'completed';
   const isAssessmentDone = student.assessmentStatus === 'completed';
   const isFeedbackDone = student.feedbackStatus === 'completed';
@@ -77,37 +93,47 @@ export default function StudentPortalPage() {
   const journeySteps = [
     {
       num: 1,
-      title: 'Discover Yourself',
-      desc: 'Share your interests, passions, and natural strengths through visual, thoughtful questions.',
+      title: language === 'hi' ? 'स्वयं को जानें' : 'Discover Yourself',
+      desc:
+        language === 'hi'
+          ? 'अपनी रुचियों, पसंद और स्वाभाविक खूबियों को सहज और रोचक प्रश्नों के माध्यम से साझा करें।'
+          : 'Share your interests, passions, and natural strengths through visual, thoughtful questions.',
       icon: <Search className="w-5 h-5" />,
       done: isQuestionnaireDone,
       href: '/student/questionnaire',
       unlocked: true,
-      buttonText: 'Begin Discovery',
+      buttonText: language === 'hi' ? 'खोज शुरू करें' : 'Begin Discovery',
       colorClass: 'indigo',
     },
     {
       num: 2,
-      title: 'Explore How You Think',
-      desc: 'Engage with real-world scenarios that reveal your unique reasoning and decision-making style.',
+      title: language === 'hi' ? 'अपनी सोच और क्षमताओं को जानें' : 'Explore How You Think',
+      desc:
+        language === 'hi'
+          ? 'वास्तविक जीवन की स्थितियों से जुड़ें जो आपकी तर्कशक्ति और निर्णय लेने की शैली को दर्शाती हैं।'
+          : 'Engage with real-world scenarios that reveal your unique reasoning and decision-making style.',
       icon: <Brain className="w-5 h-5" />,
       done: isAssessmentDone,
       href: '/student/assessment',
       unlocked: isQuestionnaireDone,
-      buttonText: 'Start Thinking Challenge',
+      buttonText: language === 'hi' ? 'अभिरुचि चुनौती शुरू करें' : 'Start Thinking Challenge',
       colorClass: 'violet',
     },
     {
       num: 3,
-      title: 'Counselor Guidance',
+      title: language === 'hi' ? 'परामर्शदाता मार्गदर्शन' : 'Counselor Guidance',
       desc: isFeedbackDone
-        ? 'Your counselor has reviewed everything and shared their personalized observations.'
+        ? language === 'hi'
+          ? 'आपके परामर्शदाता ने सभी उत्तरों की समीक्षा कर अपना व्यक्तिगत अवलोकन साझा कर दिया है।'
+          : 'Your counselor has reviewed everything and shared their personalized observations.'
+        : language === 'hi'
+        ? 'आपके शिक्षक आपके उत्तरों की समीक्षा करेंगे और अपना मार्गदर्शन जोड़ेंगे — प्रतीक्षा करें!'
         : 'Your educator will review your responses and add their perspective — sit tight!',
       icon: <Heart className="w-5 h-5" />,
       done: isFeedbackDone,
       href: '#',
       unlocked: false,
-      buttonText: 'Awaiting Counselor',
+      buttonText: language === 'hi' ? 'परामर्शदाता की प्रतीक्षा' : 'Awaiting Counselor',
       colorClass: 'emerald',
     },
   ];
@@ -144,10 +170,13 @@ export default function StudentPortalPage() {
             </div>
             <span className="font-[var(--font-heading)] text-lg tracking-tight text-[var(--color-text-primary)]">
               Career<span className="text-gradient">Discovery</span>
+              {language === 'hi' ? 'करियर ' : 'Career'}
+              <span className="text-gradient">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>
             </span>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <LanguageToggle />
             <ThemeToggle />
             <button
               onClick={handleLogout}
@@ -155,6 +184,7 @@ export default function StudentPortalPage() {
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Exit</span>
+              <span>{language === 'hi' ? 'लॉगआउट' : 'Exit'}</span>
             </button>
           </div>
         </div>
@@ -174,7 +204,11 @@ export default function StudentPortalPage() {
           </h1>
           <p className="text-sm text-[var(--color-text-secondary)]">
             {progressPercent === 100
-              ? 'All steps complete — your career discovery profile is ready!'
+              ? language === 'hi'
+                ? 'सभी चरण पूर्ण — आपकी करियर खोज प्रोफ़ाइल तैयार है!'
+                : 'All steps complete — your career discovery profile is ready!'
+              : language === 'hi'
+              ? 'यह आपकी अपनी रुचियों को जानने की जगह है। यहाँ कोई सही या गलत उत्तर नहीं है।'
               : 'This is your space to explore who you are. There are no right or wrong answers.'}
           </p>
         </motion.div>
@@ -190,8 +224,14 @@ export default function StudentPortalPage() {
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-[var(--color-primary)]" />
               <h2 className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">Your Journey</h2>
+              <h2 className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">
+                {language === 'hi' ? 'आपकी यात्रा' : 'Your Journey'}
+              </h2>
             </div>
             <span className="text-xs font-bold text-[var(--color-primary)]">{completedSteps} of 3 steps</span>
+            <span className="text-xs font-bold text-[var(--color-primary)]">
+              {language === 'hi' ? `3 में से ${completedSteps} चरण पूर्ण` : `${completedSteps} of 3 steps`}
+            </span>
           </div>
 
           <div className="w-full h-2.5 bg-[var(--color-surface-soft)] rounded-full overflow-hidden border border-[var(--color-border-subtle)]">
@@ -260,11 +300,13 @@ export default function StudentPortalPage() {
                       <div className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-semibold text-xs px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
                         <CheckCircle2 className="w-4 h-4" />
                         <span>Completed</span>
+                        <span>{language === 'hi' ? 'पूर्ण' : 'Completed'}</span>
                       </div>
                     ) : step.num === 3 ? (
                       <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-4 py-2 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)]">
                         <Clock className="w-3.5 h-3.5" />
                         <span>Awaiting Counselor</span>
+                        <span>{language === 'hi' ? 'परामर्शदाता की प्रतीक्षा' : 'Awaiting Counselor'}</span>
                       </div>
                     ) : step.unlocked ? (
                       <Link
@@ -277,6 +319,7 @@ export default function StudentPortalPage() {
                     ) : (
                       <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-4 py-2 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)] cursor-not-allowed">
                         <span>Complete previous step first</span>
+                        <span>{language === 'hi' ? 'पहले पिछला चरण पूरा करें' : 'Complete previous step first'}</span>
                       </div>
                     )}
                   </div>
@@ -296,6 +339,9 @@ export default function StudentPortalPage() {
           >
             <p className="text-xs text-[var(--color-text-muted)] italic">
               Remember — these are clues about who you are, not limits on who you can become.
+              {language === 'hi'
+                ? 'याद रखें — ये आपके बारे में संकेत हैं, आप क्या बन सकते हैं इस पर कोई सीमा नहीं।'
+                : 'Remember — these are clues about who you are, not limits on who you can become.'}
             </p>
           </motion.div>
         )}

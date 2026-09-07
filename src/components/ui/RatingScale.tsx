@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface RatingScaleProps {
   value: number | string | null;
@@ -7,13 +8,15 @@ interface RatingScaleProps {
 }
 
 export function RatingScale({ value, onChange, disabled = false }: RatingScaleProps) {
+  const { language } = useLanguage();
+
   const options: { value: number | 'N/O'; label: string; desc: string }[] = [
-    { value: 1, label: '1', desc: 'Very Low' },
-    { value: 2, label: '2', desc: 'Low' },
-    { value: 3, label: '3', desc: 'Average' },
-    { value: 4, label: '4', desc: 'Good' },
-    { value: 5, label: '5', desc: 'Very Good' },
-    { value: 'N/O', label: 'N/O', desc: 'Not Observed' },
+    { value: 1, label: '1', desc: language === 'hi' ? 'बहुत कम' : 'Very Low' },
+    { value: 2, label: '2', desc: language === 'hi' ? 'कम' : 'Low' },
+    { value: 3, label: '3', desc: language === 'hi' ? 'औसत' : 'Average' },
+    { value: 4, label: '4', desc: language === 'hi' ? 'अच्छा' : 'Good' },
+    { value: 5, label: '5', desc: language === 'hi' ? 'बहुत अच्छा' : 'Very Good' },
+    { value: 'N/O', label: 'N/O', desc: language === 'hi' ? 'अवलोकन नहीं' : 'Not Observed' },
   ];
 
   return (

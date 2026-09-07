@@ -3,6 +3,7 @@
 import { Sparkles, CheckCircle2, ArrowRight, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface CompletionScreenProps {
   studentName?: string;
@@ -21,6 +22,16 @@ export function CompletionScreen({
   title,
   subtitle,
 }: CompletionScreenProps) {
+  const { language } = useLanguage();
+
+  const defaultTitle =
+    language === 'hi' ? `शाबाश, ${studentName}!` : `Great Job, ${studentName}!`;
+
+  const defaultSubtitle =
+    language === 'hi'
+      ? 'अपने विचार साझा करने और अपनी रुचियों को खोजने के लिए धन्यवाद।'
+      : 'Thank you for sharing your thoughts and exploring your interests.';
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -34,10 +45,10 @@ export function CompletionScreen({
 
       <div className="space-y-2">
         <h2 className="text-xl sm:text-2xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
-          {title || `Great Job, ${studentName}!`}
+          {title || defaultTitle}
         </h2>
         <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-sm mx-auto">
-          {subtitle || "Thank you for sharing your thoughts and exploring your interests."}
+          {subtitle || defaultSubtitle}
         </p>
       </div>
 
@@ -46,14 +57,20 @@ export function CompletionScreen({
           onClick={onNextJourney}
           className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm shadow-md shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
         >
-          <span>Continue to {nextJourneyTitle}</span>
+          <span>
+            {language === 'hi' ? `${nextJourneyTitle} पर आगे बढ़ें` : `Continue to ${nextJourneyTitle}`}
+          </span>
           <ArrowRight className="w-4 h-4" />
         </button>
       ) : isAllCompleted ? (
         <div className="space-y-6 pt-4 border-t border-[var(--color-border-subtle)]">
           <div className="p-4 rounded-xl bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] text-xs font-medium flex items-center justify-center gap-2 border border-[var(--color-border-subtle)]">
             <Heart className="w-4 h-4 text-violet-500 shrink-0" />
-            <span>Your educator can now add observation feedback to personalize your profile.</span>
+            <span>
+              {language === 'hi'
+                ? 'अब आपके शिक्षक आपके प्रोफ़ाइल को और बेहतर बनाने के लिए अपना अवलोकन जोड़ सकते हैं।'
+                : 'Your educator can now add observation feedback to personalize your profile.'}
+            </span>
           </div>
 
           <Link
@@ -61,7 +78,7 @@ export function CompletionScreen({
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-xs shadow-md shadow-indigo-500/15 hover:from-indigo-500 hover:to-violet-500 transition-all"
           >
             <ArrowRight className="w-4 h-4" />
-            <span>Return to My Discovery Journey</span>
+            <span>{language === 'hi' ? 'मेरी खोज-यात्रा पर वापस जाएँ' : 'Return to My Discovery Journey'}</span>
           </Link>
         </div>
       ) : (
@@ -70,7 +87,7 @@ export function CompletionScreen({
             href="/student"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-xs shadow-md shadow-indigo-500/15 hover:from-indigo-500 hover:to-violet-500 transition-all"
           >
-            <span>Back to My Journey</span>
+            <span>{language === 'hi' ? 'मेरी यात्रा पर वापस जाएँ' : 'Back to My Journey'}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

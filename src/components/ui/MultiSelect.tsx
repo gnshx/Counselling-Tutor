@@ -1,9 +1,11 @@
 import React from 'react';
 import { Check } from 'lucide-react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 export interface MultiSelectOption {
   value: string;
   label: string;
+  labelHi?: string;
   icon?: string;
 }
 
@@ -23,6 +25,8 @@ export function MultiSelect({
   maxSelections,
   disabled = false,
 }: MultiSelectProps) {
+  const { language } = useLanguage();
+
   const handleToggle = (value: string) => {
     if (disabled) return;
     if (selectedValues.includes(value)) {
@@ -39,9 +43,11 @@ export function MultiSelect({
     <div className="space-y-3">
       {maxSelections && (
         <div className="flex justify-between items-center text-xs font-semibold text-[var(--color-text-secondary)]">
-          <span>Choose up to {maxSelections}</span>
+          <span>{language === 'hi' ? `अधिकतम ${maxSelections} विकल्प चुनें` : `Choose up to ${maxSelections}`}</span>
           <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[var(--color-primary-soft)] text-[var(--color-primary)] border border-indigo-200 dark:border-indigo-800/40">
-            {selectedValues.length} / {maxSelections} selected
+            {language === 'hi'
+              ? `${selectedValues.length} / ${maxSelections} चयनित`
+              : `${selectedValues.length} / ${maxSelections} selected`}
           </span>
         </div>
       )}
@@ -49,6 +55,7 @@ export function MultiSelect({
         {options.map((option) => {
           const isSelected = selectedValues.includes(option.value);
           const isAtLimit = !isSelected && maxSelections !== undefined && selectedValues.length >= maxSelections;
+          const displayLabel = language === 'hi' && option.labelHi ? option.labelHi : option.label;
 
           return (
             <button
@@ -70,7 +77,7 @@ export function MultiSelect({
                     {option.icon}
                   </span>
                 )}
-                <span className="leading-snug truncate">{option.label}</span>
+                <span className="leading-snug truncate">{displayLabel}</span>
               </div>
               <div
                 className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${

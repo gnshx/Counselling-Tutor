@@ -7,8 +7,10 @@ import { DashboardCards } from '@/components/teacher/DashboardCards';
 import { StudentTable, StudentListItem } from '@/components/teacher/StudentTable';
 import { Plus, Search, Filter, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 export default function TeacherDashboard() {
+  const { language } = useLanguage();
   const [teacher, setTeacher] = useState<{ name: string; school?: string } | null>(null);
   const [students, setStudents] = useState<StudentListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,8 +70,8 @@ export default function TeacherDashboard() {
   return (
     <div className="min-h-screen bg-[var(--color-background-main)] text-[var(--color-text-primary)] font-sans antialiased">
       <Header
-        teacherName={teacher?.name || 'Educator'}
-        schoolName={teacher?.school || 'School Dashboard'}
+        teacherName={teacher?.name || (language === 'hi' ? 'शिक्षक' : 'Educator')}
+        schoolName={teacher?.school || (language === 'hi' ? 'विद्यालय डैशबोर्ड' : 'School Dashboard')}
         onLogout={handleLogout}
       />
 
@@ -78,10 +80,14 @@ export default function TeacherDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[var(--color-surface)] p-6 sm:p-7 rounded-2xl border border-[var(--color-border-subtle)] shadow-xs transition-colors">
           <div>
             <h1 className="text-xl sm:text-2xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
-              Welcome, {teacher?.name || 'Educator'}
+              {language === 'hi'
+                ? `स्वागत है, ${teacher?.name || 'शिक्षक'}`
+                : `Welcome, ${teacher?.name || 'Educator'}`}
             </h1>
             <p className="text-xs text-[var(--color-text-secondary)] mt-1">
-              Track student discovery progress, review responses, and submit educator observations.
+              {language === 'hi'
+                ? 'विद्यार्थी की खोज प्रगति ट्रैक करें, उत्तरों की समीक्षा करें और शिक्षक अवलोकन दर्ज करें।'
+                : 'Track student discovery progress, review responses, and submit educator observations.'}
             </p>
           </div>
 
@@ -90,7 +96,7 @@ export default function TeacherDashboard() {
             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all cursor-pointer shrink-0 active:scale-[0.98]"
           >
             <Plus className="w-4 h-4" />
-            <span>Add Student</span>
+            <span>{language === 'hi' ? 'विद्यार्थी जोड़ें' : 'Add Student'}</span>
           </Link>
         </div>
 
@@ -113,7 +119,7 @@ export default function TeacherDashboard() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search students..."
+                placeholder={language === 'hi' ? 'विद्यार्थी खोजें...' : 'Search students...'}
                 className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
               />
             </div>
@@ -126,10 +132,10 @@ export default function TeacherDashboard() {
                 onChange={(e) => setSelectedClass(e.target.value)}
                 className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all appearance-none cursor-pointer"
               >
-                <option value="">All Classes</option>
-                <option value="8">Class 8</option>
-                <option value="9">Class 9</option>
-                <option value="10">Class 10</option>
+                <option value="">{language === 'hi' ? 'सभी कक्षाएं' : 'All Classes'}</option>
+                <option value="8">{language === 'hi' ? 'कक्षा 8' : 'Class 8'}</option>
+                <option value="9">{language === 'hi' ? 'कक्षा 9' : 'Class 9'}</option>
+                <option value="10">{language === 'hi' ? 'कक्षा 10' : 'Class 10'}</option>
               </select>
             </div>
           </div>
@@ -138,12 +144,14 @@ export default function TeacherDashboard() {
             <button
               onClick={() => fetchTeacherAndStudents()}
               className="p-2.5 rounded-xl border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-soft)] transition-colors cursor-pointer"
-              title="Refresh list"
+              title={language === 'hi' ? 'सूची रीफ़्रेश करें' : 'Refresh list'}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
             </button>
             <span className="text-xs font-semibold text-[var(--color-text-muted)]">
-              Showing {students.length} student{students.length === 1 ? '' : 's'}
+              {language === 'hi'
+                ? `${students.length} विद्यार्थी प्रदर्शित`
+                : `Showing ${students.length} student${students.length === 1 ? '' : 's'}`}
             </span>
           </div>
         </div>
@@ -152,7 +160,9 @@ export default function TeacherDashboard() {
         {isLoading ? (
           <div className="bg-[var(--color-surface)] rounded-2xl border border-[var(--color-border-subtle)] p-12 text-center text-[var(--color-text-secondary)]">
             <div className="w-6 h-6 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-            <p className="text-xs font-medium">Loading student data...</p>
+            <p className="text-xs font-medium">
+              {language === 'hi' ? 'विद्यार्थी डेटा लोड हो रहा है...' : 'Loading student data...'}
+            </p>
           </div>
         ) : (
           <StudentTable students={students} />

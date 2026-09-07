@@ -1,11 +1,14 @@
 import React from 'react';
 import { Check } from 'lucide-react';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 export interface RadioOption {
   value: string;
   label: string;
+  labelHi?: string;
   icon?: string;
   proofPrompt?: string;
+  proofPromptHi?: string;
 }
 
 interface RadioGroupProps {
@@ -22,10 +25,13 @@ export function RadioGroup({
   onChange,
   disabled = false,
 }: RadioGroupProps) {
+  const { language } = useLanguage();
+
   return (
     <div className="space-y-2">
       {options.map((option) => {
         const isSelected = selectedValue === option.value;
+        const displayLabel = language === 'hi' && option.labelHi ? option.labelHi : option.label;
 
         return (
           <button
@@ -45,7 +51,7 @@ export function RadioGroup({
                   {option.icon}
                 </span>
               )}
-              <span className="leading-snug">{option.label}</span>
+              <span className="leading-snug">{displayLabel}</span>
             </div>
             <div
               className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${

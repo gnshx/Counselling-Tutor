@@ -255,6 +255,41 @@ p {
 }
 
 /* ──────────────────────────────────────────────
+   Browser Autofill Dark Mode & Focus Highlight Fix
+   ────────────────────────────────────────────── */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #161D2F inset !important;
+  -webkit-text-fill-color: #F1F5F9 !important;
+  caret-color: #3B82F6 !important;
+  border-color: #1E293B !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #0B1220 inset !important;
+  border-color: #3B82F6 !important;
+}
+
+:root:not(.dark) input:-webkit-autofill,
+:root:not(.dark) input:-webkit-autofill:hover,
+:root:not(.dark) input:-webkit-autofill:focus,
+:root:not(.dark) input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #F1F0FB inset !important;
+  -webkit-text-fill-color: #1E1B4B !important;
+  caret-color: #2563EB !important;
+  border-color: #E0E0F0 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+:root:not(.dark) input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+  border-color: #2563EB !important;
+}
+
+/* ──────────────────────────────────────────────
    Reduced Motion for Accessibility
    ────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
