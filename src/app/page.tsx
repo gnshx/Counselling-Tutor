@@ -290,7 +290,7 @@ export default function Home() {
                     : item.color === 'violet' ? 'text-violet-600 dark:text-violet-400'
                     : 'text-emerald-600 dark:text-emerald-400'
                   }`}>
-                    Step {item.step}
+                    {language === 'hi' ? `चरण ${item.step}` : `Step ${item.step}`}
                   </div>
                   <h3 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">{item.title}</h3>
                   <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{item.desc}</p>
@@ -313,9 +313,13 @@ export default function Home() {
               <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/50 flex items-center justify-center mx-auto text-emerald-600 dark:text-emerald-400">
                 <Shield className="w-6 h-6" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-[var(--font-heading)] text-[var(--color-text-primary)]">Safe, Private & Growth-Oriented</h2>
+              <h2 className="text-2xl sm:text-3xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                {language === 'hi' ? 'सुरक्षित, निजी और विकास-उन्मुख' : 'Safe, Private & Growth-Oriented'}
+              </h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-lg mx-auto">
-                Built for schools — your data stays safe, and every result is framed as a clue for growth, not a score or judgment.
+                {language === 'hi'
+                  ? 'स्कूलों के लिए निर्मित — आपका डेटा सुरक्षित रहता है, और प्रत्येक परिणाम को अंक या निर्णय के बजाय विकास के संकेत के रूप में प्रस्तुत किया जाता है।'
+                  : 'Built for schools — your data stays safe, and every result is framed as a clue for growth, not a score or judgment.'}
               </p>
             </motion.div>
 
@@ -323,15 +327,27 @@ export default function Home() {
               <div className="flex gap-4 p-6 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
                 <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">Secure Access Control</h4>
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">Unique access keys isolate student records and restrict profile access exclusively to assigned educators.</p>
+                  <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                    {language === 'hi' ? 'सुरक्षित पहुंच नियंत्रण' : 'Secure Access Control'}
+                  </h4>
+                  <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">
+                    {language === 'hi'
+                      ? 'विशिष्ट एक्सेस कोड छात्र रिकॉर्ड को अलग रखते हैं और प्रोफ़ाइल एक्सेस को केवल अधिकृत शिक्षकों तक सीमित करते हैं।'
+                      : 'Unique access keys isolate student records and restrict profile access exclusively to assigned educators.'}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-4 p-6 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)]">
                 <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">Growth-Oriented Assessment</h4>
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">Evaluations emphasize development areas and natural affinity — these are clues, not limits.</p>
+                  <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                    {language === 'hi' ? 'विकास-उन्मुख मूल्यांकन' : 'Growth-Oriented Assessment'}
+                  </h4>
+                  <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">
+                    {language === 'hi'
+                      ? 'मूल्यांकन विकास क्षेत्रों और प्राकृतिक रुचियों पर जोर देते हैं — ये संकेत हैं, सीमाएं नहीं।'
+                      : 'Evaluations emphasize development areas and natural affinity — these are clues, not limits.'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -341,7 +357,7 @@ export default function Home() {
 
       <footer className="bg-[var(--color-surface)] border-t border-[var(--color-border-subtle)] py-8 text-center">
         <p className="text-xs text-[var(--color-text-muted)]">
-          &copy; {new Date().getFullYear()} Career Discovery & Counselling Platform. All rights reserved.
+          &copy; {new Date().getFullYear()} {language === 'hi' ? 'करियर डिस्कवरी और काउंसलिंग प्लेटफॉर्म। सर्वाधिकार सुरक्षित।' : 'Career Discovery & Counselling Platform. All rights reserved.'}
         </p>
       </footer>
     </div>

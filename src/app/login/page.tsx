@@ -428,7 +428,9 @@ export default function AuthPage() {
       </main>
 
       <footer className="py-6 text-center text-xs text-[var(--color-text-muted)]">
-        Career Discovery & Counselling Platform • Secure Access
+        {language === 'hi'
+          ? 'करियर डिस्कवरी और काउंसलिंग प्लेटफॉर्म • सुरक्षित पहुंच'
+          : 'Career Discovery & Counselling Platform • Secure Access'}
       </footer>
     </div>
   );

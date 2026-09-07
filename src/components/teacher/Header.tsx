@@ -92,8 +92,12 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
                   <LogOut className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-[var(--font-heading)] text-[var(--color-text-primary)]">Confirm Logout</h3>
-                  <p className="text-xs text-[var(--color-text-secondary)]">Educator Session</p>
+                  <h3 className="text-base font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                    {language === 'hi' ? 'लॉगआउट की पुष्टि करें' : 'Confirm Logout'}
+                  </h3>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
+                    {language === 'hi' ? 'शिक्षक सत्र' : 'Educator Session'}
+                  </p>
                 </div>
               </div>
               <button
@@ -106,7 +110,9 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
             </div>
 
             <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
-              Are you sure you want to log out of the Educator Portal? Any unsaved feedback draft will be discarded.
+              {language === 'hi'
+                ? 'क्या आप निश्चित रूप से शिक्षक पोर्टल से लॉग आउट करना चाहते हैं? कोई भी सहेजा न गया फ़ीडबैक ड्राफ़्ट रद्द हो जाएगा।'
+                : 'Are you sure you want to log out of the Educator Portal? Any unsaved feedback draft will be discarded.'}
             </p>
 
             <div className="flex gap-3 justify-end pt-2">
@@ -117,7 +123,7 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
                 className="px-4 py-2 text-xs font-semibold rounded-xl"
                 disabled={isLoggingOut}
               >
-                Cancel
+                {language === 'hi' ? 'रद्द करें' : 'Cancel'}
               </Button>
               <button
                 type="button"
@@ -125,7 +131,13 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
                 disabled={isLoggingOut}
                 className="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition-colors cursor-pointer disabled:opacity-50"
               >
-                {isLoggingOut ? 'Logging out...' : 'Confirm Logout'}
+                {isLoggingOut
+                  ? language === 'hi'
+                    ? 'लॉग आउट हो रहा है...'
+                    : 'Logging out...'
+                  : language === 'hi'
+                  ? 'लॉगआउट की पुष्टि करें'
+                  : 'Confirm Logout'}
               </button>
             </div>
           </div>
