@@ -15,7 +15,7 @@ const UI_TRANSLATIONS: Record<string, { en: string; hi: string }> = {
   // Navigation & General
   studentAccess: { en: '← Student Access', hi: '← विद्यार्थी प्रवेश' },
   educatorPortal: { en: 'Educator Portal', hi: 'शिक्षक पोर्टल' },
-  myJourney: { en: 'My Journey', hi: 'मेरी खोज यात्रा' },
+  myJourney: { en: 'My Journey', hi: 'मेरी यात्रा' },
   logout: { en: 'Logout', hi: 'लॉगआउट' },
   dashboard: { en: 'Dashboard', hi: 'डैशबोर्ड' },
   backToProfile: { en: 'Back to Student Profile', hi: 'विद्यार्थी प्रोफ़ाइल पर वापस जाएँ' },

@@ -78,7 +78,7 @@ export function CompletionScreen({
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-xs shadow-md shadow-indigo-500/15 hover:from-indigo-500 hover:to-violet-500 transition-all"
           >
             <ArrowRight className="w-4 h-4" />
-            <span>{language === 'hi' ? 'मेरी खोज-यात्रा पर वापस जाएँ' : 'Return to My Discovery Journey'}</span>
+            <span>{language === 'hi' ? 'मेरी यात्रा पर वापस जाएँ' : 'Return to My Discovery Journey'}</span>
           </Link>
         </div>
       ) : (

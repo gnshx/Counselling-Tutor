@@ -148,47 +148,47 @@ export default function StudentPortalPage() {
   const journeySteps = [
     {
       num: 1,
-      title: language === 'hi' ? 'स्वयं को जानें' : 'Discover Yourself',
+      title: language === 'hi' ? 'खुद को जानें' : 'Discover Yourself',
       desc:
         language === 'hi'
-          ? 'अपनी रुचियों, पसंद और स्वाभाविक खूबियों को सहज और रोचक प्रश्नों के माध्यम से साझा करें।'
+          ? 'आसान और रोचक प्रश्नों के ज़रिए अपनी पसंद, रुचियों और स्वाभाविक खूबियों को साझा करें।'
           : 'Share your interests, passions, and natural strengths through visual, thoughtful questions.',
       icon: <Search className="w-5 h-5" />,
       done: isQuestionnaireDone,
       href: '/student/questionnaire',
       unlocked: true,
-      buttonText: language === 'hi' ? 'खोज शुरू करें' : 'Begin Discovery',
+      buttonText: language === 'hi' ? 'शुरू करें' : 'Begin Discovery',
       colorClass: 'indigo',
     },
     {
       num: 2,
-      title: language === 'hi' ? 'अपनी सोच और क्षमताओं को जानें' : 'Explore How You Think',
+      title: language === 'hi' ? 'अपनी सोच को समझें' : 'Explore How You Think',
       desc:
         language === 'hi'
-          ? 'वास्तविक जीवन की स्थितियों से जुड़ें जो आपकी तर्कशक्ति और निर्णय लेने की शैली को दर्शाती हैं।'
+          ? 'रोज़मर्रा की परिस्थितियों के माध्यम से अपनी समस्या सुलझाने और सोचने के तरीके को समझें।'
           : 'Engage with real-world scenarios that reveal your unique reasoning and decision-making style.',
       icon: <Brain className="w-5 h-5" />,
       done: isAssessmentDone,
       href: '/student/assessment',
       unlocked: isQuestionnaireDone,
-      buttonText: language === 'hi' ? 'अभिरुचि चुनौती शुरू करें' : 'Start Thinking Challenge',
+      buttonText: language === 'hi' ? 'शुरू करें' : 'Start Thinking Challenge',
       colorClass: 'violet',
     },
     {
       num: 3,
-      title: language === 'hi' ? 'परामर्शदाता मार्गदर्शन' : 'Counselor Guidance',
+      title: language === 'hi' ? 'परामर्शदाता का मार्गदर्शन' : 'Counselor Guidance',
       desc: isFeedbackDone
         ? language === 'hi'
-          ? 'आपके परामर्शदाता ने सभी उत्तरों की समीक्षा कर अपना व्यक्तिगत अवलोकन साझा कर दिया है।'
+          ? 'आपके शिक्षक/परामर्शदाता ने सभी उत्तरों की समीक्षा कर अपना मार्गदर्शन जोड़ दिया है।'
           : 'Your counselor has reviewed everything and shared their personalized observations.'
         : language === 'hi'
-        ? 'आपके शिक्षक आपके उत्तरों की समीक्षा करेंगे और अपना मार्गदर्शन जोड़ेंगे — प्रतीक्षा करें!'
+        ? 'आपके शिक्षक आपके उत्तरों की समीक्षा करेंगे और अपना मार्गदर्शन जोड़ेंगे।'
         : 'Your educator will review your responses and add their perspective — sit tight!',
       icon: <Heart className="w-5 h-5" />,
       done: isFeedbackDone,
       href: '#',
       unlocked: false,
-      buttonText: language === 'hi' ? 'परामर्शदाता की प्रतीक्षा' : 'Awaiting Counselor',
+      buttonText: language === 'hi' ? 'मार्गदर्शन प्रतीक्षारत' : 'Awaiting Counselor',
       colorClass: 'emerald',
     },
   ];
@@ -258,7 +258,7 @@ export default function StudentPortalPage() {
           <p className="text-sm text-[var(--color-text-secondary)]">
             {progressPercent === 100
               ? language === 'hi'
-                ? 'सभी चरण पूर्ण — आपकी करियर खोज प्रोफ़ाइल तैयार है!'
+                ? 'सभी चरण पूर्ण — आपकी प्रोफ़ाइल तैयार है!'
                 : 'All steps complete — your career discovery profile is ready!'
               : language === 'hi'
               ? 'यह आपकी अपनी रुचियों को जानने की जगह है। यहाँ कोई सही या गलत उत्तर नहीं है।'

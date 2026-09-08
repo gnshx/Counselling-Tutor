@@ -1,4 +1,21 @@
-# Career Discovery & Counselling Tutor
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Master Document & Documentation Generator
+Updates:
+1. QUESTIONS_MASTER_DOCUMENT.md (Bilingual Markdown)
+2. docs/ALL_QUESTIONS_AND_OPTIONS.md (Bilingual Markdown)
+3. docs/ALL_QUESTIONS_AND_OPTIONS.html (Bilingual Printable HTML)
+4. docs/ALL_QUESTIONS_AND_OPTIONS.docx (Bilingual Word Document)
+5. Career Discovery & Counselling Tutor.docx (Bilingual Word Document)
+"""
+
+import os
+import html
+import zipfile
+import xml.etree.ElementTree as ET
+
+BILINGUAL_MARKDOWN = """# Career Discovery & Counselling Tutor
 ## भविष्य की दिशा एवं करियर मार्गदर्शक
 
 ### Comprehensive Master Question Bank & Evaluation Matrix
@@ -500,3 +517,241 @@
 | **Family Income Bracket** | परिवार की आय श्रेणी | Text input | Contextual income bracket | Optional (वैकल्पिक) |
 | **Student Access Code** | विद्यार्थी एक्सेस कोड | Auto Alphanumeric | 8-character token (e.g. `STU-9A8B7C`) | **Automatic (स्वचालित)** |
 
+"""
+
+# --------------------------------------------------------------------------
+# WRITE MARKDOWN FILES
+# --------------------------------------------------------------------------
+def write_markdown_files():
+    with open("QUESTIONS_MASTER_DOCUMENT.md", "w", encoding="utf-8") as f:
+        f.write(BILINGUAL_MARKDOWN)
+    with open("docs/ALL_QUESTIONS_AND_OPTIONS.md", "w", encoding="utf-8") as f:
+        f.write(BILINGUAL_MARKDOWN)
+    print("Updated QUESTIONS_MASTER_DOCUMENT.md and docs/ALL_QUESTIONS_AND_OPTIONS.md")
+
+# --------------------------------------------------------------------------
+# GENERATE HTML
+# --------------------------------------------------------------------------
+def generate_html_file(output_path):
+    h = []
+    h.append("""<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Discovery & Counselling Tutor | भविष्य की दिशा एवं करियर मार्गदर्शक</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif; line-height: 1.6; color: #1e293b; background: #f8fafc; margin: 0; padding: 40px 20px; }
+    .container { max-width: 960px; margin: 0 auto; background: #ffffff; padding: 48px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
+    h1 { font-size: 28px; color: #1e1b4b; margin-bottom: 4px; }
+    h2.sub { font-size: 20px; color: #4338ca; margin-top: 0; margin-bottom: 24px; font-weight: 600; }
+    .part-title { font-size: 20px; color: #1e293b; border-bottom: 2px solid #6366f1; padding-bottom: 8px; margin-top: 40px; }
+    .step-title { font-size: 16px; color: #4f46e5; margin-top: 24px; margin-bottom: 12px; }
+    .q-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+    .q-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+    .q-title-hi { font-size: 14.5px; font-weight: 600; color: #334155; margin-bottom: 10px; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-right: 6px; }
+    .badge-blue { background: #e0e7ff; color: #4338ca; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-purple { background: #f3e8ff; color: #7e22ce; }
+    .badge-amber { background: #fef3c7; color: #b45309; }
+    .options-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
+    .opt-item { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 13.5px; }
+    .opt-item.correct { background: #f0fdf4; border-color: #86efac; color: #166534; font-weight: 600; }
+    .proof-box { font-size: 12.5px; color: #475569; background: #f1f5f9; padding: 6px 10px; border-radius: 6px; margin-top: 4px; }
+    .pedagogical-note { font-size: 12.5px; color: #0369a1; background: #f0f9ff; padding: 8px 12px; border-radius: 6px; margin-top: 10px; border-left: 3px solid #0284c7; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13.5px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f1f5f9; font-weight: 600; color: #334155; }
+    @media print { body { background: white; padding: 0; } .container { box-shadow: none; border: none; padding: 0; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Career Discovery & Counselling Tutor</h1>
+  <h2 class="sub">भविष्य की दिशा एवं करियर मार्गदर्शक</h2>
+  <div style="background: #eef2ff; padding: 12px 16px; border-radius: 8px; color: #3730a3; font-size: 13.5px; margin-bottom: 24px;">
+    <strong>Comprehensive Master Question Bank & Evaluation Matrix</strong> | संपूर्ण प्रश्न बैंक एवं मूल्यांकन तालिका<br>
+    <em>This document consolidates all student self-discovery questionnaires, brain & life aptitude assessments, and teacher/counselor evaluation frameworks into one unified reference.</em>
+  </div>
+""")
+
+    # Render markdown content into HTML paragraphs and sections
+    in_table = False
+    table_rows = []
+    
+    for line in BILINGUAL_MARKDOWN.split("\n"):
+        line_str = line.strip()
+        if not line_str:
+            continue
+        if line_str.startswith("# PART"):
+            h.append(f'<h2 class="part-title">{html.escape(line_str.lstrip("#").strip())}</h2>')
+        elif line_str.startswith("### भाग"):
+            h.append(f'<h3 style="color:#4f46e5; margin-top:-6px; margin-bottom:20px;">{html.escape(line_str.lstrip("#").strip())}</h3>')
+        elif line_str.startswith("## ▶"):
+            h.append(f'<h3 class="step-title">{html.escape(line_str.lstrip("#").strip())}</h3>')
+        elif line_str.startswith("### चरण") or line_str.startswith("### ▶"):
+            h.append(f'<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">{html.escape(line_str.lstrip("#").strip())}</div>')
+        elif line_str.startswith("#### [Q") or line_str.startswith("#### [A") or line_str.startswith("#### 1") or line_str.startswith("#### 2") or line_str.startswith("#### [प्रश्न") or line_str.startswith("#### [TF"):
+            h.append(f'<div class="q-title" style="margin-top:14px;">{html.escape(line_str.lstrip("#").strip())}</div>')
+        elif line_str.startswith("* [x]"):
+            h.append(f'<div class="opt-item correct">✔ {html.escape(line_str[5:].strip())}</div>')
+        elif line_str.startswith("* [ ]"):
+            h.append(f'<div class="opt-item">○ {html.escape(line_str[5:].strip())}</div>')
+        elif line_str.startswith("* **Type") or line_str.startswith("* **Category") or line_str.startswith("* **Format"):
+            h.append(f'<div style="font-size:12.5px; color:#64748b; margin:4px 0;">{html.escape(line_str.lstrip("*").strip())}</div>')
+        elif line_str.startswith("  * ") or line_str.startswith("* "):
+            opt_text = line_str.lstrip("* ").strip()
+            if "Pedagogical Note" in opt_text or "शैक्षिक उद्देश्य" in opt_text:
+                h.append(f'<div class="pedagogical-note">{html.escape(opt_text)}</div>')
+            else:
+                h.append(f'<div class="opt-item" style="margin-left:12px;">• {html.escape(opt_text)}</div>')
+        elif line_str.startswith("↳"):
+            h.append(f'<div class="proof-box">{html.escape(line_str)}</div>')
+        elif line_str.startswith("|"):
+            if not in_table:
+                in_table = True
+                h.append("<table>")
+            cells = [c.strip() for c in line_str.split("|")[1:-1]]
+            if all(c.startswith(":") or c.startswith("-") for c in cells):
+                continue
+            tag = "th" if "English" in line_str or "फ़ील्ड" in line_str else "td"
+            row = "".join(f"<{tag}>{html.escape(c)}</{tag}>" for c in cells)
+            h.append(f"<tr>{row}</tr>")
+        else:
+            if in_table and not line_str.startswith("|"):
+                in_table = False
+                h.append("</table>")
+            h.append(f'<p style="font-size:13.5px; color:#475569; margin:4px 0;">{html.escape(line_str)}</p>')
+
+    if in_table:
+        h.append("</table>")
+
+    h.append("</div></body></html>")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(h))
+    print(f"Generated HTML: {output_path} ({os.path.getsize(output_path)} bytes)")
+
+# --------------------------------------------------------------------------
+# GENERATE OPENXML DOCX
+# --------------------------------------------------------------------------
+def generate_docx_file(output_path):
+    # Construct clean OpenXML elements for Word Document
+    p_elements = []
+
+    def p(text, style="Normal", bold=False, italic=False, color="1F2937", size=22):
+        escaped = html.escape(text)
+        rpr_parts = [f'<w:color w:val="{color}"/>', f'<w:sz w:val="{size}"/>']
+        if bold:
+            rpr_parts.append('<w:b/>')
+        if italic:
+            rpr_parts.append('<w:i/>')
+        rpr = "".join(rpr_parts)
+        return f'<w:p><w:pPr><w:pStyle w:val="{style}"/></w:pPr><w:r><w:rPr>{rpr}</w:rPr><w:t>{escaped}</w:t></w:r></w:p>'
+
+    p_elements.append(p("Career Discovery & Counselling Tutor", style="Title", bold=True, color="1E3A8A", size=44))
+    p_elements.append(p("भविष्य की दिशा एवं करियर मार्गदर्शक", style="Subtitle", bold=True, color="4338CA", size=32))
+    p_elements.append(p("Comprehensive Master Question Bank & Evaluation Matrix", bold=True, color="374151", size=24))
+    p_elements.append(p("संपूर्ण प्रश्न बैंक एवं मूल्यांकन तालिका", bold=True, color="4B5563", size=24))
+    p_elements.append(p("This document consolidates all student self-discovery questionnaires, brain & life aptitude assessments, and teacher/counselor evaluation frameworks into one unified reference.", italic=True, color="6B7280", size=20))
+    p_elements.append(p("यह दस्तावेज़ विद्यार्थियों को समझने, उनकी रुचियों, क्षमताओं और जीवन कौशलों का आकलन करने के लिए उपयोग की जाने वाली सभी प्रश्नावलियों, परीक्षणों तथा शिक्षक/मार्गदर्शक मूल्यांकन प्रारूपों का एक संयुक्त संग्रह है।", italic=True, color="6B7280", size=20))
+    p_elements.append(p("--------------------------------------------------------------------------------", color="CBD5E1", size=18))
+
+    for line in BILINGUAL_MARKDOWN.split("\n"):
+        s = line.strip()
+        if not s or s.startswith("---") or s.startswith("# Table of Contents") or s.startswith("1. [PART"):
+            continue
+        if s.startswith("# PART"):
+            p_elements.append(p(s.lstrip("#").strip(), bold=True, color="1E3A8A", size=30))
+        elif s.startswith("### भाग"):
+            p_elements.append(p(s.lstrip("#").strip(), bold=True, color="4338CA", size=26))
+        elif s.startswith("## ▶"):
+            p_elements.append(p(s.lstrip("#").strip(), bold=True, color="4F46E5", size=26))
+        elif s.startswith("### चरण") or s.startswith("### ▶"):
+            p_elements.append(p(s.lstrip("#").strip(), bold=True, color="6366F1", size=24))
+        elif s.startswith("#### [Q") or s.startswith("#### [A") or s.startswith("#### 1") or s.startswith("#### 2") or s.startswith("#### [TF") or s.startswith("#### [प्रश्न"):
+            p_elements.append(p(s.lstrip("#").strip(), bold=True, color="0F172A", size=22))
+        elif s.startswith("* [x]"):
+            p_elements.append(p("  ✔ " + s[5:].strip(), bold=True, color="15803D", size=20))
+        elif s.startswith("* [ ]"):
+            p_elements.append(p("  ○ " + s[5:].strip(), color="374151", size=20))
+        elif s.startswith("  * ") or s.startswith("* "):
+            p_elements.append(p("  • " + s.lstrip("* ").strip(), color="334155", size=20))
+        elif s.startswith("↳"):
+            p_elements.append(p("    " + s, italic=True, color="64748B", size=18))
+        else:
+            p_elements.append(p(s, color="475569", size=20))
+
+    body_xml = "".join(p_elements)
+
+    doc_xml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:body>
+    {body_xml}
+    <w:sectPr>
+      <w:pgSz w:w="12240" w:h="15840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720"/>
+    </w:sectPr>
+  </w:body>
+</w:document>"""
+
+    content_types_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+  <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
+</Types>"""
+
+    rels_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>"""
+
+    doc_rels_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>"""
+
+    styles_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+  <w:docDefaults>
+    <w:rPrDefault>
+      <w:rPr>
+        <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>
+        <w:sz w:val="22"/>
+        <w:color w:val="1F2937"/>
+      </w:rPr>
+    </w:rPrDefault>
+  </w:docDefaults>
+  <w:style w:type="paragraph" w:styleId="Title">
+    <w:name w:val="Title"/>
+    <w:rPr><w:b/><w:sz w:val="44"/><w:color w:val="1E3A8A"/></w:rPr>
+  </w:style>
+  <w:style w:type="paragraph" w:styleId="Subtitle">
+    <w:name w:val="Subtitle"/>
+    <w:rPr><w:b/><w:sz w:val="30"/><w:color w:val="4338CA"/></w:rPr>
+  </w:style>
+  <w:style w:type="paragraph" w:styleId="Normal">
+    <w:name w:val="Normal"/>
+    <w:rPr><w:sz w:val="22"/><w:color w:val="1F2937"/></w:rPr>
+  </w:style>
+</w:styles>"""
+
+    with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("[Content_Types].xml", content_types_xml)
+        z.writestr("_rels/.rels", rels_xml)
+        z.writestr("word/_rels/document.xml.rels", doc_rels_xml)
+        z.writestr("word/styles.xml", styles_xml)
+        z.writestr("word/document.xml", doc_xml)
+
+    print(f"Generated DOCX: {output_path} ({os.path.getsize(output_path)} bytes)")
+
+if __name__ == "__main__":
+    docs_dir = "/home/ganesh/Desktop/Counselling-Tutor/docs"
+    os.makedirs(docs_dir, exist_ok=True)
+    
+    write_markdown_files()
+    generate_html_file(os.path.join(docs_dir, "ALL_QUESTIONS_AND_OPTIONS.html"))
+    generate_docx_file(os.path.join(docs_dir, "ALL_QUESTIONS_AND_OPTIONS.docx"))
+    generate_docx_file("/home/ganesh/Desktop/Counselling-Tutor/Career Discovery & Counselling Tutor.docx")
+    print("All bilingual documentation successfully updated!")

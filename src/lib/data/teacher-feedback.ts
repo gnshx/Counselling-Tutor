@@ -168,7 +168,7 @@ export const teacherFeedbackQuestions: TeacherFeedbackQuestion[] = [
   },
   {
     id: 'tf9',
-    question: 'Which areas does the student appear most interested in?',
+    question: 'Which career direction interest areas align best with this student?',
     questionHi: 'विद्यार्थी की रुचियों के अनुसार कौन-से करियर क्षेत्र सबसे अधिक उपयुक्त दिखाई देते हैं?',
     type: 'multi-select',
     maxSelections: 3,
@@ -189,7 +189,7 @@ export const teacherFeedbackQuestions: TeacherFeedbackQuestion[] = [
   },
   {
     id: 'tf10',
-    question: "What is the student's preferred working style based on your observation?",
+    question: 'What working environment style suits this student best?',
     questionHi: 'विद्यार्थी के लिए कौन-सी कार्यशैली सबसे अधिक उपयुक्त दिखाई देती है?',
     type: 'single-select',
     required: true,
@@ -203,8 +203,8 @@ export const teacherFeedbackQuestions: TeacherFeedbackQuestion[] = [
   },
   {
     id: 'tf_comment',
-    question: 'Educator Observations & Detailed Assessment (Up to 400–500 words)',
-    questionHi: 'शिक्षक/परामर्शदाता के अवलोकन एवं विस्तृत आकलन (लगभग 400–500 शब्द)',
+    question: 'Educator Observations & Detailed Assessment (Up to 400–500 words) [OPTIONAL]',
+    questionHi: 'शिक्षक/परामर्शदाता के अवलोकन एवं विस्तृत आकलन [वैकल्पिक]',
     type: 'text',
     maxLength: 3500,
     required: false,

@@ -112,7 +112,7 @@ export default function Home() {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary-soft)] border border-indigo-200 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>{language === 'hi' ? 'करियर खोज एवं परामर्श मार्गदर्शक' : 'Guided Career Discovery Platform'}</span>
+                <span>{language === 'hi' ? 'भविष्य की दिशा एवं करियर मार्गदर्शक' : 'Career Discovery & Counselling Tutor'}</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-[var(--font-heading)] tracking-tight text-[var(--color-text-primary)] leading-[1.15]">
@@ -129,7 +129,7 @@ export default function Home() {
 
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 {language === 'hi'
-                  ? 'अपनी स्वाभाविक रुचियों, खूबियों और सोच को पहचानने की एक सहज एवं शांत यात्रा — हर कदम पर शिक्षक और परामर्शदाता के मार्गदर्शन के साथ।'
+                  ? 'अपनी रुचियों, खूबियों और सोच को समझने की एक आसान और रोचक प्रक्रिया — जिसमें हर कदम पर शिक्षक और परामर्शदाता आपका मार्गदर्शन करेंगे।'
                   : 'A calm, encouraging journey to explore your natural interests, strengths, and thinking style — guided by your counselor every step of the way.'}
               </p>
 
@@ -172,7 +172,7 @@ export default function Home() {
 
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                   {language === 'hi'
-                    ? 'आपके शिक्षक ने आपको एक विशिष्ट कोड प्रदान किया है। अपनी रुचियों और क्षमताओं को जानने के लिए इसे नीचे दर्ज करें।'
+                    ? 'आपके शिक्षक ने आपको एक विशेष कोड दिया है। अपनी रुचियों और खूबियों को जानने के लिए इसे नीचे दर्ज करें।'
                     : 'Your educator has provided you with a unique code. Enter it below to start discovering your strengths and interests.'}
                 </p>
 
@@ -204,7 +204,7 @@ export default function Home() {
                           ? 'तैयारी की जा रही है...'
                           : 'Preparing your journey...'
                         : language === 'hi'
-                        ? 'पोर्टल पर आगे बढ़ें'
+                        ? 'आगे बढ़ें'
                         : 'Continue to Portal'}
                     </span>
                     <ArrowRight className="w-4 h-4" />
@@ -226,11 +226,11 @@ export default function Home() {
               className="text-center mb-16 space-y-4"
             >
               <h2 className="text-2xl sm:text-4xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
-                {language === 'hi' ? 'आपकी खोज-यात्रा' : 'Your Discovery Journey'}
+                {language === 'hi' ? 'स्वयं को समझने की यात्रा' : 'Your Discovery Journey'}
               </h2>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)] max-w-lg mx-auto">
                 {language === 'hi'
-                  ? 'स्वयं को बेहतर समझने के लिए तीन आसान चरण — कोई सही या गलत उत्तर नहीं, केवल वास्तविक आत्म-अन्वेषण।'
+                  ? 'खुद को बेहतर समझने के लिए तीन आसान चरण — यहाँ सही या गलत उत्तर नहीं हैं, बस अपने बारे में जानने और सोचने का अवसर है।'
                   : 'Three thoughtful steps to understand yourself better — no right or wrong answers, just genuine exploration.'}
               </p>
             </motion.div>
@@ -240,30 +240,30 @@ export default function Home() {
                 {
                   icon: <Search className="w-6 h-6" />,
                   step: '01',
-                  title: language === 'hi' ? 'स्वयं को जानें' : 'Discover Yourself',
+                  title: language === 'hi' ? 'खुद को जानें' : 'Discover Yourself',
                   desc:
                     language === 'hi'
-                      ? 'विचारशील एवं दृश्य प्रश्नों के माध्यम से अपनी रुचियों, पसंद और प्राकृतिक खूबियों को साझा करें।'
+                      ? 'आसान और रोचक प्रश्नों के ज़रिए अपनी पसंद, रुचियों और स्वाभाविक खूबियों को साझा करें।'
                       : 'Share your interests, passions, and natural strengths through thoughtful, visual questions.',
                   color: 'indigo',
                 },
                 {
                   icon: <Brain className="w-6 h-6" />,
                   step: '02',
-                  title: language === 'hi' ? 'अपनी सोच और क्षमताओं को जानें' : 'Explore How You Think',
+                  title: language === 'hi' ? 'अपनी सोच को समझें' : 'Explore How You Think',
                   desc:
                     language === 'hi'
-                      ? 'वास्तविक जीवन की परिस्थितियों से जुड़ें जो आपकी समस्या-समाधान और तर्कशक्ति की अनूठी शैली को दर्शाती हैं।'
+                      ? 'रोज़मर्रा की परिस्थितियों के माध्यम से अपनी समस्या सुलझाने और सोचने के तरीके को समझें।'
                       : 'Engage with real-world scenarios that reveal your unique problem-solving and reasoning style.',
                   color: 'violet',
                 },
                 {
                   icon: <Heart className="w-6 h-6" />,
                   step: '03',
-                  title: language === 'hi' ? 'परामर्शदाता मार्गदर्शन' : 'Counselor Guidance',
+                  title: language === 'hi' ? 'परामर्शदाता का मार्गदर्शन' : 'Counselor Guidance',
                   desc:
                     language === 'hi'
-                      ? 'आपके शिक्षक सभी उत्तरों की समीक्षा करते हैं और आपके करियर पथ को सही दिशा देने के लिए अपने व्यक्तिगत विचार जोड़ते हैं।'
+                      ? 'आपके शिक्षक आपके उत्तरों को देखकर आपके सही करियर रास्ते के लिए मार्गदर्शन और व्यक्तिगत सलाह देंगे।'
                       : 'Your educator reviews everything and adds their personal insights to guide your career path.',
                   color: 'emerald',
                 },
@@ -314,11 +314,11 @@ export default function Home() {
                 <Shield className="w-6 h-6" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
-                {language === 'hi' ? 'सुरक्षित, निजी और विकास-उन्मुख' : 'Safe, Private & Growth-Oriented'}
+                {language === 'hi' ? 'सुरक्षित, निजी और आपके विकास के लिए' : 'Safe, Private & Growth-Oriented'}
               </h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-lg mx-auto">
                 {language === 'hi'
-                  ? 'स्कूलों के लिए निर्मित — आपका डेटा सुरक्षित रहता है, और प्रत्येक परिणाम को अंक या निर्णय के बजाय विकास के संकेत के रूप में प्रस्तुत किया जाता है।'
+                  ? 'विद्यालयों के लिए निर्मित — आपकी जानकारी पूरी तरह सुरक्षित रहती है। यहाँ कोई अंक या परीक्षा का दबाव नहीं है, केवल सीखने और आगे बढ़ने का अवसर है।'
                   : 'Built for schools — your data stays safe, and every result is framed as a clue for growth, not a score or judgment.'}
               </p>
             </motion.div>
@@ -328,11 +328,11 @@ export default function Home() {
                 <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
-                    {language === 'hi' ? 'सुरक्षित पहुंच नियंत्रण' : 'Secure Access Control'}
+                    {language === 'hi' ? 'सुरक्षित एक्सेस व्यवस्था' : 'Secure Access Control'}
                   </h4>
                   <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">
                     {language === 'hi'
-                      ? 'विशिष्ट एक्सेस कोड छात्र रिकॉर्ड को अलग रखते हैं और प्रोफ़ाइल एक्सेस को केवल अधिकृत शिक्षकों तक सीमित करते हैं।'
+                      ? 'हर विद्यार्थी के लिए अलग एक्सेस कोड होता है, जिससे आपका रिकॉर्ड केवल आपके शिक्षक ही देख सकते हैं।'
                       : 'Unique access keys isolate student records and restrict profile access exclusively to assigned educators.'}
                   </p>
                 </div>
@@ -341,11 +341,11 @@ export default function Home() {
                 <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
-                    {language === 'hi' ? 'विकास-उन्मुख मूल्यांकन' : 'Growth-Oriented Assessment'}
+                    {language === 'hi' ? 'सीखने और आगे बढ़ने का अवसर' : 'Growth-Oriented Assessment'}
                   </h4>
                   <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">
                     {language === 'hi'
-                      ? 'मूल्यांकन विकास क्षेत्रों और प्राकृतिक रुचियों पर जोर देते हैं — ये संकेत हैं, सीमाएं नहीं।'
+                      ? 'यह कोई परीक्षा नहीं है — यह आपकी स्वाभाविक रुचियों और खूबियों को पहचानकर आगे बढ़ने में मदद करता है।'
                       : 'Evaluations emphasize development areas and natural affinity — these are clues, not limits.'}
                   </p>
                 </div>
@@ -357,7 +357,7 @@ export default function Home() {
 
       <footer className="bg-[var(--color-surface)] border-t border-[var(--color-border-subtle)] py-8 text-center">
         <p className="text-xs text-[var(--color-text-muted)]">
-          &copy; {new Date().getFullYear()} {language === 'hi' ? 'करियर डिस्कवरी और काउंसलिंग प्लेटफॉर्म। सर्वाधिकार सुरक्षित।' : 'Career Discovery & Counselling Platform. All rights reserved.'}
+          &copy; {new Date().getFullYear()} {language === 'hi' ? 'भविष्य की दिशा एवं करियर मार्गदर्शक। सर्वाधिकार सुरक्षित।' : 'Career Discovery & Counselling Platform. All rights reserved.'}
         </p>
       </footer>
     </div>

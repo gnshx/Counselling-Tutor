@@ -1,542 +1,468 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Questions & Options - Career Discovery & Counselling Tutor</title>
-<style>
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #1f2937;
-    background: #f9fafb;
-    line-height: 1.6;
-    margin: 0;
-    padding: 40px 20px;
-  }
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 48px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    border: 1px solid #e5e7eb;
-  }
-  h1 { color: #1e3a8a; font-size: 28px; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 16px; }
-  h2.part-title { color: #1e40af; font-size: 22px; margin-top: 40px; padding: 10px 14px; background: #eff6ff; border-radius: 8px; border-left: 5px solid #3b82f6; }
-  h3.step-title { color: #374151; font-size: 18px; margin-top: 24px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
-  .q-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  .q-title { font-weight: 700; font-size: 16px; color: #0f172a; margin-bottom: 6px; }
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 6px;
-    margin-right: 6px;
-  }
-  .badge-blue { background: #dbeafe; color: #1e40af; }
-  .badge-green { background: #dcfce7; color: #166534; }
-  .badge-purple { background: #f3e8ff; color: #6b21a8; }
-  .badge-amber { background: #fef3c7; color: #92400e; }
-  .options-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 8px;
-    margin-top: 12px;
-  }
-  .opt-item {
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 13.5px;
-  }
-  .opt-item.correct {
-    background: #f0fdf4;
-    border-color: #86efac;
-    font-weight: 600;
-    color: #15803d;
-  }
-  .guidance-box {
-    background: #faf5ff;
-    border: 1px solid #e9d5ff;
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 10px;
-    font-size: 13px;
-    color: #581c87;
-  }
-  .proof-box {
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-top: 6px;
-    font-size: 12px;
-    color: #92400e;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 16px;
-  }
-  th, td {
-    padding: 10px 12px;
-    border: 1px solid #e2e8f0;
-    font-size: 13.5px;
-    text-align: left;
-  }
-  th { background: #f1f5f9; font-weight: 700; color: #334155; }
-  @media print {
-    body { background: #ffffff; padding: 0; }
-    .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
-    .q-card { break-inside: avoid; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Career Discovery & Counselling Tutor | भविष्य की दिशा एवं करियर मार्गदर्शक</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", sans-serif; line-height: 1.6; color: #1e293b; background: #f8fafc; margin: 0; padding: 40px 20px; }
+    .container { max-width: 960px; margin: 0 auto; background: #ffffff; padding: 48px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
+    h1 { font-size: 28px; color: #1e1b4b; margin-bottom: 4px; }
+    h2.sub { font-size: 20px; color: #4338ca; margin-top: 0; margin-bottom: 24px; font-weight: 600; }
+    .part-title { font-size: 20px; color: #1e293b; border-bottom: 2px solid #6366f1; padding-bottom: 8px; margin-top: 40px; }
+    .step-title { font-size: 16px; color: #4f46e5; margin-top: 24px; margin-bottom: 12px; }
+    .q-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+    .q-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+    .q-title-hi { font-size: 14.5px; font-weight: 600; color: #334155; margin-bottom: 10px; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-right: 6px; }
+    .badge-blue { background: #e0e7ff; color: #4338ca; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-purple { background: #f3e8ff; color: #7e22ce; }
+    .badge-amber { background: #fef3c7; color: #b45309; }
+    .options-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
+    .opt-item { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 13.5px; }
+    .opt-item.correct { background: #f0fdf4; border-color: #86efac; color: #166534; font-weight: 600; }
+    .proof-box { font-size: 12.5px; color: #475569; background: #f1f5f9; padding: 6px 10px; border-radius: 6px; margin-top: 4px; }
+    .pedagogical-note { font-size: 12.5px; color: #0369a1; background: #f0f9ff; padding: 8px 12px; border-radius: 6px; margin-top: 10px; border-left: 3px solid #0284c7; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13.5px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f1f5f9; font-weight: 600; color: #334155; }
+    @media print { body { background: white; padding: 0; } .container { box-shadow: none; border: none; padding: 0; } }
+  </style>
 </head>
 <body>
 <div class="container">
-  <h1>🎓 Career Discovery & Counselling Tutor</h1>
-  <p><strong>Master Question Bank & Option Catalog</strong> — All Student & Teacher Modules in One Document</p>
+  <h1>Career Discovery & Counselling Tutor</h1>
+  <h2 class="sub">भविष्य की दिशा एवं करियर मार्गदर्शक</h2>
+  <div style="background: #eef2ff; padding: 12px 16px; border-radius: 8px; color: #3730a3; font-size: 13.5px; margin-bottom: 24px;">
+    <strong>Comprehensive Master Question Bank & Evaluation Matrix</strong> | संपूर्ण प्रश्न बैंक एवं मूल्यांकन तालिका<br>
+    <em>This document consolidates all student self-discovery questionnaires, brain & life aptitude assessments, and teacher/counselor evaluation frameworks into one unified reference.</em>
+  </div>
 
+<p style="font-size:13.5px; color:#475569; margin:4px 0;"># Career Discovery &amp; Counselling Tutor</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">## भविष्य की दिशा एवं करियर मार्गदर्शक</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">### Comprehensive Master Question Bank &amp; Evaluation Matrix</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">### संपूर्ण प्रश्न बैंक एवं मूल्यांकन तालिका</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">&gt; **Purpose / उद्देश्य:**</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">&gt; This document consolidates all student self-discovery questionnaires, brain &amp; life aptitude assessments, and teacher/counselor evaluation frameworks into one unified reference.</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">&gt; *यह दस्तावेज़ विद्यार्थियों को समझने, उनकी रुचियों, क्षमताओं और जीवन कौशलों का आकलन करने के लिए उपयोग की जाने वाली सभी प्रश्नावलियों, परीक्षणों तथा शिक्षक/मार्गदर्शक मूल्यांकन प्रारूपों का एक संयुक्त संग्रह है।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;"># Table of Contents / विषय-सूची</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">1. [PART 1: Student Career Questionnaire (Self-Discovery) / भाग 1: विद्यार्थी करियर प्रश्नावली](#part-1-student-career-questionnaire-self-discovery)</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">2. [PART 2: Student Brain &amp; Life Assessment (15 Questions) / भाग 2: विद्यार्थी मस्तिष्क एवं जीवन आकलन](#part-2-student-brain--life-assessment-15-questions)</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">3. [PART 3: Teacher &amp; Counselor Feedback Framework / भाग 3: शिक्षक एवं परामर्शदाता प्रतिक्रिया रूपरेखा](#part-3-teacher--counselor-feedback-framework)</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">4. [PART 4: Student Registration &amp; Profile Intake Fields / भाग 4: विद्यार्थी पंजीकरण एवं प्रोफ़ाइल जानकारी](#part-4-student-registration--profile-intake-fields)</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
 <h2 class="part-title">PART 1: Student Career Questionnaire (Self-Discovery)</h2>
-<h3 class="step-title">Step 1: 🌱 My Passions</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q1</span> Which subjects bring out your curiosity and enthusiasm?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Multi-Select (Max 3)</strong> | Category: Passions (passions)</div>
-<div class="options-grid">
-<div class="opt-item">🧮 Mathematics &amp; Logic</div>
-<div class="opt-item">🔬 Science &amp; Discovery</div>
-<div class="opt-item">💻 Computers &amp; Technology</div>
-<div class="opt-item">📚 Languages &amp; Literature</div>
-<div class="opt-item">🏛️ Social Studies &amp; History</div>
-<div class="opt-item">🎨 Creative Arts &amp; Music</div>
-<div class="opt-item">⚽ Sports &amp; Athletics</div>
-<div class="opt-item">✨ Other Exciting Subjects</div>
-</div>
-</div>
-<h3 class="step-title">Step 2: ⭐ My Talents</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q2</span> Which activities do you find most fun and fulfilling?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Multi-Select (Max 3)</strong> | Category: Joyful Activities (joyful_activities)</div>
-<div class="options-grid">
-<div class="opt-item">🧩 Solving fun puzzles &amp; brain teasers</div>
-<div class="opt-item">💻 Creating with technology &amp; gadgets</div>
-<div class="opt-item">🛠️ Designing or building cool things</div>
-<div class="opt-item">✏️ Drawing, sketching &amp; creative design</div>
-<div class="opt-item">🌿 Exploring nature &amp; environment</div>
-<div class="opt-item">🤝 Inspiring &amp; helping friends</div>
-<div class="opt-item">🏀 Playing sports &amp; staying active</div>
-<div class="opt-item">📖 Discovering new books &amp; ideas</div>
-<div class="opt-item">🗣️ Sharing ideas &amp; storytelling</div>
-<div class="opt-item">🎯 Organizing events &amp; leading teams</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q3</span> What are your unique strengths and talents?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Multi-Select (Max 3)</strong> | Category: Superpowers (superpowers)</div>
-<div class="options-grid">
-<div class="opt-item">💡 Creative Problem-Solving</div>
-<div class="opt-item">💬 Expressing Ideas &amp; Communication</div>
-<div class="opt-item">📐 Mathematical &amp; Logical Thinking</div>
-<div class="opt-item">🎨 Artistic &amp; Imaginative Thinking</div>
-<div class="opt-item">🤖 Digital &amp; Tech Skills</div>
-<div class="opt-item">⚙️ Hands-on Technical Ability</div>
-<div class="opt-item">👥 Bringing People Together (Teamwork)</div>
-<div class="opt-item">👑 Motivating Others (Leadership)</div>
-<div class="opt-item">❤️ Empathy &amp; Helping Spirit</div>
-<div class="opt-item">🏃 Physical Agility &amp; Sports</div>
-</div>
-</div>
-<h3 class="step-title">Step 3: 🚀 My Style</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q4</span> In what environment do you feel most energised?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Single-Select + Real Proof Requirement</strong> | Category: Ideal Environment (ideal_environment)</div>
-<div class="options-grid">
-<div class="opt-item">🧘 Focused &amp; independent space (Solo Work)<div class="proof-box">↳ <em>Give a quick example or proof of solo work you completed on your own</em></div></div>
-<div class="opt-item">👥 Vibrant team collaboration (Group Work)<div class="proof-box">↳ <em>Give a quick example or proof of group work you did with a team</em></div></div>
-<div class="opt-item">⚖️ A healthy mix of both (Group Work &amp; Solo Work)<div class="proof-box">↳ <em>Give an example of a project you did (group or solo)</em></div></div>
-<div class="opt-item">🔄 Dynamic — depending on the project<div class="proof-box">↳ <em>Give a quick example of a recent group or solo task</em></div></div>
-<div class="opt-item">🌟 Eager to try all work styles<div class="proof-box">↳ <em>Give a quick example of a project or task you enjoyed</em></div></div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q5</span> When faced with an exciting new challenge, how do you love to tackle it?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Single-Select (Choose 1)</strong> | Category: Growth Mindset (growth_mindset)</div>
-<div class="options-grid">
-<div class="opt-item">🔍 Dive right in and experiment on my own</div>
-<div class="opt-item">🧠 Explore first, then brainstorm with others</div>
-<div class="opt-item">🙋 Collaborate with a mentor or teammate right away</div>
-<div class="opt-item">💪 Stay curious and persevere until I solve it!</div>
-<div class="opt-item">🔮 Find a novel, creative way around it</div>
-</div>
-</div>
-<h3 class="step-title">Step 4: 🎯 My Future Dreams</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q6</span> Which career paths sound most exciting to explore?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Multi-Select (Max 2)</strong> | Category: Future Passions (future_passions)</div>
-<div class="options-grid">
-<div class="opt-item">💻 Building the Future with Technology</div>
-<div class="opt-item">🤝 Working with &amp; Empowering People</div>
-<div class="opt-item">📊 Analyzing Data &amp; Financial Insights</div>
-<div class="opt-item">🏗️ Engineering &amp; Crafting Innovations</div>
-<div class="opt-item">🌱 Sustainable Development &amp; Nature</div>
-<div class="opt-item">🎨 Arts, Media &amp; Creative Design</div>
-<div class="opt-item">🩺 Healthcare, Education &amp; Mentorship</div>
-<div class="opt-item">💼 Entrepreneurship &amp; Business Innovation</div>
-<div class="opt-item">🏕️ Outdoor Exploration &amp; Environmental Fieldwork</div>
-<div class="opt-item">🌈 Open to discovering many exciting fields!</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q7</span> Is there a dream career or role you are eager to learn more about?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Conditional Single-Select</strong> | Category: Aspirations (aspirations)</div>
-<div class="options-grid">
-<div class="opt-item">🌟 Yes! I have a dream career in mind [Triggers follow-up]</div>
-<div class="opt-item">💡 I have several exciting ideas</div>
-<div class="opt-item">🚀 I am ready to explore and discover new paths!</div>
-</div>
-<div class="proof-box" style="margin-top:12px;"><strong>↳ Follow-Up (If "yes_know_one" is chosen):</strong> [Q7_FOLLOWUP] What dream career excites you? (Give a brief example / proof) (Text (Max 100 chars))</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q8</span> What inspires you about this path?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Multi-Select (Max 4)</strong> | Category: Inspiration (inspiration)</div>
-<div class="options-grid">
-<div class="opt-item">❤️ I truly enjoy doing this kind of work</div>
-<div class="opt-item">⭐ It aligns with my natural talents</div>
-<div class="opt-item">👨‍👩‍👧 Inspired by role models in my family/community</div>
-<div class="opt-item">🎓 Encouraged by teachers or mentors</div>
-<div class="opt-item">🌍 Opportunity to make a positive impact on the world</div>
-<div class="opt-item">🚀 Great growth &amp; learning opportunities</div>
-<div class="opt-item">📖 Inspired by amazing stories &amp; innovations</div>
-<div class="opt-item">✨ Other exciting reasons</div>
-</div>
-</div>
-<h3 class="step-title">Step 5: ☀️ My Growth Potential</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q9</span> How eager and ready do you feel to discover your future possibilities?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>5-Point Rating Scale</strong> | Category: Optimism (optimism)</div>
-<div class="options-grid">
-<div class="opt-item">🌱 1 - Curious to start exploring</div>
-<div class="opt-item">💡 2 - Learning new ideas every day</div>
-<div class="opt-item">🙂 3 - Positive and open-minded</div>
-<div class="opt-item">🌟 4 - Confident in my potential</div>
-<div class="opt-item">🚀 5 - Super excited &amp; ready to shine!</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-blue">Q10</span> What positive opportunities or guidance would help you reach your highest potential?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Type: <strong>Multi-Select (Max 3)</strong> | Category: Growth Opportunities (growth_opportunities)</div>
-<div class="options-grid">
-<div class="opt-item">💻 Exploring cutting-edge tech &amp; practical skills</div>
-<div class="opt-item">🔬 Hands-on projects &amp; creative experiments</div>
-<div class="opt-item">🧠 Mentorship &amp; guidance from experts</div>
-<div class="opt-item">👥 Interactive workshops &amp; team activities</div>
-<div class="opt-item">🎨 Creative design &amp; artistic opportunities</div>
-<div class="opt-item">🏆 Sports coaching &amp; leadership programs</div>
-<div class="opt-item">🏛️ Discovering top colleges &amp; field exposures</div>
-<div class="opt-item">⭐ Discovering hidden talents &amp; strengths</div>
-<div class="opt-item">🎯 Personalized career counselling</div>
-</div>
-</div>
-<h2 class="part-title">PART 2: Student Brain & Life Assessment (15 Questions)</h2>
-<h3 class="step-title">🌍 Section A: General Awareness</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A1</span> What should you do when the traffic light is red?</div>
-<div class="options-grid">
-<div class="opt-item">A) Go quickly</div>
-<div class="opt-item correct">B) Stop and wait <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) Ignore it</div>
-<div class="opt-item">D) Run across</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A2</span> Which number is for police, ambulance, and fire engine?</div>
-<div class="options-grid">
-<div class="opt-item">A) Police - 100</div>
-<div class="opt-item">B) Ambulance - 108</div>
-<div class="opt-item">C) Fire - 101</div>
-<div class="opt-item correct">D) All in one - 112 <strong>[CORRECT ANSWER]</strong></div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A3</span> Before crossing a busy road, what should you do?</div>
-<div class="options-grid">
-<div class="opt-item">A) Run without looking</div>
-<div class="opt-item correct">B) Look carefully for traffic and cross safely <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) Follow anyone nearby</div>
-<div class="opt-item">D) Use your phone while crossing</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A4</span> Why should we wash our hands before eating?</div>
-<div class="options-grid">
-<div class="opt-item correct">A) To remove germs and reduce illness <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">B) To make our hands cold</div>
-<div class="opt-item">C) To make food taste better</div>
-<div class="opt-item">D) It is not necessary</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A5</span> Which planet do we live on?</div>
-<div class="options-grid">
-<div class="opt-item">A) Mars</div>
-<div class="opt-item correct">B) Earth <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) Jupiter</div>
-<div class="opt-item">D) Venus</div>
-</div>
-</div>
-<h3 class="step-title">🧮 Section B: Basic Aptitude</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A6</span> What comes next in the sequence? 2 → 4 → 6 → 8 → ?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Context / Hint: <em>Even numbers incrementing by 2</em></div>
-<div class="options-grid">
-<div class="opt-item">A) 9</div>
-<div class="opt-item correct">B) 10 <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) 11</div>
-<div class="opt-item">D) 12</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A7</span> If 3 pencils cost ₹15, how much does 1 pencil cost?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Context / Hint: <em>15 ÷ 3 = 5</em></div>
-<div class="options-grid">
-<div class="opt-item">A) ₹3</div>
-<div class="opt-item correct">B) ₹5 <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) ₹10</div>
-<div class="opt-item">D) ₹15</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A8</span> Which number is different? [2, 4, 6, 7, 8]</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Context / Hint: <em>7 is the only odd number</em></div>
-<div class="options-grid">
-<div class="opt-item">A) 2</div>
-<div class="opt-item">B) 4</div>
-<div class="opt-item correct">C) 7 <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">D) 8</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A9</span> Raju is taller than Amit. Amit is taller than Ravi. Who is the shortest?</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Context / Hint: <em>Raju &gt; Amit &gt; Ravi</em></div>
-<div class="options-grid">
-<div class="opt-item">A) Raju</div>
-<div class="opt-item">B) Amit</div>
-<div class="opt-item correct">C) Ravi <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">D) Cannot tell</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A10</span> Which one does NOT belong? (Doctor, Nurse, Teacher, Hospital)</div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Context / Hint: <em>Hospital is a building/institution; the rest are human professions</em></div>
-<div class="options-grid">
-<div class="opt-item">A) Doctor</div>
-<div class="opt-item">B) Nurse</div>
-<div class="opt-item">C) Teacher</div>
-<div class="opt-item correct">D) Hospital <strong>[CORRECT ANSWER]</strong></div>
-</div>
-</div>
-<h3 class="step-title">💡 Section C: Practical Decision Making</h3>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A11</span> You don&#x27;t understand something in class. What should you do?</div>
-<div class="options-grid">
-<div class="opt-item">A) Give up</div>
-<div class="opt-item correct">B) Ask the teacher or someone who can help <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) Copy someone</div>
-<div class="opt-item">D) Ignore it</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A12</span> You make a mistake while doing something. What should you do?</div>
-<div class="options-grid">
-<div class="opt-item">A) Hide it</div>
-<div class="opt-item">B) Blame someone</div>
-<div class="opt-item correct">C) Understand the mistake and try again <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">D) Stop learning</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A13</span> Two students in your group have different ideas. What should you do?</div>
-<div class="options-grid">
-<div class="opt-item">A) Fight</div>
-<div class="opt-item">B) Ignore the other person</div>
-<div class="opt-item correct">C) Listen to both ideas and discuss them <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">D) Leave the group</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A14</span> You have two important tasks and limited time. What should you do?</div>
-<div class="options-grid">
-<div class="opt-item">A) Do nothing</div>
-<div class="opt-item correct">B) Decide which is more urgent and plan your time <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) Randomly choose one</div>
-<div class="opt-item">D) Wait for someone else</div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-green">A15</span> You don&#x27;t know how to do a new task. What is the best approach?</div>
-<div class="options-grid">
-<div class="opt-item">A) Pretend you know</div>
-<div class="opt-item correct">B) Ask questions, learn and try <strong>[CORRECT ANSWER]</strong></div>
-<div class="opt-item">C) Give up</div>
-<div class="opt-item">D) Avoid the task</div>
-</div>
-</div>
-<h2 class="part-title">PART 3: Teacher & Counselor Feedback Framework (16 Questions)</h2>
-<div class="guidance-box" style="margin-bottom:16px;"><strong>Standard 1–5 Rating Scale for Items 1–12:</strong> 1: Very Low | 2: Low | 3: Average | 4: Good | 5: Very Good | N/O: Not Observed</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 1</span> [TF1] How well do the student&#x27;s reported interests match what you have observed? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q1 (Curiosity), Q2 (Joyful Activities), Q6 (Career Paths), Q7 (Dream Role)</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 2</span> [TF2] How well do the student&#x27;s reported strengths match your observations? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q3 (Unique Strengths &amp; Talents)</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 3</span> [TF3] How would you rate the student&#x27;s problem-solving ability? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Aptitude Assessment Score (/15) and Q5 (Challenge Approach)</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 4</span> [TF4] How would you rate the student&#x27;s ability to learn independently? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q4 (Solo Work preference) and Q5 (Self-exploration)</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 5</span> [TF5] How would you rate the student&#x27;s teamwork? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q4 (Group Collaboration) and Q3 (Teamwork Strength)</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 6</span> [TF6] How would you rate the student&#x27;s communication? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q3 (Communication) and Q2 (Storytelling &amp; Explaining)</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 7</span> [TF7] How would you rate the student&#x27;s persistence when facing difficult tasks? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q5 (Keep trying approach) and Q9 (Optimism &amp; Readiness)</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 8</span> [TF_SINCERITY] How would you rate the student&#x27;s sincerity and dedication towards learning and duties? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div class="guidance-box"><strong>Educator Observation Focus Criteria:</strong><ul>
-<li>Genuine effort and earnestness in class assignments and projects.</li>
-<li>Honesty, authenticity, and taking personal ownership of learning.</li>
-<li>Sustained focus without requiring continuous teacher intervention.</li>
-</ul></div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 9</span> [TF_ATTENDANCE] How would you rate the student&#x27;s attendance, punctuality, and regularity? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div class="guidance-box"><strong>Educator Observation Focus Criteria:</strong><ul>
-<li>Regularity in class attendance with minimal unexcused absences.</li>
-<li>Arriving on time for classes, laboratory sessions, and group activities.</li>
-<li>Timely submission of homework, projects, and lab reports.</li>
-</ul></div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 10</span> [TF_DISCIPLINE] How would you rate the student&#x27;s obedience and classroom discipline? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div class="guidance-box"><strong>Educator Observation Focus Criteria:</strong><ul>
-<li>Adherence to school policies, classroom decorum, and instructions.</li>
-<li>Maintaining self-control during independent work and group activities.</li>
-<li>Respectful, non-disruptive behavior towards teachers and classmates.</li>
-</ul></div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 11</span> [TF_RESPECT] How would you rate the student&#x27;s level of respect towards teachers, staff, and peers? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div class="guidance-box"><strong>Educator Observation Focus Criteria:</strong><ul>
-<li>Polite tone, active listening, and courteous speech with teachers and staff.</li>
-<li>Openness to constructive feedback, advice, and guidance.</li>
-<li>Empathy, inclusion, and kindness towards peers of all backgrounds.</li>
-</ul></div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 12</span> [TF_CLEANLINESS] How would you rate the student&#x27;s personal cleanliness, neatness, and care for belongings? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</strong></div>
-<div class="guidance-box"><strong>Educator Observation Focus Criteria:</strong><ul>
-<li>Keeping study desk, laboratory bench, and workspace organized.</li>
-<li>Careful handling and neat presentation of books, notebooks, and equipment.</li>
-<li>Personal hygiene, tidy uniform/attire, and pride in neat work.</li>
-</ul></div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 13</span> [TF8] Which areas appear to be the student&#x27;s strongest based on your observations? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Multi-Select (Choose 1 to 3)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q3 (Strengths)</div>
-<div class="options-grid">
-<div class="opt-item">Academic <span style="font-size:11px; color:#94a3b8;">(academic)</span></div>
-<div class="opt-item">Problem-solving <span style="font-size:11px; color:#94a3b8;">(problem_solving)</span></div>
-<div class="opt-item">Communication <span style="font-size:11px; color:#94a3b8;">(communication)</span></div>
-<div class="opt-item">Creativity <span style="font-size:11px; color:#94a3b8;">(creativity)</span></div>
-<div class="opt-item">Technical/practical skills <span style="font-size:11px; color:#94a3b8;">(technical_practical)</span></div>
-<div class="opt-item">Leadership <span style="font-size:11px; color:#94a3b8;">(leadership)</span></div>
-<div class="opt-item">Teamwork <span style="font-size:11px; color:#94a3b8;">(teamwork)</span></div>
-<div class="opt-item">Sports <span style="font-size:11px; color:#94a3b8;">(sports)</span></div>
-<div class="opt-item">Helping others <span style="font-size:11px; color:#94a3b8;">(helping_others)</span></div>
-<div class="opt-item">Other <span style="font-size:11px; color:#94a3b8;">(other)</span></div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 14</span> [TF9] Which career direction interest areas align best with this student? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Multi-Select (Choose 1 to 3)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q1 (Subjects), Q6 (Career Paths), Q7 (Dream Role)</div>
-<div class="options-grid">
-<div class="opt-item">Mathematics <span style="font-size:11px; color:#94a3b8;">(mathematics)</span></div>
-<div class="opt-item">Science <span style="font-size:11px; color:#94a3b8;">(science)</span></div>
-<div class="opt-item">Computers/Technology <span style="font-size:11px; color:#94a3b8;">(computers_technology)</span></div>
-<div class="opt-item">Arts/Creativity <span style="font-size:11px; color:#94a3b8;">(arts_creativity)</span></div>
-<div class="opt-item">Sports <span style="font-size:11px; color:#94a3b8;">(sports)</span></div>
-<div class="opt-item">Agriculture/Nature <span style="font-size:11px; color:#94a3b8;">(agriculture_nature)</span></div>
-<div class="opt-item">Technical/Machines <span style="font-size:11px; color:#94a3b8;">(technical_machines)</span></div>
-<div class="opt-item">Helping people <span style="font-size:11px; color:#94a3b8;">(helping_people)</span></div>
-<div class="opt-item">Business <span style="font-size:11px; color:#94a3b8;">(business)</span></div>
-<div class="opt-item">Leadership <span style="font-size:11px; color:#94a3b8;">(leadership)</span></div>
-<div class="opt-item">Other <span style="font-size:11px; color:#94a3b8;">(other)</span></div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 15</span> [TF10] What working environment style suits this student best? <span class="badge badge-purple">REQUIRED</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Single-Select (Choose 1)</strong></div>
-<div style="font-size:12.5px; color:#0369a1; background:#e0f2fe; padding:6px 10px; border-radius:6px; margin-bottom:8px;"><strong>Student Reference Data:</strong> Cross-referenced with Student Q4 (Work Environment)</div>
-<div class="options-grid">
-<div class="opt-item">Mostly independent (Solo Work) <span style="font-size:11px; color:#94a3b8;">(independent)</span></div>
-<div class="opt-item">Mostly group-based (Team Collaboration) <span style="font-size:11px; color:#94a3b8;">(group_based)</span></div>
-<div class="opt-item">Comfortable with both (Group Work &amp; Solo Work) <span style="font-size:11px; color:#94a3b8;">(both)</span></div>
-<div class="opt-item">Depends on the task context <span style="font-size:11px; color:#94a3b8;">(depends)</span></div>
-<div class="opt-item">Not enough observation <span style="font-size:11px; color:#94a3b8;">(not_enough)</span></div>
-</div>
-</div>
-<div class="q-card">
-<div class="q-title"><span class="badge badge-purple">TF 16</span> [TF_COMMENT] Educator Observations &amp; Detailed Assessment (Up to 400–500 words) <span class="badge badge-amber">OPTIONAL</span></div>
-<div style="font-size:12px; color:#64748b; margin-bottom:8px;">Format: <strong>Long-form Text Area (Max 3,500 characters)</strong></div>
-</div>
-<h2 class="part-title">PART 4: Student Registration & Profile Intake Fields</h2>
+<h3 style="color:#4f46e5; margin-top:-6px; margin-bottom:20px;">भाग 1: विद्यार्थी करियर प्रश्नावली (अपनी रुचि और क्षमता को समझना)</h3>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">**Structure:** Total: 10 Core Questions, 1 Conditional Sub-Question, Proof Prompts across 5 Journey Steps.</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*कुल: 10 मुख्य प्रश्न, 1 आवश्यकतानुसार पूछा जाने वाला उप-प्रश्न और 5 चरणों में प्रमाण/उदाहरण से जुड़े प्रश्न।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h3 class="step-title">▶ Step 1: 🌱 My Passions</h3>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">चरण 1: 🌱 मुझे क्या करना सबसे अच्छा लगता है?</div>
+<div class="q-title" style="margin-top:14px;">[Q1] Which subjects bring out your curiosity and enthusiasm?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 1] किन विषयों को पढ़ते समय आपकी जिज्ञासा और उत्साह बढ़ जाता है?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Multi-Select (Max 3) | बहु-विकल्प चयन (अधिकतम 3)</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Passions (`passions`) | मेरी रुचियाँ</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 🧮 Mathematics &amp; Logic [`mathematics`] — 🧮 गणित और तर्कशक्ति [`गणित`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🔬 Science &amp; Discovery [`science`] — 🔬 विज्ञान और खोज [`विज्ञान`]</div>
+<div class="opt-item" style="margin-left:12px;">• 💻 Computers &amp; Technology [`computers`] — 💻 कंप्यूटर और तकनीक [`कंप्यूटर`]</div>
+<div class="opt-item" style="margin-left:12px;">• 📚 Languages &amp; Literature [`languages`] — 📚 भाषाएँ और साहित्य [`भाषाएँ`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🏛️ Social Studies &amp; History [`social_studies`] — 🏛️ सामाजिक अध्ययन और इतिहास [`सामाजिक अध्ययन`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🎨 Creative Arts &amp; Music [`arts`] — 🎨 रचनात्मक कला और संगीत [`रचनात्मक कला`]</div>
+<div class="opt-item" style="margin-left:12px;">• ⚽ Sports &amp; Athletics [`sports`] — ⚽ खेल और शारीरिक गतिविधियाँ [`खेल`]</div>
+<div class="opt-item" style="margin-left:12px;">• ✨ Other Exciting Subjects [`other`] — ✨ अन्य पसंदीदा विषय [`अन्य`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Encourages broad discovery without academic pressure.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न विद्यार्थियों को बिना किसी शैक्षणिक दबाव के अपनी विभिन्न रुचियों और पसंद के विषयों को पहचानने एवं खोजने के लिए प्रोत्साहित करता है।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h3 class="step-title">▶ Step 2: ⭐ My Talents</h3>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">चरण 2: ⭐ मेरी क्षमताएँ</div>
+<div class="q-title" style="margin-top:14px;">[Q2] Which activities do you find most fun and fulfilling?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 2] किन गतिविधियों को करना आपको सबसे अधिक मज़ेदार और संतोषजनक लगता है?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Multi-Select (Max 3) | बहु-विकल्प चयन (अधिकतम 3)</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Joyful Activities (`joyful_activities`) | आनंददायक गतिविधियाँ</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 🧩 Solving fun puzzles &amp; brain teasers [`solving_puzzles`] — 🧩 मज़ेदार पहेलियाँ और दिमागी प्रश्न हल करना [`पहेलियाँ_हल_करना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 💻 Creating with technology &amp; gadgets [`using_computers`] — 💻 तकनीक और गैजेट्स के साथ कुछ नया बनाना [`कंप्यूटर_का_उपयोग`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🛠️ Designing or building cool things [`building_repairing`] — 🛠️ नई चीज़ों को डिज़ाइन करना या बनाना [`बनाना_मरम्मत_करना`]</div>
+<div class="opt-item" style="margin-left:12px;">• ✏️ Drawing, sketching &amp; creative design [`drawing_designing`] — ✏️ चित्र बनाना, स्केच करना और रचनात्मक डिज़ाइन करना [`चित्र_बनाना_डिज़ाइन_करना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🌿 Exploring nature &amp; environment [`working_nature`] — 🌿 प्रकृति और पर्यावरण को जानना और समझना [`प्रकृति_के_साथ_काम`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🤝 Inspiring &amp; helping friends [`helping_people`] — 🤝 दोस्तों की मदद करना और उन्हें प्रेरित करना [`लोगों_की_मदद_करना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🏀 Playing sports &amp; staying active [`sports_physical`] — 🏀 खेल खेलना और शारीरिक रूप से सक्रिय रहना [`खेल_शारीरिक_गतिविधि`]</div>
+<div class="opt-item" style="margin-left:12px;">• 📖 Discovering new books &amp; ideas [`reading_learning`] — 📖 नई किताबें पढ़ना और नए विचारों को जानना [`पढ़ना_सीखना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🗣️ Sharing ideas &amp; storytelling [`talking_explaining`] — 🗣️ अपने विचार साझा करना और कहानियाँ सुनाना [`बात_करना_समझाना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🎯 Organizing events &amp; leading teams [`organizing_leading`] — 🎯 कार्यक्रम आयोजित करना और टीम का नेतृत्व करना [`आयोजन_नेतृत्व`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Helps identify informal and extracurricular talents.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न विद्यार्थियों की औपचारिक पढ़ाई के बाहर विकसित होने वाली क्षमताओं और पाठ्येतर प्रतिभाओं को पहचानने में मदद करता है।*</p>
+<div class="q-title" style="margin-top:14px;">[Q3] What are your unique strengths and talents?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 3] आपकी विशिष्ट खूबियाँ और प्रतिभाएँ क्या हैं?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Multi-Select (Max 3) | बहु-विकल्प चयन (अधिकतम 3)</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Superpowers (`superpowers`) | मेरी विशेष क्षमताएँ</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 💡 Creative Problem-Solving [`problem_solving`] — 💡 रचनात्मक तरीके से समस्याओं का समाधान करना [`समस्या_समाधान`]</div>
+<div class="opt-item" style="margin-left:12px;">• 💬 Expressing Ideas &amp; Communication [`communication`] — 💬 विचारों को व्यक्त करना और प्रभावी संवाद करना [`संवाद_कौशल`]</div>
+<div class="opt-item" style="margin-left:12px;">• 📐 Mathematical &amp; Logical Thinking [`mathematics`] — 📐 गणितीय और तार्किक सोच [`गणित`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🎨 Artistic &amp; Imaginative Thinking [`creativity`] — 🎨 कलात्मक और कल्पनाशील सोच [`रचनात्मकता`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🤖 Digital &amp; Tech Skills [`computers`] — 🤖 डिजिटल और तकनीकी कौशल [`कंप्यूटर`]</div>
+<div class="opt-item" style="margin-left:12px;">• ⚙️ Hands-on Technical Ability [`practical_technical`] — ⚙️ व्यावहारिक और तकनीकी कार्य करने की क्षमता [`व्यावहारिक_तकनीकी`]</div>
+<div class="opt-item" style="margin-left:12px;">• 👥 Bringing People Together (Teamwork) [`teamwork`] — 👥 लोगों को साथ लेकर चलना और टीम में काम करना [`टीम_वर्क`]</div>
+<div class="opt-item" style="margin-left:12px;">• 👑 Motivating Others (Leadership) [`leadership`] — 👑 दूसरों को प्रेरित करना और नेतृत्व करना [`नेतृत्व`]</div>
+<div class="opt-item" style="margin-left:12px;">• ❤️ Empathy &amp; Helping Spirit [`helping_others`] — ❤️ दूसरों की भावनाओं को समझना और मदद करने की भावना [`दूसरों_की_मदद`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🏃 Physical Agility &amp; Sports [`sports`] — 🏃 शारीरिक दक्षता और खेल-कूद [`खेल`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Matches student self-efficacy directly with counselor feedback.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न विद्यार्थियों की अपनी क्षमताओं में विश्वास (आत्म-प्रभावकारिता) को शिक्षक या परामर्शदाता के आकलन के साथ सीधे जोड़ने में मदद करता है।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h3 class="step-title">▶ Step 3: 🚀 My Style</h3>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">चरण 3: 🚀 मेरी कार्यशैली</div>
+<div class="q-title" style="margin-top:14px;">[Q4] In what environment do you feel most energised?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 4] आप किस प्रकार के वातावरण में सबसे अधिक ऊर्जावान और उत्साहित महसूस करते हैं?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Single-Select + Real Proof Requirement | एक-विकल्प चयन + वास्तविक उदाहरण देना अनिवार्य</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Ideal Environment (`ideal_environment`) | आदर्श कार्य वातावरण</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 🧘 Focused &amp; independent space (Solo Work) [`by_myself`] — 🧘 शांत और एकाग्र वातावरण — अकेले काम करना [`अकेले_काम`]</div>
+<div class="proof-box">↳ *Proof Prompt / उदाहरण संकेत:* &quot;Give a quick example or proof of solo work you completed on your own&quot; / “अपने आप किए गए किसी ऐसे कार्य या प्रोजेक्ट का छोटा-सा उदाहरण दें, जिसे आपने अकेले पूरा किया हो।”</div>
+<div class="opt-item" style="margin-left:12px;">• 👥 Vibrant team collaboration (Group Work) [`with_group`] — 👥 सक्रिय और सहयोगात्मक वातावरण — समूह में काम करना [`समूह_के_साथ`]</div>
+<div class="proof-box">↳ *Proof Prompt / उदाहरण संकेत:* &quot;Give a quick example or proof of group work you did with a team&quot; / “टीम के साथ किए गए किसी कार्य या प्रोजेक्ट का छोटा-सा उदाहरण दें।”</div>
+<div class="opt-item" style="margin-left:12px;">• ⚖️ A healthy mix of both (Group Work &amp; Solo Work) [`both`] — ⚖️ दोनों का संतुलित मिश्रण — समूह और अकेले, दोनों तरह से काम करना [`दोनों`]</div>
+<div class="proof-box">↳ *Proof Prompt / उदाहरण संकेत:* &quot;Give an example of a project you did (group or solo)&quot; / “किसी ऐसे प्रोजेक्ट का उदाहरण दें जिसे आपने समूह में या अकेले किया हो।”</div>
+<div class="opt-item" style="margin-left:12px;">• 🔄 Dynamic — depending on the project [`depends`] — 🔄 परिस्थिति के अनुसार बदलने वाली कार्यशैली — प्रोजेक्ट पर निर्भर [`परिस्थिति_पर_निर्भर`]</div>
+<div class="proof-box">↳ *Proof Prompt / उदाहरण संकेत:* &quot;Give a quick example of a recent group or solo task&quot; / “हाल ही में किए गए किसी समूह या व्यक्तिगत कार्य का छोटा-सा उदाहरण दें।”</div>
+<div class="opt-item" style="margin-left:12px;">• 🌟 Eager to try all work styles [`exploring`] — 🌟 हर तरह की कार्यशैली आज़माने के लिए उत्सुक [`खोज_और_प्रयोग`]</div>
+<div class="proof-box">↳ *Proof Prompt / उदाहरण संकेत:* &quot;Give a quick example of a project or task you enjoyed&quot; / “किसी ऐसे प्रोजेक्ट या कार्य का छोटा-सा उदाहरण दें जिसे करने में आपको बहुत आनंद आया।”</div>
+<div class="pedagogical-note">Pedagogical Note:** Mandatory real-life example input (up to 150 chars) prevents casual guessing.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: वास्तविक जीवन के उदाहरण को अनिवार्य रूप से शामिल करने से विद्यार्थी केवल अनुमान लगाकर उत्तर देने के बजाय अपने अनुभव के आधार पर अपनी पसंद को समझने और व्यक्त करने के लिए प्रेरित होते हैं।*</p>
+<div class="q-title" style="margin-top:14px;">[Q5] When faced with an exciting new challenge, how do you love to tackle it?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 5] जब आपके सामने कोई रोमांचक और नई चुनौती आती है, तो आप उसे किस तरह हल करना पसंद करते हैं?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Single-Select (Choose 1) | एक-विकल्प चयन (1 विकल्प चुनें)</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Growth Mindset (`growth_mindset`) | सोच का विकास</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 🔍 Dive right in and experiment on my own [`solve_myself`] — 🔍 सीधे चुनौती में जुट जाना और खुद प्रयोग करके समाधान खोजना [`स्वयं_समाधान`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🧠 Explore first, then brainstorm with others [`try_then_ask`] — 🧠 पहले समझना और खोज करना, फिर दूसरों के साथ विचार-विमर्श करना [`पहले_प्रयास_फिर_पूछना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🙋 Collaborate with a mentor or teammate right away [`ask_immediately`] — 🙋 तुरंत किसी मार्गदर्शक या टीम के साथी के साथ मिलकर काम करना [`तुरंत_मदद_माँगना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 💪 Stay curious and persevere until I solve it! [`keep_trying`] — 💪 जिज्ञासु बने रहना और समाधान मिलने तक लगातार प्रयास करते रहना! [`प्रयास_जारी_रखना`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🔮 Find a novel, creative way around it [`creative_ways`] — 🔮 चुनौती को हल करने के लिए कोई नया और रचनात्मक तरीका खोजना [`रचनात्मक_तरीके`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Evaluates independent perseverance vs collaborative tendency.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न यह समझने में मदद करता है कि विद्यार्थी किसी चुनौती का सामना करते समय स्वतंत्र रूप से प्रयास करना, दूसरों के साथ मिलकर काम करना या लगातार प्रयास करते रहना—इनमें से किस प्रवृत्ति को अधिक अपनाता है।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h3 class="step-title">▶ Step 4: 🎯 My Future Dreams</h3>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">चरण 4: 🎯 मेरे भविष्य के सपने</div>
+<div class="q-title" style="margin-top:14px;">[Q6] Which career paths sound most exciting to explore?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 6] आप किन करियर क्षेत्रों को जानने और उनमें आगे बढ़ने के लिए सबसे अधिक उत्साहित हैं?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Multi-Select (Max 2) | बहु-विकल्प चयन (अधिकतम 2)</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Future Passions (`future_passions`) | भविष्य की रुचियाँ</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 💻 Building the Future with Technology [`technology`] — 💻 तकनीक के साथ भविष्य का निर्माण करना [`तकनीक`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🤝 Working with &amp; Empowering People [`people`] — 🤝 लोगों के साथ काम करना और उन्हें सशक्त बनाना [`लोग`]</div>
+<div class="opt-item" style="margin-left:12px;">• 📊 Analyzing Data &amp; Financial Insights [`numbers_data`] — 📊 आँकड़ों का विश्लेषण और वित्तीय जानकारी को समझना [`संख्या_और_आँकड़े`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🏗️ Engineering &amp; Crafting Innovations [`building_repairing`] — 🏗️ इंजीनियरिंग और नई तकनीकों/वस्तुओं का निर्माण करना [`निर्माण_और_मरम्मत`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🌱 Sustainable Development &amp; Nature [`nature_agriculture`] — 🌱 सतत विकास और प्रकृति के साथ काम करना [`प्रकृति_और_कृषि`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🎨 Arts, Media &amp; Creative Design [`creative_design`] — 🎨 कला, मीडिया और रचनात्मक डिज़ाइन [`रचनात्मक_डिज़ाइन`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🩺 Healthcare, Education &amp; Mentorship [`teaching_helping`] — 🩺 स्वास्थ्य सेवा, शिक्षा और मार्गदर्शन [`शिक्षण_और_मदद`]</div>
+<div class="opt-item" style="margin-left:12px;">• 💼 Entrepreneurship &amp; Business Innovation [`business`] — 💼 उद्यमिता और व्यवसाय में नए विचारों को आगे बढ़ाना [`व्यवसाय`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🏕️ Outdoor Exploration &amp; Environmental Fieldwork [`outdoor`] — 🏕️ बाहरी गतिविधियाँ, प्रकृति की खोज और पर्यावरणीय क्षेत्रीय कार्य [`बाहरी_गतिविधियाँ`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🌈 Open to discovering many exciting fields! [`exploring_all`] — 🌈 कई अलग-अलग रोमांचक क्षेत्रों को जानने के लिए तैयार ! [`सभी_क्षेत्रों_की_खोज`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Narrows aspirational vocational sectors.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न विद्यार्थियों की रुचियों और आकांक्षाओं के आधार पर संभावित करियर क्षेत्रों को सीमित करने और उन्हें अपनी भविष्य की दिशा तलाशने में मदद करता है।*</p>
+<div class="q-title" style="margin-top:14px;">[Q7] Is there a dream career or role you are eager to learn more about?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 7] क्या कोई ऐसा करियर या भूमिका है जिसके बारे में आप और अधिक जानने के लिए उत्सुक हैं?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Conditional Single-Select | शर्ताधारित एक-विकल्प चयन</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Aspirations (`aspirations`) | मेरी आकांक्षाएँ</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 🌟 Yes! I have a dream career in mind [Triggers follow-up] [`yes_know_one`] — 🌟 हाँ! मेरे मन में एक पसंदीदा करियर है [आगे का प्रश्न प्रदर्शित होगा] [`एक_करियर_पता_है`]</div>
+<div class="opt-item" style="margin-left:12px;">• 💡 I have several exciting ideas [`few_ideas`] — 💡 मेरे मन में कई रोचक करियर विकल्प हैं [`कुछ_विचार`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🚀 I am ready to explore and discover new paths! [`dont_know`] — 🚀 मैं नए करियर विकल्पों को खोजने और जानने के लिए तैयार हूँ! [`अभी_पता_नहीं`]</div>
+<div class="opt-item" style="margin-left:12px;">• Conditional Sub-Question (Triggered if &#x27;yes_know_one&#x27; is chosen):**</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">**[Q7_FOLLOWUP]** What dream career excites you? (Give a brief example / proof) (Text, Max 100 chars)</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*[प्रश्न 7_आगे] आपको कौन-सा पसंदीदा करियर सबसे अधिक उत्साहित करता है? (संक्षिप्त उदाहरण / प्रमाण दें) (लिखित उत्तर, अधिकतम 100 अक्षर)*</p>
+<div class="pedagogical-note">Pedagogical Note:** Enables free-form aspiration capture when student has a clear vision.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यदि विद्यार्थी के मन में किसी स्पष्ट करियर की कल्पना या लक्ष्य है, तो यह प्रश्न उसे अपने शब्दों में अपनी आकांक्षा व्यक्त करने का अवसर देता है।*</p>
+<div class="q-title" style="margin-top:14px;">[Q8] What inspires you about this path?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 8] इस करियर क्षेत्र के बारे में आपको क्या प्रेरित करता है?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Multi-Select (Max 4) | बहु-विकल्प चयन (अधिकतम 4)</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Inspiration (`inspiration`) | प्रेरणा</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• ❤️ I truly enjoy doing this kind of work [`enjoy_work`] — ❤️ मुझे इस तरह का काम करना वास्तव में पसंद है [`काम_करने_में_रुचि`]</div>
+<div class="opt-item" style="margin-left:12px;">• ⭐ It aligns with my natural talents [`good_at_it`] — ⭐ यह मेरी स्वाभाविक प्रतिभाओं और क्षमताओं से मेल खाता है [`इसमें_अच्छा_हूँ`]</div>
+<div class="opt-item" style="margin-left:12px;">• 👨‍👩‍👧 Inspired by role models in my family/community [`family_does_it`] — 👨‍👩‍👧 मेरे परिवार या समुदाय के किसी प्रेरणादायक व्यक्ति से प्रेरणा मिली है [`परिवार_में_कोई_करता_है`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🎓 Encouraged by teachers or mentors [`suggested`] — 🎓 शिक्षकों या मार्गदर्शकों ने मुझे इसके लिए प्रोत्साहित किया है [`सुझाव_मिला`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🌍 Opportunity to make a positive impact on the world [`help_people`] — 🌍 दुनिया में सकारात्मक बदलाव लाने और लोगों की मदद करने का अवसर मिलता है [`लोगों_की_मदद`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🚀 Great growth &amp; learning opportunities [`good_opportunities`] — 🚀 आगे बढ़ने और नई चीज़ें सीखने के अच्छे अवसर मिलते हैं [`अच्छे_अवसर`]</div>
+<div class="opt-item" style="margin-left:12px;">• 📖 Inspired by amazing stories &amp; innovations [`saw_read`] — 📖 प्रेरणादायक कहानियों और नई खोजों/आविष्कारों से प्रेरणा मिली है [`देखा_या_पढ़ा`]</div>
+<div class="opt-item" style="margin-left:12px;">• ✨ Other exciting reasons [`other`] — ✨ अन्य रोचक कारण [`अन्य`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Explores intrinsic vs extrinsic motivational drivers.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न यह समझने में मदद करता है कि विद्यार्थी किसी करियर की ओर मुख्य रूप से अपनी आंतरिक रुचि और पसंद से आकर्षित है या बाहरी प्रभावों, जैसे परिवार, शिक्षक, मार्गदर्शक और अवसरों से।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h3 class="step-title">▶ Step 5: ☀️ My Growth Potential</h3>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">चरण 5: ☀️ मेरी विकास क्षमता</div>
+<div class="q-title" style="margin-top:14px;">[Q9] How eager and ready do you feel to discover your future possibilities?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 9] आप अपने भविष्य की संभावनाओं को जानने और तलाशने के लिए कितने उत्सुक और तैयार महसूस करते हैं?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** 5-Point Rating Scale | 5-बिंदु रेटिंग स्केल</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Optimism (`optimism`) | आशावाद</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 🌱 1 - Curious to start exploring [`1`] — 🌱 1 – नई संभावनाओं को तलाशना शुरू करने के लिए उत्सुक हूँ [`1`]</div>
+<div class="opt-item" style="margin-left:12px;">• 💡 2 - Learning new ideas every day [`2`] — 💡 2 – हर दिन नए विचार सीख रहा/रही हूँ [`2`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🙂 3 - Positive and open-minded [`3`] — 🙂 3 – सकारात्मक हूँ और नए विचारों के लिए खुला/खुली हूँ [`3`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🌟 4 - Confident in my potential [`4`] — 🌟 4 – अपनी क्षमता पर मुझे विश्वास है [`4`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🚀 5 - Super excited &amp; ready to shine! [`5`] — 🚀 5 – बहुत उत्साहित हूँ और अपनी पहचान बनाने के लिए पूरी तरह तैयार हूँ! [`5`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Quantifies student enthusiasm and self-belief.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न विद्यार्थी के उत्साह, आत्मविश्वास और अपनी क्षमता पर विश्वास के स्तर को समझने में मदद करता है।*</p>
+<div class="q-title" style="margin-top:14px;">[Q10] What positive opportunities or guidance would help you reach your highest potential?</div>
+<div class="q-title" style="margin-top:14px;">[प्रश्न 10] अपनी सर्वोच्च क्षमता तक पहुँचने के लिए आपके लिए कौन-से सकारात्मक अवसर या मार्गदर्शन उपयोगी होंगे?</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Type / प्रकार:** Multi-Select (Max 3) | बहु-विकल्प चयन (अधिकतम 3)</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Category / श्रेणी:** Growth Opportunities (`growth_opportunities`) | विकास के अवसर</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• 💻 Exploring cutting-edge tech &amp; practical skills [`explore_tech`] — 💻 नई और उन्नत तकनीकों को जानना तथा व्यावहारिक कौशल सीखना [`तकनीक_की_खोज`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🔬 Hands-on projects &amp; creative experiments [`hands_on`] — 🔬 व्यावहारिक प्रोजेक्ट करना और रचनात्मक प्रयोग करना [`व्यावहारिक_कार्य`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🧠 Mentorship &amp; guidance from experts [`mentorship`] — 🧠 विशेषज्ञों से मार्गदर्शन और सलाह प्राप्त करना [`मार्गदर्शन`]</div>
+<div class="opt-item" style="margin-left:12px;">• 👥 Interactive workshops &amp; team activities [`workshops`] — 👥 इंटरैक्टिव कार्यशालाओं और टीम गतिविधियों में भाग लेना [`कार्यशालाएँ`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🎨 Creative design &amp; artistic opportunities [`arts_creative`] — 🎨 रचनात्मक डिज़ाइन और कला से जुड़े अवसर प्राप्त करना [`कला_और_रचनात्मकता`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🏆 Sports coaching &amp; leadership programs [`sports_leadership`] — 🏆 खेल प्रशिक्षण और नेतृत्व विकास कार्यक्रमों में भाग लेना [`खेल_और_नेतृत्व`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🏛️ Discovering top colleges &amp; field exposures [`top_colleges`] — 🏛️ श्रेष्ठ कॉलेजों के बारे में जानना और विभिन्न क्षेत्रों का व्यावहारिक अनुभव प्राप्त करना [`श्रेष्ठ_कॉलेज`]</div>
+<div class="opt-item" style="margin-left:12px;">• ⭐ Discovering hidden talents &amp; strengths [`discover_talents`] — ⭐ अपनी छिपी हुई प्रतिभाओं और क्षमताओं को पहचानना [`प्रतिभाओं_की_खोज`]</div>
+<div class="opt-item" style="margin-left:12px;">• 🎯 Personalized career counselling [`general_guidance`] — 🎯 व्यक्तिगत करियर परामर्श प्राप्त करना [`सामान्य_मार्गदर्शन`]</div>
+<div class="pedagogical-note">Pedagogical Note:** Directly informs counselor recommendation strategies.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*शैक्षिक उद्देश्य: यह प्रश्न परामर्शदाता को विद्यार्थी की आवश्यकताओं के अनुसार उचित मार्गदर्शन और विकास के अवसर सुझाने में सीधे मदद करता है।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h2 class="part-title">PART 2: Student Brain &amp; Life Assessment (15 Questions)</h2>
+<h3 style="color:#4f46e5; margin-top:-6px; margin-bottom:20px;">भाग 2: विद्यार्थी मस्तिष्क एवं जीवन आकलन (15 प्रश्न)</h3>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">**Format / प्रारूप:** 4 Multiple-Choice Options (A, B, C, D) per question, 1 point per correct answer (Score /15).</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*प्रत्येक प्रश्न में 4 बहु-विकल्पीय उत्तर (A, B, C, D) होंगे। प्रत्येक सही उत्तर के लिए 1 अंक निर्धारित है। (कुल अंक: 15)*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">▶ 🌍 Section A: General Awareness / खंड A: सामान्य जागरूकता</div>
+<div class="q-title" style="margin-top:14px;">[A1] What should you do when the traffic light is red?</div>
+<div class="q-title" style="margin-top:14px;">[A1] ट्रैफिक लाइट लाल होने पर आपको क्या करना चाहिए?</div>
+<div class="opt-item">○ A) Go quickly / जल्दी से आगे बढ़ जाना</div>
+<div class="opt-item correct">✔ **B) Stop and wait (CORRECT ANSWER) / रुकना और इंतज़ार करना (सही उत्तर)**</div>
+<div class="opt-item">○ C) Ignore it / लाल बत्ती को नज़रअंदाज़ करना</div>
+<div class="opt-item">○ D) Run across / सड़क पर दौड़कर पार करना</div>
+<div class="q-title" style="margin-top:14px;">[A2] Which number is for police, ambulance, and fire engine?</div>
+<div class="q-title" style="margin-top:14px;">[A2] पुलिस, एम्बुलेंस और दमकल के लिए कौन-सा नंबर है?</div>
+<div class="opt-item">○ A) Police - 100 / पुलिस – 100</div>
+<div class="opt-item">○ B) Ambulance - 108 / एम्बुलेंस – 108</div>
+<div class="opt-item">○ C) Fire - 101 / दमकल – 101</div>
+<div class="opt-item correct">✔ **D) All in one - 112 (CORRECT ANSWER) / सभी आपातकालीन सेवाओं के लिए एक नंबर – 112 (सही उत्तर)**</div>
+<div class="q-title" style="margin-top:14px;">[A3] Before crossing a busy road, what should you do?</div>
+<div class="q-title" style="margin-top:14px;">[A3] व्यस्त सड़क पार करने से पहले आपको क्या करना चाहिए?</div>
+<div class="opt-item">○ A) Run without looking / बिना देखे सड़क पार करने के लिए दौड़ना</div>
+<div class="opt-item correct">✔ **B) Look carefully for traffic and cross safely (CORRECT ANSWER) / यातायात को ध्यान से देखकर सुरक्षित तरीके से सड़क पार करना (सही उत्तर)**</div>
+<div class="opt-item">○ C) Follow anyone nearby / पास में मौजूद किसी भी व्यक्ति का अनुसरण करना</div>
+<div class="opt-item">○ D) Use your phone while crossing / सड़क पार करते समय मोबाइल फोन का इस्तेमाल करना</div>
+<div class="q-title" style="margin-top:14px;">[A4] Why should we wash our hands before eating?</div>
+<div class="q-title" style="margin-top:14px;">[A4] खाना खाने से पहले हमें हाथ क्यों धोने चाहिए?</div>
+<div class="opt-item correct">✔ **A) To remove germs and reduce illness (CORRECT ANSWER) / कीटाणुओं को हटाने और बीमारियों के खतरे को कम करने के लिए (सही उत्तर)**</div>
+<div class="opt-item">○ B) To make our hands cold / हाथों को ठंडा करने के लिए</div>
+<div class="opt-item">○ C) To make food taste better / भोजन का स्वाद बेहतर बनाने के लिए</div>
+<div class="opt-item">○ D) It is not necessary / हाथ धोना आवश्यक नहीं है</div>
+<div class="q-title" style="margin-top:14px;">[A5] Which planet do we live on?</div>
+<div class="q-title" style="margin-top:14px;">[A5] हम किस ग्रह पर रहते हैं?</div>
+<div class="opt-item">○ A) Mars / मंगल ग्रह</div>
+<div class="opt-item correct">✔ **B) Earth (CORRECT ANSWER) / पृथ्वी (सही उत्तर)**</div>
+<div class="opt-item">○ C) Jupiter / बृहस्पति ग्रह</div>
+<div class="opt-item">○ D) Venus / शुक्र ग्रह</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">▶ 🧮 Section B: Basic Aptitude / खंड B: बुनियादी अभिरुचि एवं योग्यता</div>
+<div class="q-title" style="margin-top:14px;">[A6] What comes next in the sequence? 2 → 4 → 6 → 8 → ?</div>
+<div class="q-title" style="margin-top:14px;">[A6] क्रम में अगली संख्या कौन-सी होगी? 2 → 4 → 6 → 8 → ?</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*Hint / संदर्भ:* Even numbers incrementing by 2 / सम संख्याएँ 2 के क्रम से बढ़ रही हैं</p>
+<div class="opt-item">○ A) 9</div>
+<div class="opt-item correct">✔ **B) 10 (CORRECT ANSWER / सही उत्तर)**</div>
+<div class="opt-item">○ C) 11</div>
+<div class="opt-item">○ D) 12</div>
+<div class="q-title" style="margin-top:14px;">[A7] If 3 pencils cost ₹15, how much does 1 pencil cost?</div>
+<div class="q-title" style="margin-top:14px;">[A7] यदि 3 पेंसिलों की कीमत ₹15 है, तो 1 पेंसिल की कीमत कितनी होगी?</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*Hint / संदर्भ:* 15 ÷ 3 = 5</p>
+<div class="opt-item">○ A) ₹3</div>
+<div class="opt-item correct">✔ **B) ₹5 (CORRECT ANSWER / सही उत्तर)**</div>
+<div class="opt-item">○ C) ₹10</div>
+<div class="opt-item">○ D) ₹15</div>
+<div class="q-title" style="margin-top:14px;">[A8] Which number is different? [2, 4, 6, 7, 8]</div>
+<div class="q-title" style="margin-top:14px;">[A8] इनमें से कौन-सी संख्या अलग है? [2, 4, 6, 7, 8]</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*Hint / संदर्भ:* 7 is the only odd number / 7 एकमात्र विषम संख्या है</p>
+<div class="opt-item">○ A) 2</div>
+<div class="opt-item">○ B) 4</div>
+<div class="opt-item correct">✔ **C) 7 (CORRECT ANSWER / सही उत्तर)**</div>
+<div class="opt-item">○ D) 8</div>
+<div class="q-title" style="margin-top:14px;">[A9] Raju is taller than Amit. Amit is taller than Ravi. Who is the shortest?</div>
+<div class="q-title" style="margin-top:14px;">[A9] राजू, अमित से लंबा है। अमित, रवि से लंबा है। सबसे छोटा कौन है?</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*Hint / संदर्भ:* Raju &gt; Amit &gt; Ravi</p>
+<div class="opt-item">○ A) Raju / राजू</div>
+<div class="opt-item">○ B) Amit / अमित</div>
+<div class="opt-item correct">✔ **C) Ravi (CORRECT ANSWER) / रवि (सही उत्तर)**</div>
+<div class="opt-item">○ D) Cannot tell / निश्चित रूप से नहीं बता सकते</div>
+<div class="q-title" style="margin-top:14px;">[A10] Which one does NOT belong? (Doctor, Teacher, Engineer, Chair)</div>
+<div class="q-title" style="margin-top:14px;">[A10] इनमें से कौन-सा एक ही श्रेणी में नहीं आता? (डॉक्टर, शिक्षक, इंजीनियर, कुर्सी)</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*Hint / Context:* Doctor, Teacher, and Engineer are human professions; Chair is an inanimate object</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*संकेत / संदर्भ:* डॉक्टर, शिक्षक और इंजीनियर मानवीय पेशे (व्यवसाय) हैं; कुर्सी एक निर्जीव वस्तु (फर्नीचर) है</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*(Note: Clean, uncontroversial replacement avoiding confusion between places and similar healthcare occupations)*</p>
+<div class="opt-item">○ A) Doctor / डॉक्टर</div>
+<div class="opt-item">○ B) Teacher / शिक्षक</div>
+<div class="opt-item">○ C) Engineer / इंजीनियर</div>
+<div class="opt-item correct">✔ **D) Chair (CORRECT ANSWER) / कुर्सी (सही उत्तर)**</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<div style="font-weight:700; color:#3b82f6; margin-bottom:12px;">▶ 💡 Section C: Practical Decision Making / खंड C: व्यावहारिक निर्णय लेने की क्षमता</div>
+<div class="q-title" style="margin-top:14px;">[A11] You don&#x27;t understand something in class. What should you do?</div>
+<div class="q-title" style="margin-top:14px;">[A11] यदि आपको कक्षा में कोई बात समझ में नहीं आती है, तो आपको क्या करना चाहिए?</div>
+<div class="opt-item">○ A) Give up / प्रयास छोड़ देना</div>
+<div class="opt-item correct">✔ **B) Ask the teacher or someone who can help (CORRECT ANSWER) / शिक्षक या किसी ऐसे व्यक्ति से पूछना जो आपकी मदद कर सके (सही उत्तर)**</div>
+<div class="opt-item">○ C) Copy someone / किसी दूसरे विद्यार्थी की नकल करना</div>
+<div class="opt-item">○ D) Ignore it / उसे नज़रअंदाज़ करना</div>
+<div class="q-title" style="margin-top:14px;">[A12] You make a mistake while doing something. What should you do?</div>
+<div class="q-title" style="margin-top:14px;">[A12] किसी कार्य को करते समय आपसे कोई गलती हो जाती है। आपको क्या करना चाहिए?</div>
+<div class="opt-item">○ A) Hide it / गलती छिपाना</div>
+<div class="opt-item">○ B) Blame someone / किसी और को दोष देना</div>
+<div class="opt-item correct">✔ **C) Understand the mistake and try again (CORRECT ANSWER) / अपनी गलती को समझना और दोबारा प्रयास करना (सही उत्तर)**</div>
+<div class="opt-item">○ D) Stop learning / सीखना बंद कर देना</div>
+<div class="q-title" style="margin-top:14px;">[A13] Two students in your group have different ideas. What should you do?</div>
+<div class="q-title" style="margin-top:14px;">[A13] आपके समूह में दो विद्यार्थियों के विचार अलग-अलग हैं। आपको क्या करना चाहिए?</div>
+<div class="opt-item">○ A) Fight / लड़ाई करना</div>
+<div class="opt-item">○ B) Ignore the other person / दूसरे व्यक्ति की बात को नज़रअंदाज़ करना</div>
+<div class="opt-item correct">✔ **C) Listen to both ideas and discuss them (CORRECT ANSWER) / दोनों के विचार ध्यान से सुनना और उन पर चर्चा करना (सही उत्तर)**</div>
+<div class="opt-item">○ D) Leave the group / समूह छोड़ देना</div>
+<div class="q-title" style="margin-top:14px;">[A14] You have two important tasks and limited time. What should you do?</div>
+<div class="q-title" style="margin-top:14px;">[A14] आपके पास दो महत्वपूर्ण कार्य हैं और समय सीमित है। आपको क्या करना चाहिए?</div>
+<div class="opt-item">○ A) Do nothing / कुछ भी न करना</div>
+<div class="opt-item correct">✔ **B) Decide which is more urgent and plan your time (CORRECT ANSWER) / तय करना कि कौन-सा कार्य अधिक जरूरी है और अपने समय की योजना बनाना (सही उत्तर)**</div>
+<div class="opt-item">○ C) Randomly choose one / बिना सोचे किसी एक कार्य को चुन लेना</div>
+<div class="opt-item">○ D) Wait for someone else / किसी और के निर्णय का इंतज़ार करना</div>
+<div class="q-title" style="margin-top:14px;">[A15] You don&#x27;t know how to do a new task. What is the best approach?</div>
+<div class="q-title" style="margin-top:14px;">[A15] आपको कोई नया कार्य करना नहीं आता है। ऐसी स्थिति में सबसे अच्छा तरीका क्या है?</div>
+<div class="opt-item">○ A) Pretend you know / ऐसा दिखाना कि आपको वह कार्य आता है</div>
+<div class="opt-item correct">✔ **B) Ask questions, learn and try (CORRECT ANSWER) / प्रश्न पूछना, सीखना और प्रयास करना (सही उत्तर)**</div>
+<div class="opt-item">○ C) Give up / प्रयास छोड़ देना</div>
+<div class="opt-item">○ D) Avoid the task / उस कार्य से बचना</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h2 class="part-title">PART 3: Teacher &amp; Counselor Feedback Framework</h2>
+<h3 style="color:#4f46e5; margin-top:-6px; margin-bottom:20px;">भाग 3: शिक्षक एवं परामर्शदाता प्रतिक्रिया रूपरेखा</h3>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">**Summary:** 16 Evaluation Items: 12 Behavioral Competency Ratings (1–5 + N/O), 3 Categorical Items, 1 Qualitative Assessment.</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*कुल 16 मूल्यांकन बिंदु: 12 व्यवहारिक दक्षताओं का आकलन (1–5 अंक + N/O), 3 श्रेणीगत प्रश्न और 1 गुणात्मक आकलन।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">**Standard Rating Scale (Items 1 to 12):**</p>
+<div class="opt-item" style="margin-left:12px;">• 1: Very Low / बहुत कम</div>
+<div class="opt-item" style="margin-left:12px;">• 2: Low / कम</div>
+<div class="opt-item" style="margin-left:12px;">• 3: Average / औसत</div>
+<div class="opt-item" style="margin-left:12px;">• 4: Good / अच्छा</div>
+<div class="opt-item" style="margin-left:12px;">• 5: Very Good / बहुत अच्छा</div>
+<div class="opt-item" style="margin-left:12px;">• N/O: Not Observed / अवलोकन नहीं किया गया</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<div class="q-title" style="margin-top:14px;">1. [TF1] How well do the student&#x27;s reported interests match what you have observed? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">1. [TF1] विद्यार्थी द्वारा बताई गई रुचियाँ आपके अवलोकन से कितनी मेल खाती हैं? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q1 (Curiosity), Q2 (Joyful Activities), Q6 (Career Paths), Q7 (Dream Role)</div>
+<div class="q-title" style="margin-top:14px;">2. [TF2] How well do the student&#x27;s reported strengths match your observations? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">2. [TF2] विद्यार्थी द्वारा बताई गई खूबियाँ आपके अवलोकन से कितनी मेल खाती हैं? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q3 (Unique Strengths &amp; Talents)</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 3. [TF3] How would you rate the student&#x27;s problem-solving ability? [REQUIRED]</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 3. [TF3] आप विद्यार्थी की समस्या-समाधान क्षमता को कैसे आँकेंगे? [अनिवार्य]</p>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Aptitude Assessment Score (/15) and Q5 (Challenge Approach)</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 4. [TF4] How would you rate the student&#x27;s ability to learn independently? [REQUIRED]</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 4. [TF4] आप विद्यार्थी की स्वतंत्र रूप से सीखने की क्षमता को कैसे आँकेंगे? [अनिवार्य]</p>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q4 (Solo Work preference) and Q5 (Self-exploration)</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 5. [TF5] How would you rate the student&#x27;s teamwork? [REQUIRED]</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 5. [TF5] आप विद्यार्थी की टीम में काम करने की क्षमता को कैसे आँकेंगे? [अनिवार्य]</p>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q4 (Group Collaboration) and Q3 (Teamwork Strength)</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 6. [TF6] How would you rate the student&#x27;s communication? [REQUIRED]</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 6. [TF6] आप विद्यार्थी के संवाद एवं संचार कौशल को कैसे आँकेंगे? [अनिवार्य]</p>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q3 (Communication) and Q2 (Storytelling &amp; Explaining)</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 7. [TF7] How would you rate the student&#x27;s persistence when facing difficult tasks? [REQUIRED]</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 7. [TF7] कठिन कार्यों का सामना करते समय विद्यार्थी के निरंतर प्रयास करने की क्षमता को आप कैसे आँकेंगे? [अनिवार्य]</p>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q5 (Keep trying approach) and Q9 (Optimism &amp; Readiness)</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 8. [TF_SINCERITY] How would you rate the student&#x27;s sincerity and dedication towards learning and duties? [REQUIRED]</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 8. [TF_SINCERITY] सीखने और अपनी जिम्मेदारियों के प्रति विद्यार्थी की ईमानदारी एवं समर्पण को आप कैसे आँकेंगे? [अनिवार्य]</p>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Educator Observation Criteria / शिक्षक की अवलोकन कसौटियाँ:**</div>
+<div class="opt-item" style="margin-left:12px;">• Genuine effort and earnestness in class assignments and projects. / कक्षा के कार्यों और प्रोजेक्ट में वास्तविक प्रयास एवं गंभीरता।</div>
+<div class="opt-item" style="margin-left:12px;">• Honesty, authenticity, and taking personal ownership of learning. / सीखने के प्रति ईमानदारी, स्वयं की जिम्मेदारी लेना और अपने कार्य का स्वामित्व रखना।</div>
+<div class="opt-item" style="margin-left:12px;">• Sustained focus without requiring continuous teacher intervention. / लगातार शिक्षक के हस्तक्षेप की आवश्यकता के बिना ध्यान केंद्रित करके कार्य करना।</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 9. [TF_ATTENDANCE] How would you rate the student&#x27;s attendance, punctuality, and regularity? [REQUIRED]</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">#### 9. [TF_ATTENDANCE] विद्यार्थी की उपस्थिति, समय की पाबंदी और नियमितता को आप कैसे आँकेंगे? [अनिवार्य]</p>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Educator Observation Criteria / शिक्षक की अवलोकन कसौटियाँ:**</div>
+<div class="opt-item" style="margin-left:12px;">• Regularity in class attendance with minimal unexcused absences. / बिना उचित कारण अनुपस्थित हुए नियमित रूप से कक्षा में उपस्थित रहना।</div>
+<div class="opt-item" style="margin-left:12px;">• Arriving on time for classes, laboratory sessions, and group activities. / कक्षाओं, प्रयोगशाला सत्रों और समूह गतिविधियों में समय पर पहुँचना।</div>
+<div class="opt-item" style="margin-left:12px;">• Timely submission of homework, projects, and lab reports. / गृहकार्य, प्रोजेक्ट और प्रयोगशाला रिपोर्ट समय पर जमा करना।</div>
+<div class="q-title" style="margin-top:14px;">10. [TF_DISCIPLINE] How would you rate the student&#x27;s obedience and classroom discipline? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">10. [TF_DISCIPLINE] विद्यार्थी के अनुशासन और निर्देशों का पालन करने की क्षमता को आप कैसे आँकेंगे? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Educator Observation Criteria / शिक्षक की अवलोकन कसौटियाँ:**</div>
+<div class="opt-item" style="margin-left:12px;">• Adherence to school policies, classroom decorum, and instructions. / विद्यालय के नियमों, कक्षा के अनुशासन और दिए गए निर्देशों का पालन करना।</div>
+<div class="opt-item" style="margin-left:12px;">• Maintaining self-control during independent work and group activities. / व्यक्तिगत कार्य और समूह गतिविधियों के दौरान आत्म-नियंत्रण बनाए रखना।</div>
+<div class="opt-item" style="margin-left:12px;">• Respectful, non-disruptive behavior towards teachers and classmates. / शिक्षकों और सहपाठियों के प्रति सम्मानजनक एवं बिना व्यवधान वाला व्यवहार करना।</div>
+<div class="q-title" style="margin-top:14px;">11. [TF_RESPECT] How would you rate the student&#x27;s level of respect towards teachers, staff, and peers? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">11. [TF_RESPECT] शिक्षकों, विद्यालय के कर्मचारियों और सहपाठियों के प्रति विद्यार्थी के सम्मान के स्तर को आप कैसे आँकेंगे? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Educator Observation Criteria / शिक्षक की अवलोकन कसौटियाँ:**</div>
+<div class="opt-item" style="margin-left:12px;">• Polite tone, active listening, and courteous speech with teachers and staff. / शिक्षकों और कर्मचारियों के साथ विनम्र भाषा, ध्यानपूर्वक सुनना और शिष्ट व्यवहार।</div>
+<div class="opt-item" style="margin-left:12px;">• Openness to constructive feedback, advice, and guidance. / रचनात्मक प्रतिक्रिया, सलाह और मार्गदर्शन को स्वीकार करने की तत्परता।</div>
+<div class="opt-item" style="margin-left:12px;">• Empathy, inclusion, and kindness towards peers of all backgrounds. / सभी सहपाठियों के प्रति संवेदनशीलता, समावेशी व्यवहार और सहयोग की भावना।</div>
+<div class="q-title" style="margin-top:14px;">12. [TF_CLEANLINESS] How would you rate the student&#x27;s personal cleanliness, neatness, and care for belongings? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">12. [TF_CLEANLINESS] विद्यार्थी की व्यक्तिगत स्वच्छता, साफ-सफाई और अपनी वस्तुओं की देखभाल को आप कैसे आँकेंगे? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Rating (1=Very Low, 2=Low, 3=Average, 4=Good, 5=Very Good, N/O=Not Observed)</div>
+<div class="opt-item" style="margin-left:12px;">• Educator Observation Criteria / शिक्षक की अवलोकन कसौटियाँ:**</div>
+<div class="opt-item" style="margin-left:12px;">• Keeping study desk, laboratory bench, and workspace organized. / अध्ययन की मेज़, प्रयोगशाला की कार्य-मेज और कार्यस्थल को व्यवस्थित रखना।</div>
+<div class="opt-item" style="margin-left:12px;">• Careful handling and neat presentation of books, notebooks, and equipment. / पुस्तकों, नोटबुक और उपकरणों को सावधानी से संभालना और व्यवस्थित रखना।</div>
+<div class="opt-item" style="margin-left:12px;">• Personal hygiene, tidy uniform/attire, and pride in neat work. / व्यक्तिगत स्वच्छता, साफ-सुथरी वेशभूषा और अपने कार्य को साफ-सुथरा रखने की आदत।</div>
+<div class="q-title" style="margin-top:14px;">13. [TF8] Which areas appear to be the student&#x27;s strongest based on your observations? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">13. [TF8] आपके अवलोकन के आधार पर विद्यार्थी की सबसे मजबूत क्षमताएँ किन क्षेत्रों में दिखाई देती हैं? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Multi-Select (Choose 1 to 3) | बहु-विकल्प चयन (1 से 3 विकल्प चुनें)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q3 (Strengths)</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• Academic [`academic`] — शैक्षणिक क्षमता</div>
+<div class="opt-item" style="margin-left:12px;">• Problem-solving [`problem_solving`] — समस्या-समाधान</div>
+<div class="opt-item" style="margin-left:12px;">• Communication [`communication`] — संचार कौशल</div>
+<div class="opt-item" style="margin-left:12px;">• Creativity [`creativity`] — रचनात्मकता</div>
+<div class="opt-item" style="margin-left:12px;">• Technical/practical skills [`technical_practical`] — तकनीकी/व्यावहारिक कौशल</div>
+<div class="opt-item" style="margin-left:12px;">• Leadership [`leadership`] — नेतृत्व क्षमता</div>
+<div class="opt-item" style="margin-left:12px;">• Teamwork [`teamwork`] — टीमवर्क</div>
+<div class="opt-item" style="margin-left:12px;">• Sports [`sports`] — खेल-कूद</div>
+<div class="opt-item" style="margin-left:12px;">• Helping others [`helping_others`] — दूसरों की मदद करना</div>
+<div class="opt-item" style="margin-left:12px;">• Other [`other`] — अन्य</div>
+<div class="q-title" style="margin-top:14px;">14. [TF9] Which career direction interest areas align best with this student? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">14. [TF9] विद्यार्थी की रुचियों के अनुसार कौन-से करियर क्षेत्र सबसे अधिक उपयुक्त दिखाई देते हैं? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Multi-Select (Choose 1 to 3) | बहु-विकल्प चयन (1 से 3 विकल्प चुनें)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q1 (Subjects), Q6 (Career Paths), Q7 (Dream Role)</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• Mathematics [`mathematics`] — गणित</div>
+<div class="opt-item" style="margin-left:12px;">• Science [`science`] — विज्ञान</div>
+<div class="opt-item" style="margin-left:12px;">• Computers/Technology [`computers_technology`] — कंप्यूटर/तकनीक</div>
+<div class="opt-item" style="margin-left:12px;">• Arts/Creativity [`arts_creativity`] — कला/रचनात्मकता</div>
+<div class="opt-item" style="margin-left:12px;">• Sports [`sports`] — खेल</div>
+<div class="opt-item" style="margin-left:12px;">• Agriculture/Nature [`agriculture_nature`] — कृषि/प्रकृति</div>
+<div class="opt-item" style="margin-left:12px;">• Technical/Machines [`technical_machines`] — तकनीकी कार्य/मशीनें</div>
+<div class="opt-item" style="margin-left:12px;">• Helping people [`helping_people`] — लोगों की मदद करना</div>
+<div class="opt-item" style="margin-left:12px;">• Business [`business`] — व्यवसाय</div>
+<div class="opt-item" style="margin-left:12px;">• Leadership [`leadership`] — नेतृत्व</div>
+<div class="opt-item" style="margin-left:12px;">• Other [`other`] — अन्य</div>
+<div class="q-title" style="margin-top:14px;">15. [TF10] What working environment style suits this student best? [REQUIRED]</div>
+<div class="q-title" style="margin-top:14px;">15. [TF10] विद्यार्थी के लिए कौन-सी कार्यशैली सबसे अधिक उपयुक्त दिखाई देती है? [अनिवार्य]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Single-Select (Choose 1) | एक-विकल्प चयन (1 विकल्प चुनें)</div>
+<div class="opt-item" style="margin-left:12px;">• Student Data Cross-Reference:** Q4 (Work Environment)</div>
+<div class="opt-item" style="margin-left:12px;">• Available Options / उपलब्ध विकल्प:**</div>
+<div class="opt-item" style="margin-left:12px;">• Mostly independent (Solo Work) [`independent`] — मुख्य रूप से स्वतंत्र रूप से काम करना (अकेले काम)</div>
+<div class="opt-item" style="margin-left:12px;">• Mostly group-based (Team Collaboration) [`group_based`] — मुख्य रूप से समूह में काम करना (टीम सहयोग)</div>
+<div class="opt-item" style="margin-left:12px;">• Comfortable with both (Group Work &amp; Solo Work) [`both`] — दोनों में सहज (समूह और अकेले काम)</div>
+<div class="opt-item" style="margin-left:12px;">• Depends on the task context [`depends`] — कार्य की परिस्थिति के अनुसार</div>
+<div class="opt-item" style="margin-left:12px;">• Not enough observation [`not_enough`] — पर्याप्त अवलोकन उपलब्ध नहीं है</div>
+<div class="q-title" style="margin-top:14px;">16. [TF_COMMENT] Educator Observations &amp; Detailed Assessment (Up to 400–500 words) [OPTIONAL]</div>
+<div class="q-title" style="margin-top:14px;">16. [TF_COMMENT] शिक्षक/परामर्शदाता के अवलोकन एवं विस्तृत आकलन [वैकल्पिक]</div>
+<div style="font-size:12.5px; color:#64748b; margin:4px 0;">**Format:** Long-form Text Area (Max 3,500 characters / लगभग 400–500 शब्द)</div>
+<div class="opt-item" style="margin-left:12px;">• Instructions / निर्देश:** Qualitative commentary on student character, special guidance, and holistic career advice.</div>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">*विद्यार्थी के व्यक्तित्व, विशेष मार्गदर्शन की आवश्यकता, व्यवहार, क्षमताओं और समग्र करियर संबंधी सलाह पर अपने अनुभव एवं अवलोकन के आधार पर विस्तृत टिप्पणी लिखें।*</p>
+<p style="font-size:13.5px; color:#475569; margin:4px 0;">---</p>
+<h2 class="part-title">PART 4: Student Registration &amp; Profile Intake Fields</h2>
+<h3 style="color:#4f46e5; margin-top:-6px; margin-bottom:20px;">भाग 4: विद्यार्थी पंजीकरण एवं प्रोफ़ाइल जानकारी</h3>
 <table>
-      <thead>
-        <tr><th>Field Name</th><th>Input Format</th><th>Allowed Values</th><th>Required</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Student Full Name</td><td>Text Input</td><td>Full legal name</td><td><strong>Yes</strong></td></tr>
-        <tr><td>Date of Birth</td><td>Date Picker</td><td>YYYY-MM-DD</td><td><strong>Yes</strong></td></tr>
-        <tr><td>Class Grade</td><td>Dropdown Selector</td><td>Class 8, 9, 10, 11, 12</td><td><strong>Yes</strong></td></tr>
-        <tr><td>School Name</td><td>Text Input</td><td>School institution name</td><td>Optional</td></tr>
-        <tr><td>Parent / Guardian Job</td><td>Text Input</td><td>e.g. Agriculture, Healthcare, Business...</td><td>Optional</td></tr>
-        <tr><td>Family Income Bracket</td><td>Text Input</td><td>Contextual bracket</td><td>Optional</td></tr>
-        <tr><td>Student Access Code</td><td>Alphanumeric Token</td><td>8-character unique code (e.g. STU-8X9Y2Z)</td><td><strong>Automatic</strong></td></tr>
-      </tbody>
-    </table>
+<tr><th>Field Name (English)</th><th>फ़ील्ड नाम (हिन्दी)</th><th>Format / प्रारूप</th><th>Allowed Values / मान</th><th>Requirement / अनिवार्यता</th></tr>
+<tr><td>**Student Full Name**</td><td>विद्यार्थी का पूरा नाम</td><td>Text input</td><td>Any valid student name</td><td>**Required (अनिवार्य)**</td></tr>
+<tr><td>**Date of Birth**</td><td>जन्म तिथि</td><td>Date picker</td><td>Calendar date (`YYYY-MM-DD`)</td><td>**Required (अनिवार्य)**</td></tr>
+<tr><td>**Class Grade**</td><td>कक्षा</td><td>Dropdown Selector</td><td>Class 8, 9, 10, 11, 12</td><td>**Required (अनिवार्य)**</td></tr>
+<tr><td>**School Name**</td><td>विद्यालय का नाम</td><td>Text input</td><td>School / institution name</td><td>Optional (वैकल्पिक)</td></tr>
+<tr><td>**Parent / Guardian Job**</td><td>माता-पिता / अभिभावक का व्यवसाय</td><td>Text input</td><td>e.g. Agriculture, Healthcare, Business...</td><td>Optional (वैकल्पिक)</td></tr>
+<tr><td>**Family Income Bracket**</td><td>परिवार की आय श्रेणी</td><td>Text input</td><td>Contextual income bracket</td><td>Optional (वैकल्पिक)</td></tr>
+<tr><td>**Student Access Code**</td><td>विद्यार्थी एक्सेस कोड</td><td>Auto Alphanumeric</td><td>8-character token (e.g. `STU-9A8B7C`)</td><td>**Automatic (स्वचालित)**</td></tr>
+</table>
 </div></body></html>
