@@ -15,8 +15,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Career Discovery & Counselling Tutor",
-  description: "Explore your career path with guided discovery and counselor insights.",
+  metadataBase: new URL("https://counselling-tutor.vercel.app"),
+  title: "Career Discovery & Counselling Tutor | भविष्य की दिशा एवं करियर मार्गदर्शक",
+  description: "Explore your career path with guided discovery, aptitude assessments, and counselor insights.",
 };
 
 const themeScript = `
