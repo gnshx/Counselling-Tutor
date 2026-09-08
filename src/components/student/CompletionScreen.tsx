@@ -1,6 +1,6 @@
 'use client';
 
-import { Sparkles, CheckCircle2, ArrowRight, Heart } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/lib/context/LanguageContext';

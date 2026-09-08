@@ -10,17 +10,9 @@ import { RadioGroup } from '@/components/ui/RadioGroup';
 import { Button } from '@/components/ui/Button';
 import {
   ArrowLeft,
-  MessageSquarePlus,
   CheckCircle2,
-  BookOpen,
-  Star,
-  Zap,
-  Target,
-  Sun,
   Brain,
-  Compass,
   Sparkles,
-  HelpCircle,
 } from 'lucide-react';
 import { teacherFeedbackQuestions } from '@/lib/data/teacher-feedback';
 import { questionnaireQuestions } from '@/lib/data/questionnaire';
@@ -39,8 +31,8 @@ interface StudentDetail {
   school?: string | null;
   accessCode: string;
   feedbackStatus: string;
-  questionnaireResponse?: { responses: { questionId: string; answer: any }[] } | null;
-  assessmentResponse?: { score: number; totalQuestions: number; responses: any[] } | null;
+  questionnaireResponse?: { responses: { questionId: string; answer: unknown }[] } | null;
+  assessmentResponse?: { score: number; totalQuestions: number; responses: { questionId: string; selectedAnswer: string; isCorrect: boolean }[] } | null;
 }
 
 export default function TeacherFeedbackPage({ params }: { params: Promise<{ id: string }> }) {

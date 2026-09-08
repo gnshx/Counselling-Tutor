@@ -6,8 +6,22 @@ import Link from 'next/link';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { Compass, Brain, ArrowRight, CheckCircle2, LogOut, Heart, Clock, Search, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+import {
+  Compass,
+  Brain,
+  ArrowRight,
+  CheckCircle2,
+  LogOut,
+  Heart,
+  Clock,
+  Search,
+  Sparkles,
+  X,
+  XCircle,
+  Lightbulb,
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { formatAssessmentResponse, FormattedAssessmentData } from '@/lib/utils/profile-formatter';
 
 interface StudentSession {
   id: string;
@@ -18,9 +32,19 @@ interface StudentSession {
   feedbackStatus?: string;
 }
 
+interface RawAssessmentData {
+  score: number;
+  totalQuestions: number;
+  responses: Array<{ questionId: string; selectedAnswer: string; isCorrect: boolean }>;
+}
+
 export default function StudentPortalPage() {
   const [student, setStudent] = useState<StudentSession | null>(null);
   const [timePeriod, setTimePeriod] = useState<'morning' | 'afternoon' | 'evening'>('morning');
+  const [rawAssessment, setRawAssessment] = useState<RawAssessmentData | null>(null);
+  const [showAssessmentReview, setShowAssessmentReview] = useState(false);
+  const [filterType, setFilterType] = useState<'all' | 'correct' | 'incorrect'>('all');
+  const [isLoadingAssessment, setIsLoadingAssessment] = useState(false);
   const { language } = useLanguage();
   const router = useRouter();
 
@@ -38,6 +62,11 @@ export default function StudentPortalPage() {
       if (hour < 12) setTimePeriod('morning');
       else if (hour < 18) setTimePeriod('afternoon');
       else setTimePeriod('evening');
+
+      // Check if URL specifies auto-opening review
+      if (typeof window !== 'undefined' && window.location.search.includes('review=assessment')) {
+        setShowAssessmentReview(true);
+      }
 
       // Fetch latest student status from DB to ensure teacher feedback status is up-to-date
       fetch(`/api/student/${parsed.id}/status`)
@@ -59,6 +88,22 @@ export default function StudentPortalPage() {
       router.push('/');
     }
   }, [router]);
+
+  // Load assessment response when assessment status is completed
+  useEffect(() => {
+    if (!student?.id || student.assessmentStatus !== 'completed') return;
+
+    setIsLoadingAssessment(true);
+    fetch(`/api/student/${student.id}/assessment`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.assessmentResponse) {
+          setRawAssessment(data.assessmentResponse);
+        }
+      })
+      .catch((err) => console.error('Failed to load student assessment response:', err))
+      .finally(() => setIsLoadingAssessment(false));
+  }, [student?.id, student?.assessmentStatus]);
 
   const handleLogout = () => {
     localStorage.removeItem('student_session');
@@ -89,6 +134,16 @@ export default function StudentPortalPage() {
   if (isAssessmentDone) completedSteps++;
   if (isFeedbackDone) completedSteps++;
   const progressPercent = Math.round((completedSteps / 3) * 100);
+
+  const assessmentData: FormattedAssessmentData | null = rawAssessment
+    ? formatAssessmentResponse(rawAssessment, language)
+    : null;
+
+  const filteredQuestions = assessmentData?.questionDetails.filter((q) => {
+    if (filterType === 'correct') return q.isCorrect;
+    if (filterType === 'incorrect') return !q.isCorrect;
+    return true;
+  }) || [];
 
   const journeySteps = [
     {
@@ -243,20 +298,65 @@ export default function StudentPortalPage() {
           <div className="flex items-center justify-between mt-4">
             {journeySteps.map((step) => (
               <div key={step.num} className="flex items-center gap-1.5">
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                  step.done
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] border border-[var(--color-border-subtle)]'
-                }`}>
+                <div
+                  className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                    step.done
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-[var(--color-surface-soft)] text-[var(--color-text-muted)] border border-[var(--color-border-subtle)]'
+                  }`}
+                >
                   {step.done ? <CheckCircle2 className="w-3 h-3" /> : step.num}
                 </div>
-                <span className={`text-[11px] font-semibold hidden sm:block ${step.done ? 'text-emerald-600 dark:text-emerald-400' : 'text-[var(--color-text-muted)]'}`}>
+                <span
+                  className={`text-[11px] font-semibold hidden sm:block ${
+                    step.done ? 'text-emerald-600 dark:text-emerald-400' : 'text-[var(--color-text-muted)]'
+                  }`}
+                >
                   {step.title}
                 </span>
               </div>
             ))}
           </div>
         </motion.div>
+
+        {/* Assessment Completed Quick Review Card */}
+        {isAssessmentDone && assessmentData && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-violet-500/10 via-indigo-500/10 to-purple-500/10 border border-violet-500/25 rounded-2xl p-5 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm"
+          >
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-violet-500/20">
+                <Brain className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="font-[var(--font-heading)] text-sm font-bold text-[var(--color-text-primary)]">
+                    {language === 'hi' ? 'अभिरुचि चुनौती के परिणाम व व्याख्या' : 'Thinking Challenge Solutions & Explanations'}
+                  </h3>
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-violet-100 dark:bg-violet-950/70 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800/60">
+                    {assessmentData.score} / {assessmentData.totalQuestions} ({assessmentData.percent}%)
+                  </span>
+                </div>
+                <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                  {language === 'hi'
+                    ? 'सभी 15 प्रश्नों के सही उत्तर, आपका चयन और उनकी विस्तृत व्याख्या देखें।'
+                    : 'Review every question, check your selected choice, and explore step-by-step explanations.'}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowAssessmentReview(true)}
+              className="shrink-0 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs shadow-md shadow-violet-500/20 transition-all cursor-pointer active:scale-[0.98]"
+            >
+              <Lightbulb className="w-4 h-4" />
+              <span>{language === 'hi' ? 'उत्तर एवं व्याख्या देखें' : 'View Explanations'}</span>
+            </button>
+          </motion.div>
+        )}
 
         {/* Journey Cards */}
         <div className="space-y-4">
@@ -276,11 +376,13 @@ export default function StudentPortalPage() {
               >
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${
-                      step.done
-                        ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/50 text-emerald-600 dark:text-emerald-400'
-                        : `${colors.bg} ${colors.border} ${colors.text}`
-                    }`}>
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${
+                        step.done
+                          ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/50 text-emerald-600 dark:text-emerald-400'
+                          : `${colors.bg} ${colors.border} ${colors.text}`
+                      }`}
+                    >
                       {step.icon}
                     </div>
                     <div>
@@ -293,9 +395,21 @@ export default function StudentPortalPage() {
 
                   <div className="w-full sm:w-auto shrink-0">
                     {step.done ? (
-                      <div className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-semibold text-xs px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
-                        <CheckCircle2 className="w-4 h-4" />
-                        <span>{language === 'hi' ? 'पूर्ण' : 'Completed'}</span>
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                        <div className="inline-flex items-center justify-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-semibold text-xs px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
+                          <CheckCircle2 className="w-4 h-4" />
+                          <span>{language === 'hi' ? 'पूर्ण' : 'Completed'}</span>
+                        </div>
+                        {step.num === 2 && (
+                          <button
+                            type="button"
+                            onClick={() => setShowAssessmentReview(true)}
+                            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs shadow-sm shadow-violet-500/15 transition-all cursor-pointer active:scale-[0.98]"
+                          >
+                            <Lightbulb className="w-3.5 h-3.5" />
+                            <span>{language === 'hi' ? 'उत्तर एवं व्याख्या देखें' : 'View Answers & Explanations'}</span>
+                          </button>
+                        )}
                       </div>
                     ) : step.num === 3 ? (
                       <div className="inline-flex items-center gap-1.5 text-[var(--color-text-muted)] font-medium text-xs px-4 py-2 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)]">
@@ -338,6 +452,223 @@ export default function StudentPortalPage() {
           </motion.div>
         )}
       </main>
+
+      {/* Answers & Explanations Modal */}
+      <AnimatePresence>
+        {showAssessmentReview && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/60 backdrop-blur-sm overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ duration: 0.2 }}
+              className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden my-auto"
+            >
+              {/* Modal Header */}
+              <div className="px-6 py-4 border-b border-[var(--color-border-subtle)] flex items-center justify-between sticky top-0 bg-[var(--color-surface)] z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 flex items-center justify-center border border-violet-200 dark:border-violet-800/60 shrink-0">
+                    <Brain className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 className="font-[var(--font-heading)] font-bold text-base text-[var(--color-text-primary)]">
+                      {language === 'hi' ? 'अभिरुचि चुनौती: उत्तर और व्याख्या' : 'Thinking Challenge: Answers & Explanations'}
+                    </h2>
+                    {assessmentData && (
+                      <p className="text-xs text-[var(--color-text-secondary)]">
+                        {language === 'hi' ? 'कुल प्राप्तांक: ' : 'Total Score: '}
+                        <span className="font-bold text-violet-600 dark:text-violet-400">
+                          {assessmentData.score} / {assessmentData.totalQuestions} ({assessmentData.percent}%)
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowAssessmentReview(false)}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-soft)] transition-colors cursor-pointer"
+                  aria-label="Close"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {isLoadingAssessment ? (
+                <div className="py-20 text-center text-[var(--color-text-muted)] text-sm">
+                  {language === 'hi' ? 'उत्तर व व्याख्या लोड हो रही है...' : 'Loading solutions & explanations...'}
+                </div>
+              ) : !assessmentData ? (
+                <div className="py-20 text-center text-[var(--color-text-muted)] text-sm">
+                  {language === 'hi'
+                    ? 'अभिरुचि चुनौती का परिणाम उपलब्ध नहीं है।'
+                    : 'Assessment responses not available.'}
+                </div>
+              ) : (
+                <>
+                  {/* Category Pills & Filters */}
+                  <div className="px-6 py-3 bg-[var(--color-surface-soft)]/60 border-b border-[var(--color-border-subtle)] flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5 p-1 bg-[var(--color-surface)] rounded-xl border border-[var(--color-border-subtle)]">
+                      <button
+                        type="button"
+                        onClick={() => setFilterType('all')}
+                        className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                          filterType === 'all'
+                            ? 'bg-violet-600 text-white shadow-xs'
+                            : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+                        }`}
+                      >
+                        {language === 'hi' ? 'सभी प्रश्न' : 'All'} ({assessmentData.questionDetails.length})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFilterType('correct')}
+                        className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                          filterType === 'correct'
+                            ? 'bg-emerald-600 text-white shadow-xs'
+                            : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+                        }`}
+                      >
+                        {language === 'hi' ? 'सही उत्तर' : 'Correct'} ({assessmentData.score})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFilterType('incorrect')}
+                        className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                          filterType === 'incorrect'
+                            ? 'bg-rose-600 text-white shadow-xs'
+                            : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+                        }`}
+                      >
+                        {language === 'hi' ? 'पुनरावलोकन' : 'To Review'} (
+                        {assessmentData.totalQuestions - assessmentData.score})
+                      </button>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      {assessmentData.categories.map((cat) => (
+                        <span
+                          key={cat.key}
+                          className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)]"
+                        >
+                          {cat.label.split(' ')[0]} {cat.score}/{cat.total}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Questions Scrollable List */}
+                  <div className="p-6 overflow-y-auto space-y-4 flex-1">
+                    {filteredQuestions.length === 0 ? (
+                      <div className="py-12 text-center text-[var(--color-text-muted)] text-sm">
+                        {language === 'hi' ? 'कोई प्रश्न नहीं मिला।' : 'No questions found for this filter.'}
+                      </div>
+                    ) : (
+                      filteredQuestions.map((q, idx) => {
+                        const qParts = q.question.split('\n');
+                        const mainQ = qParts[0];
+                        const subQ = qParts.slice(1).join('\n');
+
+                        return (
+                          <div
+                            key={q.id}
+                            className="bg-[var(--color-surface-soft)] rounded-xl p-5 border border-[var(--color-border-subtle)] space-y-3"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:text-violet-400">
+                                  {q.categoryLabel}
+                                </span>
+                                <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mt-1">
+                                  {idx + 1}. {mainQ}
+                                </h4>
+                                {subQ && (
+                                  <div className="mt-2 inline-block px-3 py-1.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)] font-mono text-sm font-semibold text-[var(--color-text-primary)]">
+                                    {subQ}
+                                  </div>
+                                )}
+                              </div>
+                              {q.isCorrect ? (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-semibold border border-emerald-200 dark:border-emerald-800/60 shrink-0">
+                                  <CheckCircle2 className="w-3.5 h-3.5" /> {language === 'hi' ? 'सही' : 'Correct'}
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-xs font-semibold border border-rose-200 dark:border-rose-800/60 shrink-0">
+                                  <XCircle className="w-3.5 h-3.5" /> {language === 'hi' ? 'गलत' : 'Incorrect'}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Answers Comparison Grid */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                              <div
+                                className={`p-3 rounded-lg border ${
+                                  q.isCorrect
+                                    ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/40'
+                                    : 'bg-rose-50/50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-800/40'
+                                }`}
+                              >
+                                <span className="text-[var(--color-text-secondary)] block text-[11px] mb-0.5">
+                                  {language === 'hi' ? 'आपका चयन:' : 'Your Selection:'}
+                                </span>
+                                <strong
+                                  className={
+                                    q.isCorrect
+                                      ? 'text-emerald-700 dark:text-emerald-300'
+                                      : 'text-rose-700 dark:text-rose-300'
+                                  }
+                                >
+                                  {q.selectedAnswer}
+                                </strong>
+                              </div>
+
+                              <div className="p-3 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border-subtle)]">
+                                <span className="text-[var(--color-text-secondary)] block text-[11px] mb-0.5">
+                                  {language === 'hi' ? 'सही उत्तर:' : 'Correct Answer:'}
+                                </span>
+                                <strong className="text-[var(--color-text-primary)]">
+                                  {q.correctAnswer}
+                                </strong>
+                              </div>
+                            </div>
+
+                            {/* Explanation Box */}
+                            {q.explanation && (
+                              <div className="p-3.5 rounded-lg bg-indigo-50/80 dark:bg-indigo-950/30 border border-indigo-200/70 dark:border-indigo-800/50 text-xs flex items-start gap-2.5">
+                                <Lightbulb className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                                <div className="space-y-1">
+                                  <span className="font-bold text-indigo-800 dark:text-indigo-300">
+                                    {language === 'hi' ? 'उत्तर की व्याख्या:' : 'Explanation:'}
+                                  </span>
+                                  <p className="text-[var(--color-text-secondary)] leading-relaxed">
+                                    {q.explanation}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+
+                  {/* Modal Footer */}
+                  <div className="px-6 py-4 border-t border-[var(--color-border-subtle)] flex items-center justify-end bg-[var(--color-surface)]">
+                    <button
+                      type="button"
+                      onClick={() => setShowAssessmentReview(false)}
+                      className="px-5 py-2 rounded-xl bg-[var(--color-surface-soft)] hover:bg-[var(--color-surface)] text-[var(--color-text-primary)] text-xs font-semibold border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
+                    >
+                      {language === 'hi' ? 'बंद करें' : 'Close'}
+                    </button>
+                  </div>
+                </>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

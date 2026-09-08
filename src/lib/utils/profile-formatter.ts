@@ -45,6 +45,7 @@ export interface FormattedAssessmentData {
     selectedAnswer: string;
     correctAnswer: string;
     isCorrect: boolean;
+    explanation?: string;
   }>;
 }
 
@@ -97,7 +98,7 @@ export function getTeacherAreaLabels(qId: 'tf8' | 'tf9', values?: string[] | nul
 
 export function getQuestionnaireAnswerLabel(
   qId: string,
-  ans: any,
+  ans: unknown,
   lang: 'en' | 'hi' = 'en'
 ): { label: string; detail?: string } {
   const question = questionnaireQuestions.find((q) => q.id === qId);
@@ -105,8 +106,9 @@ export function getQuestionnaireAnswerLabel(
 
   // Handle conditional/proof answer with object: { choice: 'with_group', detail: 'Science fair project' }
   if (ans && typeof ans === 'object' && !Array.isArray(ans)) {
-    const choice = ans.choice || ans.value;
-    const detail = ans.detail;
+    const record = ans as Record<string, unknown>;
+    const choice = String(record.choice || record.value || '');
+    const detail = typeof record.detail === 'string' ? record.detail : undefined;
     if ('options' in question) {
       const opt = question.options.find((o) => o.value === choice);
       const label = opt ? (lang === 'hi' && opt.labelHi ? opt.labelHi : opt.label) : String(choice);
@@ -137,10 +139,10 @@ export function getQuestionnaireAnswerLabel(
 }
 
 export function formatQuestionnaireResponse(
-  responses: Array<{ questionId: string; answer: any }>,
+  responses: Array<{ questionId: string; answer: unknown }>,
   lang: 'en' | 'hi' = 'en'
 ): FormattedQuestionnaireData {
-  const responseMap = new Map<string, any>();
+  const responseMap = new Map<string, unknown>();
   responses.forEach((r) => responseMap.set(r.questionId, r.answer));
 
   const getOptionLabels = (qId: string): string[] => {
@@ -160,12 +162,13 @@ export function formatQuestionnaireResponse(
     const ans = responseMap.get(qId);
     if (!ans) return lang === 'hi' ? 'उत्तर नहीं दिया' : 'Not answered';
     const question = questionnaireQuestions.find((q) => q.id === qId);
-    let choiceVal = ans;
+    let choiceVal: unknown = ans;
     let detailVal: string | undefined;
 
     if (typeof ans === 'object' && ans !== null && !Array.isArray(ans)) {
-      choiceVal = ans.choice || ans.value;
-      detailVal = ans.detail;
+      const record = ans as Record<string, unknown>;
+      choiceVal = record.choice || record.value;
+      detailVal = typeof record.detail === 'string' ? record.detail : undefined;
     }
 
     if (question && 'options' in question) {
@@ -185,8 +188,9 @@ export function formatQuestionnaireResponse(
   let dreamRoleObj = { choice: lang === 'hi' ? 'उत्तर नहीं दिया' : 'Not answered', detail: undefined as string | undefined };
   if (q7Ans) {
     if (typeof q7Ans === 'object' && !Array.isArray(q7Ans)) {
-      const parsed = getQuestionnaireAnswerLabel('q7', q7Ans.choice || q7Ans.value, lang);
-      dreamRoleObj = { choice: parsed.label, detail: q7Ans.detail };
+      const record = q7Ans as Record<string, unknown>;
+      const parsed = getQuestionnaireAnswerLabel('q7', record.choice || record.value, lang);
+      dreamRoleObj = { choice: parsed.label, detail: typeof record.detail === 'string' ? record.detail : undefined };
     } else {
       const parsed = getQuestionnaireAnswerLabel('q7', q7Ans, lang);
       dreamRoleObj = { choice: parsed.label, detail: undefined };
@@ -271,6 +275,10 @@ export function formatAssessmentResponse(
       }
     }
 
+    const explanation = lang === 'hi'
+      ? (q.explanationHi || q.hintHi || q.explanation || q.hint)
+      : (q.explanation || q.hint || q.explanationHi || q.hintHi);
+
     return {
       id: q.id,
       question: lang === 'hi' && q.questionHi ? q.questionHi : q.question,
@@ -278,6 +286,7 @@ export function formatAssessmentResponse(
       selectedAnswer: displaySelected,
       correctAnswer: lang === 'hi' && q.correctAnswerHi ? q.correctAnswerHi : q.correctAnswer,
       isCorrect,
+      explanation,
     };
   });
 

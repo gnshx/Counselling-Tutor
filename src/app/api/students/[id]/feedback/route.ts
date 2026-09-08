@@ -23,18 +23,6 @@ export async function POST(
       return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
-    // Check if feedback already exists
-    const existing = await prisma.teacherFeedback.findUnique({
-      where: { studentId: id },
-    });
-
-    if (existing) {
-      return NextResponse.json(
-        { error: 'Feedback already submitted for this student' },
-        { status: 409 }
-      );
-    }
-
     const body = await request.json();
     const { ratings, strongestAreas, interestedAreas, workingStyle, comment } = body;
 
@@ -45,10 +33,18 @@ export async function POST(
       );
     }
 
-    const feedback = await prisma.teacherFeedback.create({
-      data: {
+    const feedback = await prisma.teacherFeedback.upsert({
+      where: { studentId: id },
+      create: {
         studentId: id,
         teacherId: teacher.teacherId,
+        ratings,
+        strongestAreas: strongestAreas || [],
+        interestedAreas: interestedAreas || [],
+        workingStyle: workingStyle || null,
+        comment: comment || null,
+      },
+      update: {
         ratings,
         strongestAreas: strongestAreas || [],
         interestedAreas: interestedAreas || [],

@@ -10,8 +10,8 @@ import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface QuestionCardProps {
   question: QuestionnaireQuestion;
-  value: any;
-  onChange: (value: any) => void;
+  value: string | string[] | undefined;
+  onChange: (value: string | string[]) => void;
   followUpValue?: string;
   onFollowUpChange?: (val: string) => void;
 }

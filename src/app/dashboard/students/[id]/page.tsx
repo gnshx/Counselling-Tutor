@@ -13,12 +13,10 @@ import {
   DollarSign,
   MessageSquarePlus,
   CheckCircle,
-  Sparkles,
   Brain,
   Compass,
   Star,
   Target,
-  Sun,
   ChevronDown,
   ChevronUp,
   CheckCircle2,
@@ -51,10 +49,10 @@ interface StudentDetail {
   questionnaireStatus: string;
   assessmentStatus: string;
   feedbackStatus: string;
-  questionnaireResponse?: { responses: { questionId: string; answer: any }[] } | null;
-  assessmentResponse?: { score: number; totalQuestions: number; responses: any[] } | null;
+  questionnaireResponse?: { responses: { questionId: string; answer: unknown }[] } | null;
+  assessmentResponse?: { score: number; totalQuestions: number; responses: { questionId: string; selectedAnswer: string; isCorrect: boolean }[] } | null;
   teacherFeedback?: {
-    ratings: { questionId: string; rating: any }[];
+    ratings: { questionId: string; rating: number | 'N/O' }[];
     strongestAreas?: string[];
     interestedAreas?: string[];
     workingStyle?: string;
@@ -499,6 +497,18 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
                             <strong className="text-[var(--color-text-primary)]">{q.correctAnswer}</strong>
                           </div>
                         </div>
+
+                        {q.explanation && (
+                          <div className="p-3 rounded-lg bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-200/60 dark:border-indigo-800/40 text-xs flex items-start gap-2.5">
+                            <Lightbulb className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                            <div className="space-y-0.5">
+                              <span className="font-bold text-indigo-700 dark:text-indigo-300">
+                                {language === 'hi' ? 'उत्तर की व्याख्या: ' : 'Explanation: '}
+                              </span>
+                              <p className="text-[var(--color-text-secondary)] leading-relaxed">{q.explanation}</p>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>

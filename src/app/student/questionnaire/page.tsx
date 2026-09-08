@@ -17,7 +17,7 @@ export default function StudentQuestionnairePage() {
   const { language } = useLanguage();
   const [student, setStudent] = useState<{ id: string; name: string } | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [followUpAnswers, setFollowUpAnswers] = useState<Record<string, string>>({});
   const [visitedQuestions, setVisitedQuestions] = useState<Set<number>>(new Set([0]));
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -134,7 +134,7 @@ export default function StudentQuestionnairePage() {
     .map((s, idx) => (!s.isAnswered ? idx : null))
     .filter((v): v is number => v !== null);
 
-  const handleAnswerChange = (val: any) => {
+  const handleAnswerChange = (val: string | string[]) => {
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: val }));
     setError('');
   };
@@ -175,7 +175,7 @@ export default function StudentQuestionnairePage() {
     setError('');
     try {
       const formattedResponses = Object.entries(answers).map(([questionId, rawVal]) => {
-        let answerData: any = rawVal;
+        let answerData: string | string[] | { choice: string; detail?: string } = rawVal;
         const qDef = questionnaireQuestions.find((q) => q.id === questionId);
 
         let needsDetail = false;
@@ -191,7 +191,7 @@ export default function StudentQuestionnairePage() {
 
         if (needsDetail && followUpAnswers[questionId]) {
           answerData = {
-            choice: rawVal,
+            choice: Array.isArray(rawVal) ? rawVal.join(', ') : String(rawVal),
             detail: followUpAnswers[questionId],
           };
         }

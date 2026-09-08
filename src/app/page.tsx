@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, ShieldCheck, Compass, Brain, Users, CheckCircle, Shield, GraduationCap, Sparkles, Heart, Search } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Compass, Brain, CheckCircle, Shield, GraduationCap, Sparkles, Heart, Search } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/context/LanguageContext';

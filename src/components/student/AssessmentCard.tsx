@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { AssessmentQuestion } from '@/lib/data/assessment';
-import { Sparkles, Brain } from 'lucide-react';
+import { Brain } from 'lucide-react';
 import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface AssessmentCardProps {
@@ -31,7 +31,6 @@ export function AssessmentCard({
 
   const categoryLabel =
     language === 'hi' && question.categoryLabelHi ? question.categoryLabelHi : question.categoryLabel;
-  const hint = language === 'hi' && question.hintHi ? question.hintHi : question.hint;
 
   return (
     <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-9 border border-[var(--color-border-subtle)] max-w-2xl mx-auto space-y-7 transition-colors text-center">
@@ -41,9 +40,15 @@ export function AssessmentCard({
           <Brain className="w-3.5 h-3.5" />
           <span>{language === 'hi' ? 'अपनी सोच और क्षमताओं को जानें' : 'Explore How You Think'}</span>
         </div>
-        <div className="block">
+        <div className="flex items-center justify-center gap-2">
           <span className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider">
             {categoryLabel}
+          </span>
+          <span className="text-xs font-semibold text-[var(--color-text-muted)]">•</span>
+          <span className="text-xs font-bold text-[var(--color-primary)]">
+            {language === 'hi'
+              ? `प्रश्न ${questionNumber} / ${totalQuestions}`
+              : `Question ${questionNumber} of ${totalQuestions}`}
           </span>
         </div>
       </div>
@@ -57,9 +62,6 @@ export function AssessmentCard({
           <div className="inline-block bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] rounded-xl px-5 py-3 text-lg sm:text-xl font-mono font-semibold text-[var(--color-text-primary)]">
             {subContent}
           </div>
-        )}
-        {hint && (
-          <p className="text-xs italic text-[var(--color-text-muted)]">{hint}</p>
         )}
       </div>
 

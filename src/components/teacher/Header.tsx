@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, UserCheck, GraduationCap, AlertCircle, X, Compass } from 'lucide-react';
+import { LogOut, UserCheck, X, Compass } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/context/LanguageContext';

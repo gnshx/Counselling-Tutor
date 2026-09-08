@@ -15,8 +15,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const trimmedEmail = email.trim().toLowerCase();
+
     const teacher = await prisma.teacher.findUnique({
-      where: { email },
+      where: { email: trimmedEmail },
     });
 
     if (!teacher) {

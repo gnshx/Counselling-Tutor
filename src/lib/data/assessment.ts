@@ -9,6 +9,8 @@ export interface AssessmentQuestion {
   optionsHi: string[];
   correctAnswer: string;
   correctAnswerHi: string;
+  explanation?: string;
+  explanationHi?: string;
   hint?: string;
   hintHi?: string;
 }
@@ -26,6 +28,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     optionsHi: ['जल्दी से आगे बढ़ जाना', 'रुकना और इंतज़ार करना', 'लाल बत्ती को नज़रअंदाज़ करना', 'सड़क पर दौड़कर पार करना'],
     correctAnswer: 'Stop and wait',
     correctAnswerHi: 'रुकना और इंतज़ार करना',
+    explanation: 'A red traffic light signals vehicles and pedestrians to stop immediately to prevent accidents and allow crossing traffic to move safely.',
+    explanationHi: 'लाल बत्ती सड़क पर सुरक्षित आवागमन सुनिश्चित करने और दुर्घटनाओं से बचने के लिए वाहनों और यात्रियों को रुकने का संकेत देती है।',
   },
   {
     id: 'a2',
@@ -38,6 +42,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     optionsHi: ['पुलिस – 100', 'एम्बुलेंस – 108', 'दमकल – 101', 'सभी आपातकालीन सेवाओं के लिए एक नंबर – 112'],
     correctAnswer: 'All in one - 112',
     correctAnswerHi: 'सभी आपातकालीन सेवाओं के लिए एक नंबर – 112',
+    explanation: '112 is the single unified Emergency Response Support System (ERSS) number across India for Police, Ambulance, and Fire services.',
+    explanationHi: '112 भारत का एकीकृत आपातकालीन नंबर (ERSS) है, जो पुलिस, एम्बुलेंस और दमकल तीनों सेवाओं को एक ही नंबर पर उपलब्ध कराता है।',
   },
   {
     id: 'a3',
@@ -60,6 +66,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     ],
     correctAnswer: 'Look carefully for traffic and cross safely',
     correctAnswerHi: 'यातायात को ध्यान से देखकर सुरक्षित तरीके से सड़क पार करना',
+    explanation: 'Always look both ways to check oncoming vehicles and use zebra crossings to cross the road safely without rushing.',
+    explanationHi: 'सड़क पार करने से पहले दोनों तरफ आने-जाने वाले वाहनों को ध्यान से देखना और सुरक्षित तरीके से सड़क पार करना चाहिए।',
   },
   {
     id: 'a4',
@@ -82,6 +90,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     ],
     correctAnswer: 'To remove germs and reduce illness',
     correctAnswerHi: 'कीटाणुओं को हटाने और बीमारियों के खतरे को कम करने के लिए',
+    explanation: 'Washing hands with soap removes harmful germs, bacteria, and viruses that can enter our body through food and cause sickness.',
+    explanationHi: 'साबुन और पानी से हाथ धोने से हानिकारक कीटाणु और बैक्टीरिया खत्म हो जाते हैं, जिससे बीमारियों का खतरा कम होता है।',
   },
   {
     id: 'a5',
@@ -94,6 +104,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     optionsHi: ['मंगल ग्रह', 'पृथ्वी', 'बृहस्पति ग्रह', 'शुक्र ग्रह'],
     correctAnswer: 'Earth',
     correctAnswerHi: 'पृथ्वी',
+    explanation: 'Earth is the third planet from the Sun and the only known celestial body in our solar system that supports life.',
+    explanationHi: 'पृथ्वी सूर्य से तीसरा ग्रह है और हमारे सौरमंडल का एकमात्र ज्ञात ग्रह है जहाँ जीवन संभव है।',
   },
 
   // ── Basic Aptitude (5 questions) ──
@@ -104,6 +116,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     category: 'basic_aptitude',
     categoryLabel: '🧮 Basic Aptitude',
     categoryLabelHi: '🧮 बुनियादी अभिरुचि एवं योग्यता',
+    explanation: 'This is an arithmetic progression of even numbers increasing by +2 each step (2 + 2 = 4, 4 + 2 = 6, 6 + 2 = 8, 8 + 2 = 10).',
+    explanationHi: 'सम संख्याओं की श्रृंखला में प्रत्येक पद में 2 जोड़ा जा रहा है (2 + 2 = 4, 4 + 2 = 6, 6 + 2 = 8, 8 + 2 = 10)।',
     hint: 'Even numbers incrementing by 2',
     hintHi: 'सम संख्याएँ 2 के क्रम से बढ़ रही हैं',
     options: ['9', '10', '11', '12'],
@@ -118,6 +132,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     category: 'basic_aptitude',
     categoryLabel: '🧮 Basic Aptitude',
     categoryLabelHi: '🧮 बुनियादी अभिरुचि एवं योग्यता',
+    explanation: 'To find the unit cost, divide the total cost by the number of pencils: ₹15 ÷ 3 = ₹5 per pencil.',
+    explanationHi: 'प्रति पेंसिल मूल्य निकालने के लिए कुल कीमत को पेंसिलों की संख्या से भाग दें: ₹15 ÷ 3 = ₹5।',
     hint: '15 ÷ 3 = 5',
     hintHi: '15 ÷ 3 = 5',
     options: ['₹3', '₹5', '₹10', '₹15'],
@@ -132,6 +148,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     category: 'basic_aptitude',
     categoryLabel: '🧮 Basic Aptitude',
     categoryLabelHi: '🧮 बुनियादी अभिरुचि एवं योग्यता',
+    explanation: '2, 4, 6, and 8 are all even numbers (divisible by 2), whereas 7 is an odd number.',
+    explanationHi: '2, 4, 6 और 8 सम संख्याएँ हैं (2 से विभाज्य), जबकि 7 इस समूह में एकमात्र विषम संख्या है।',
     hint: '7 is the only odd number',
     hintHi: '7 एकमात्र विषम संख्या है',
     options: ['2', '4', '7', '8'],
@@ -146,6 +164,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     category: 'basic_aptitude',
     categoryLabel: '🧮 Basic Aptitude',
     categoryLabelHi: '🧮 बुनियादी अभिरुचि एवं योग्यता',
+    explanation: 'From the given statements: Raju > Amit and Amit > Ravi, meaning Raju > Amit > Ravi. Therefore, Ravi is the shortest.',
+    explanationHi: 'तुलना करने पर: राजू > अमित और अमित > रवि, यानी क्रम है: राजू > अमित > रवि। अतः रवि सबसे छोटा है।',
     hint: 'Raju > Amit > Ravi',
     hintHi: 'राजू > अमित > रवि',
     options: ['Raju', 'Amit', 'Ravi', 'Cannot tell'],
@@ -160,6 +180,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     category: 'basic_aptitude',
     categoryLabel: '🧮 Basic Aptitude',
     categoryLabelHi: '🧮 बुनियादी अभिरुचि एवं योग्यता',
+    explanation: 'Doctor, Nurse, and Teacher are human professions, whereas Hospital is a healthcare institution/facility.',
+    explanationHi: 'डॉक्टर, नर्स और शिक्षक मानवीय व्यवसाय/पेशा हैं, जबकि अस्पताल एक संस्था या भवन है।',
     hint: 'Doctor, Nurse, Teacher, Hospital',
     hintHi: 'डॉक्टर, नर्स, शिक्षक, अस्पताल (अस्पताल एक संस्था है)',
     options: ['Doctor', 'Nurse', 'Teacher', 'Hospital'],
@@ -190,6 +212,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     ],
     correctAnswer: 'Ask the teacher or someone who can help',
     correctAnswerHi: 'शिक्षक या किसी ऐसे व्यक्ति से पूछना जो आपकी मदद कर सके',
+    explanation: 'Asking questions when confused is the most effective approach to clarify doubts and build strong understanding.',
+    explanationHi: 'जब कोई बात समझ न आए तो शिक्षक या जानकार से प्रश्न पूछना सीखने का सबसे सही और प्रभावी दृष्टिकोण है।',
   },
   {
     id: 'a12',
@@ -212,6 +236,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     ],
     correctAnswer: 'Understand the mistake and try again',
     correctAnswerHi: 'अपनी गलती को समझना और दोबारा प्रयास करना',
+    explanation: 'Mistakes are vital learning opportunities; understanding what went wrong and trying again builds competence and resilience.',
+    explanationHi: 'गलतियाँ सीखने की प्रक्रिया का स्वाभाविक हिस्सा हैं। अपनी गलती को समझकर दोबारा प्रयास करने से आत्मविश्वास और कौशल बढ़ता है।',
   },
   {
     id: 'a13',
@@ -234,6 +260,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     ],
     correctAnswer: 'Listen to both ideas and discuss them',
     correctAnswerHi: 'दोनों के विचार ध्यान से सुनना और उन पर चर्चा करना',
+    explanation: 'Active listening and respectful discussion help synthesize different perspectives into a well-rounded team solution.',
+    explanationHi: 'सभी के विचारों को ध्यान से सुनना और उन पर सकारात्मक चर्चा करना एक सफल और सामंजस्यपूर्ण समूह कार्य का आधार होता है।',
   },
   {
     id: 'a14',
@@ -256,6 +284,8 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     ],
     correctAnswer: 'Decide which is more urgent and plan your time',
     correctAnswerHi: 'तय करना कि कौन-सा कार्य अधिक जरूरी है और अपने समय की योजना बनाना',
+    explanation: 'Prioritizing based on urgency and importance allows you to manage limited time efficiently and finish essential tasks.',
+    explanationHi: 'समय सीमित होने पर प्राथमिकताओं का निर्धारण करना और योजनाबद्ध तरीके से काम करना सबसे बुद्धिमानी भरा निर्णय है।',
   },
   {
     id: 'a15',
@@ -278,5 +308,7 @@ export const assessmentQuestions: AssessmentQuestion[] = [
     ],
     correctAnswer: 'Ask questions, learn and try',
     correctAnswerHi: 'प्रश्न पूछना, सीखना और प्रयास करना',
+    explanation: 'Adopting a learning mindset by asking questions, seeking guidance, and attempting the task leads to personal growth and skill development.',
+    explanationHi: 'नई चीज़ों को सीखने के लिए उत्सुकता दिखाना, प्रश्न पूछना और लगातार अभ्यास करना व्यक्तिगत विकास का सर्वोत्तम मार्ग है।',
   },
 ];

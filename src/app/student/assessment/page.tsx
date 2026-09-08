@@ -8,7 +8,7 @@ import { QuestionPalette } from '@/components/student/QuestionPalette';
 import { CompletionScreen } from '@/components/student/CompletionScreen';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { ArrowLeft, ArrowRight, Check, FastForward, AlertCircle, Brain, Eye, CheckCircle2, HelpCircle, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, FastForward, AlertCircle, Brain, Eye, CheckCircle2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 

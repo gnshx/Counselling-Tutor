@@ -37,16 +37,25 @@ export async function POST(
     }
 
     // Grade answers server-side (never trust the client)
-    const gradedResponses = answers.map((answer: { questionId: string; selectedAnswer: string }) => {
-      const question = assessmentQuestions.find((q) => q.id === answer.questionId);
+    const answersMap = new Map(
+      answers
+        .filter((a): a is { questionId: string; selectedAnswer: string } => Boolean(a && typeof a.questionId === 'string'))
+        .map((a) => [a.questionId, a.selectedAnswer])
+    );
+
+    const gradedResponses = assessmentQuestions.map((q) => {
+      const selected = answersMap.get(q.id) || '';
+      const isCorrect = Boolean(
+        selected && (q.correctAnswer === selected || q.correctAnswerHi === selected)
+      );
       return {
-        questionId: answer.questionId,
-        selectedAnswer: answer.selectedAnswer,
-        isCorrect: question ? question.correctAnswer === answer.selectedAnswer : false,
+        questionId: q.id,
+        selectedAnswer: selected,
+        isCorrect,
       };
     });
 
-    const score = gradedResponses.filter((r: { isCorrect: boolean }) => r.isCorrect).length;
+    const score = gradedResponses.filter((r) => r.isCorrect).length;
 
     await prisma.assessmentResponse.create({
       data: {
@@ -70,3 +79,44 @@ export async function POST(
     );
   }
 }
+
+// GET — retrieve student's completed assessment response
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+
+  try {
+    const student = await prisma.student.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        assessmentStatus: true,
+        assessmentResponse: true,
+      },
+    });
+
+    if (!student) {
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
+    }
+
+    if (student.assessmentStatus !== 'completed' || !student.assessmentResponse) {
+      return NextResponse.json(
+        { error: 'Assessment not completed yet', assessmentResponse: null },
+        { status: 200 }
+      );
+    }
+
+    return NextResponse.json({
+      assessmentResponse: student.assessmentResponse,
+    });
+  } catch {
+    return NextResponse.json(
+      { error: 'Failed to fetch assessment response' },
+      { status: 500 }
+    );
+  }
+}
+

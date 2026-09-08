@@ -230,7 +230,7 @@ export default function AuthPage() {
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
                       placeholder="you@gmail.com"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-slate-900/90 dark:focus:bg-slate-950 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-white dark:focus:bg-slate-900/90 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
                     />
                   </div>
                 </div>
@@ -248,7 +248,7 @@ export default function AuthPage() {
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-11 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-slate-900/90 dark:focus:bg-slate-950 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
+                      className="w-full pl-10 pr-11 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-white dark:focus:bg-slate-900/90 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
                     />
                     <button
                       type="button"
@@ -319,7 +319,7 @@ export default function AuthPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder={language === 'hi' ? 'उदा. गणेश शर्मा' : 'e.g. Ganesh Sharma'}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-slate-900/90 dark:focus:bg-slate-950 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-white dark:focus:bg-slate-900/90 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
                     />
                   </div>
                 </div>
@@ -337,7 +337,7 @@ export default function AuthPage() {
                       value={signupEmail}
                       onChange={(e) => setSignupEmail(e.target.value)}
                       placeholder="you@gmail.com"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-slate-900/90 dark:focus:bg-slate-950 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-white dark:focus:bg-slate-900/90 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
                     />
                   </div>
                 </div>
@@ -355,7 +355,7 @@ export default function AuthPage() {
                       value={signupPassword}
                       onChange={(e) => setSignupPassword(e.target.value)}
                       placeholder={language === 'hi' ? 'कम से कम 6 अक्षर' : 'Min. 6 characters'}
-                      className="w-full pl-10 pr-11 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-slate-900/90 dark:focus:bg-slate-950 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
+                      className="w-full pl-10 pr-11 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-white dark:focus:bg-slate-900/90 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
                     />
                     <button
                       type="button"
@@ -382,7 +382,7 @@ export default function AuthPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder={language === 'hi' ? 'पासवर्ड दोबारा दर्ज करें' : 'Repeat password'}
-                      className="w-full pl-10 pr-11 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-slate-900/90 dark:focus:bg-slate-950 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
+                      className="w-full pl-10 pr-11 py-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:bg-white dark:focus:bg-slate-900/90 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:shadow-lg focus:shadow-blue-500/15"
                     />
                     <button
                       type="button"
