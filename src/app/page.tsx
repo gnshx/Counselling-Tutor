@@ -1,17 +1,28 @@
-'use client';
+"use client";
 
-import React, { useState, useRef } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { ArrowRight, ShieldCheck, Compass, Brain, CheckCircle, Shield, GraduationCap, Sparkles, Heart, Search } from 'lucide-react';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { LanguageToggle } from '@/components/ui/LanguageToggle';
-import { useLanguage } from '@/lib/context/LanguageContext';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  ArrowRight,
+  ShieldCheck,
+  Compass,
+  Brain,
+  CheckCircle,
+  Shield,
+  GraduationCap,
+  Sparkles,
+  Heart,
+  Search,
+} from "lucide-react";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
+import { useLanguage } from "@/lib/context/LanguageContext";
+import { motion } from "framer-motion";
 
 export default function Home() {
-  const [accessCode, setAccessCode] = useState('');
-  const [error, setError] = useState('');
+  const [accessCode, setAccessCode] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { language } = useLanguage();
   const router = useRouter();
@@ -21,19 +32,19 @@ export default function Home() {
     e.preventDefault();
     if (!accessCode.trim()) {
       setError(
-        language === 'hi'
-          ? 'कृपया अपना 8-अक्षरों का एक्सेस कोड दर्ज करें।'
-          : 'Please enter your 8-character access code.'
+        language === "hi"
+          ? "कृपया अपना 8-अक्षरों का एक्सेस कोड दर्ज करें।"
+          : "Please enter your 8-character access code.",
       );
       return;
     }
-    setError('');
+    setError("");
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/student/access', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/student/access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accessCode: accessCode.trim().toUpperCase() }),
       });
 
@@ -41,28 +52,30 @@ export default function Home() {
       if (!res.ok) {
         setError(
           data.error ||
-            (language === 'hi' ? 'एक्सेस कोड मान्य नहीं है।' : 'Access code not recognized.')
+            (language === "hi"
+              ? "एक्सेस कोड मान्य नहीं है।"
+              : "Access code not recognized."),
         );
         setIsLoading(false);
         return;
       }
 
-      localStorage.setItem('student_session', JSON.stringify(data.student));
-      router.push('/student');
+      localStorage.setItem("student_session", JSON.stringify(data.student));
+      router.push("/student");
     } catch {
       setError(
-        language === 'hi'
-          ? 'कुछ गलत हो गया। कृपया पुन: प्रयास करें।'
-          : "Something didn't go as planned. Please try again."
+        language === "hi"
+          ? "कुछ गलत हो गया। कृपया पुन: प्रयास करें।"
+          : "Something didn't go as planned. Please try again.",
       );
       setIsLoading(false);
     }
   };
 
   const scrollToAccess = () => {
-    const card = document.getElementById('access-card');
+    const card = document.getElementById("access-card");
     if (card) {
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
       setTimeout(() => inputRef.current?.focus(), 600);
     }
   };
@@ -77,8 +90,10 @@ export default function Home() {
               <Compass className="w-5 h-5 stroke-[2.5]" />
             </div>
             <span className="font-[var(--font-heading)] text-xl tracking-tight text-[var(--color-text-primary)]">
-              {language === 'hi' ? 'करियर ' : 'Career'}
-              <span className="text-gradient font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>
+              {language === "hi" ? "करियर " : "Career"}
+              <span className="text-gradient font-bold">
+                {language === "hi" ? "मार्गदर्शक" : "Discovery"}
+              </span>
             </span>
           </div>
 
@@ -90,7 +105,9 @@ export default function Home() {
               className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] transition-all cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4 text-indigo-500" />
-              <span>{language === 'hi' ? 'शिक्षक पोर्टल' : 'Educator Portal'}</span>
+              <span>
+                {language === "hi" ? "शिक्षक पोर्टल" : "Educator Portal"}
+              </span>
             </Link>
           </div>
         </div>
@@ -107,30 +124,36 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               className="flex-1 text-center lg:text-left z-10 space-y-7"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary-soft)] border border-indigo-200 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>{language === 'hi' ? 'भविष्य की दिशा एवं करियर मार्गदर्शक' : 'Career Discovery & Counselling Tutor'}</span>
+                <span>
+                  {language === "hi"
+                    ? "भविष्य की दिशा एवं करियर मार्गदर्शक"
+                    : "Career Discovery & Counselling Tutor"}
+                </span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-[var(--font-heading)] tracking-tight text-[var(--color-text-primary)] leading-[1.15]">
-                {language === 'hi' ? (
+                {language === "hi" ? (
                   <>
-                    पहचानें अपनी <span className="text-gradient">असली क्षमता।</span>
+                    खुद को पहचानें,
+                    <span className="text-gradient">अपनी खासियत जानें।</span>
                   </>
                 ) : (
                   <>
-                    Discover what makes <span className="text-gradient">you, you.</span>
+                    Discover what makes{" "}
+                    <span className="text-gradient">you, you.</span>
                   </>
                 )}
               </h1>
 
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                {language === 'hi'
-                  ? 'अपनी रुचियों, खूबियों और सोच को समझने की एक आसान और रोचक प्रक्रिया — जिसमें हर कदम पर शिक्षक और परामर्शदाता आपका मार्गदर्शन करेंगे।'
-                  : 'A calm, encouraging journey to explore your natural interests, strengths, and thinking style — guided by your counselor every step of the way.'}
+                {language === "hi"
+                  ? "अपनी रुचियों, खूबियों और सोच को समझने की एक आसान और रोचक प्रक्रिया — जिसमें हर कदम पर शिक्षक और परामर्शदाता आपका मार्गदर्शन करेंगे।"
+                  : "A calm, encouraging journey to explore your natural interests, strengths, and thinking style — guided by your counselor every step of the way."}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-1">
@@ -138,7 +161,9 @@ export default function Home() {
                   onClick={scrollToAccess}
                   className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
                 >
-                  {language === 'hi' ? 'अपनी यात्रा शुरू करें' : 'Begin Your Journey'}
+                  {language === "hi"
+                    ? "अपनी यात्रा शुरू करें"
+                    : "Begin Your Journey"}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -148,7 +173,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               id="access-card"
               className="flex-1 w-full max-w-md z-10 scroll-mt-32"
             >
@@ -162,18 +187,22 @@ export default function Home() {
                   </div>
                   <div>
                     <h2 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">
-                      {language === 'hi' ? 'विद्यार्थी प्रवेश' : 'Student Access'}
+                      {language === "hi"
+                        ? "विद्यार्थी प्रवेश"
+                        : "Student Access"}
                     </h2>
                     <p className="text-xs text-[var(--color-text-muted)]">
-                      {language === 'hi' ? 'अपना व्यक्तिगत एक्सेस कोड दर्ज करें' : 'Enter your personal access code'}
+                      {language === "hi"
+                        ? "अपना व्यक्तिगत एक्सेस कोड दर्ज करें"
+                        : "Enter your personal access code"}
                     </p>
                   </div>
                 </div>
 
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                  {language === 'hi'
-                    ? 'आपके शिक्षक ने आपको एक विशेष कोड दिया है। अपनी रुचियों और खूबियों को जानने के लिए इसे नीचे दर्ज करें।'
-                    : 'Your educator has provided you with a unique code. Enter it below to start discovering your strengths and interests.'}
+                  {language === "hi"
+                    ? "आपके शिक्षक ने आपको एक विशेष कोड दिया है। अपनी रुचियों और खूबियों को जानने के लिए इसे नीचे दर्ज करें।"
+                    : "Your educator has provided you with a unique code. Enter it below to start discovering your strengths and interests."}
                 </p>
 
                 <form onSubmit={handleStudentAccess} className="space-y-4">
@@ -183,8 +212,14 @@ export default function Home() {
                       type="text"
                       maxLength={8}
                       value={accessCode}
-                      onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
-                      placeholder={language === 'hi' ? 'अपना कोड दर्ज करें' : 'Enter your code'}
+                      onChange={(e) =>
+                        setAccessCode(e.target.value.toUpperCase())
+                      }
+                      placeholder={
+                        language === "hi"
+                          ? "अपना कोड दर्ज करें"
+                          : "Enter your code"
+                      }
                       className="w-full px-4 py-4 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-center font-mono text-xl font-bold tracking-[0.3em] text-[var(--color-text-primary)] uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all placeholder:tracking-normal placeholder:font-sans placeholder:text-sm placeholder:font-medium placeholder:text-[var(--color-text-muted)]"
                     />
                     {error && (
@@ -200,12 +235,12 @@ export default function Home() {
                   >
                     <span>
                       {isLoading
-                        ? language === 'hi'
-                          ? 'तैयारी की जा रही है...'
-                          : 'Preparing your journey...'
-                        : language === 'hi'
-                        ? 'आगे बढ़ें'
-                        : 'Continue to Portal'}
+                        ? language === "hi"
+                          ? "तैयारी की जा रही है..."
+                          : "Preparing your journey..."
+                        : language === "hi"
+                          ? "आगे बढ़ें"
+                          : "Continue to Portal"}
                     </span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
@@ -216,22 +251,27 @@ export default function Home() {
         </section>
 
         {/* ──── Journey Steps ──── */}
-        <section id="how-it-works" className="py-20 sm:py-28 bg-[var(--color-surface)] border-y border-[var(--color-border-subtle)] scroll-mt-20">
+        <section
+          id="how-it-works"
+          className="py-20 sm:py-28 bg-[var(--color-surface)] border-y border-[var(--color-border-subtle)] scroll-mt-20"
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5 }}
               className="text-center mb-16 space-y-4"
             >
               <h2 className="text-2xl sm:text-4xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
-                {language === 'hi' ? 'स्वयं को समझने की यात्रा' : 'Your Discovery Journey'}
+                {language === "hi"
+                  ? "स्वयं को समझने की यात्रा"
+                  : "Your Discovery Journey"}
               </h2>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)] max-w-lg mx-auto">
-                {language === 'hi'
-                  ? 'खुद को बेहतर समझने के लिए तीन आसान चरण — यहाँ सही या गलत उत्तर नहीं हैं, बस अपने बारे में जानने और सोचने का अवसर है।'
-                  : 'Three thoughtful steps to understand yourself better — no right or wrong answers, just genuine exploration.'}
+                {language === "hi"
+                  ? "खुद को बेहतर समझने के लिए तीन आसान चरण — यहाँ सही या गलत उत्तर नहीं हैं, बस अपने बारे में जानने और सोचने का अवसर है।"
+                  : "Three thoughtful steps to understand yourself better — no right or wrong answers, just genuine exploration."}
               </p>
             </motion.div>
 
@@ -239,61 +279,80 @@ export default function Home() {
               {[
                 {
                   icon: <Search className="w-6 h-6" />,
-                  step: '01',
-                  title: language === 'hi' ? 'खुद को जानें' : 'Discover Yourself',
+                  step: "01",
+                  title:
+                    language === "hi" ? "खुद को जानें" : "Discover Yourself",
                   desc:
-                    language === 'hi'
-                      ? 'आसान और रोचक प्रश्नों के ज़रिए अपनी पसंद, रुचियों और स्वाभाविक खूबियों को साझा करें।'
-                      : 'Share your interests, passions, and natural strengths through thoughtful, visual questions.',
-                  color: 'indigo',
+                    language === "hi"
+                      ? "आसान और रोचक प्रश्नों के ज़रिए अपनी पसंद, रुचियों और स्वाभाविक खूबियों को साझा करें।"
+                      : "Share your interests, passions, and natural strengths through thoughtful, visual questions.",
+                  color: "indigo",
                 },
                 {
                   icon: <Brain className="w-6 h-6" />,
-                  step: '02',
-                  title: language === 'hi' ? 'अपनी सोच को समझें' : 'Explore How You Think',
+                  step: "02",
+                  title:
+                    language === "hi"
+                      ? "अपनी सोच को समझें"
+                      : "Explore How You Think",
                   desc:
-                    language === 'hi'
-                      ? 'रोज़मर्रा की परिस्थितियों के माध्यम से अपनी समस्या सुलझाने और सोचने के तरीके को समझें।'
-                      : 'Engage with real-world scenarios that reveal your unique problem-solving and reasoning style.',
-                  color: 'violet',
+                    language === "hi"
+                      ? "रोज़मर्रा की परिस्थितियों के माध्यम से अपनी समस्या सुलझाने और सोचने के तरीके को समझें।"
+                      : "Engage with real-world scenarios that reveal your unique problem-solving and reasoning style.",
+                  color: "violet",
                 },
                 {
                   icon: <Heart className="w-6 h-6" />,
-                  step: '03',
-                  title: language === 'hi' ? 'परामर्शदाता का मार्गदर्शन' : 'Counselor Guidance',
+                  step: "03",
+                  title:
+                    language === "hi"
+                      ? "परामर्शदाता का मार्गदर्शन"
+                      : "Counselor Guidance",
                   desc:
-                    language === 'hi'
-                      ? 'आपके शिक्षक आपके उत्तरों को देखकर आपके सही करियर रास्ते के लिए मार्गदर्शन और व्यक्तिगत सलाह देंगे।'
-                      : 'Your educator reviews everything and adds their personal insights to guide your career path.',
-                  color: 'emerald',
+                    language === "hi"
+                      ? "आपके शिक्षक आपके उत्तरों को देखकर आपके सही करियर रास्ते के लिए मार्गदर्शन और व्यक्तिगत सलाह देंगे।"
+                      : "Your educator reviews everything and adds their personal insights to guide your career path.",
+                  color: "emerald",
                 },
               ].map((item, i) => (
                 <motion.div
                   key={item.step}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-30px' }}
+                  viewport={{ once: true, margin: "-30px" }}
                   transition={{ duration: 0.5, delay: i * 0.12 }}
                   className="group p-7 rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-background-main)] flex flex-col items-start text-left space-y-5 hover:-translate-y-1 transition-all cursor-default"
                 >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                    item.color === 'indigo'
-                      ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50'
-                      : item.color === 'violet'
-                      ? 'bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800/50'
-                      : 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50'
-                  }`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                      item.color === "indigo"
+                        ? "bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50"
+                        : item.color === "violet"
+                          ? "bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800/50"
+                          : "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50"
+                    }`}
+                  >
                     {item.icon}
                   </div>
-                  <div className={`font-bold text-xs uppercase tracking-wider ${
-                    item.color === 'indigo' ? 'text-indigo-600 dark:text-indigo-400'
-                    : item.color === 'violet' ? 'text-violet-600 dark:text-violet-400'
-                    : 'text-emerald-600 dark:text-emerald-400'
-                  }`}>
-                    {language === 'hi' ? `चरण ${item.step}` : `Step ${item.step}`}
+                  <div
+                    className={`font-bold text-xs uppercase tracking-wider ${
+                      item.color === "indigo"
+                        ? "text-indigo-600 dark:text-indigo-400"
+                        : item.color === "violet"
+                          ? "text-violet-600 dark:text-violet-400"
+                          : "text-emerald-600 dark:text-emerald-400"
+                    }`}
+                  >
+                    {language === "hi"
+                      ? `चरण ${item.step}`
+                      : `Step ${item.step}`}
                   </div>
-                  <h3 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">{item.title}</h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{item.desc}</p>
+                  <h3 className="text-lg font-[var(--font-heading)] text-[var(--color-text-primary)]">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    {item.desc}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -314,12 +373,14 @@ export default function Home() {
                 <Shield className="w-6 h-6" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-[var(--font-heading)] text-[var(--color-text-primary)]">
-                {language === 'hi' ? 'सुरक्षित, निजी और आपके विकास के लिए' : 'Safe, Private & Growth-Oriented'}
+                {language === "hi"
+                  ? "सुरक्षित, निजी और आपके विकास के लिए"
+                  : "Safe, Private & Growth-Oriented"}
               </h2>
               <p className="text-sm text-[var(--color-text-secondary)] max-w-lg mx-auto">
-                {language === 'hi'
-                  ? 'विद्यालयों के लिए निर्मित — आपकी जानकारी पूरी तरह सुरक्षित रहती है। यहाँ कोई अंक या परीक्षा का दबाव नहीं है, केवल सीखने और आगे बढ़ने का अवसर है।'
-                  : 'Built for schools — your data stays safe, and every result is framed as a clue for growth, not a score or judgment.'}
+                {language === "hi"
+                  ? "विद्यालयों के लिए निर्मित — आपकी जानकारी पूरी तरह सुरक्षित रहती है। यहाँ कोई अंक या परीक्षा का दबाव नहीं है, केवल सीखने और आगे बढ़ने का अवसर है।"
+                  : "Built for schools — your data stays safe, and every result is framed as a clue for growth, not a score or judgment."}
               </p>
             </motion.div>
 
@@ -328,12 +389,14 @@ export default function Home() {
                 <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
-                    {language === 'hi' ? 'सुरक्षित एक्सेस व्यवस्था' : 'Secure Access Control'}
+                    {language === "hi"
+                      ? "सुरक्षित एक्सेस व्यवस्था"
+                      : "Secure Access Control"}
                   </h4>
                   <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">
-                    {language === 'hi'
-                      ? 'हर विद्यार्थी के लिए अलग एक्सेस कोड होता है, जिससे आपका रिकॉर्ड केवल आपके शिक्षक ही देख सकते हैं।'
-                      : 'Unique access keys isolate student records and restrict profile access exclusively to assigned educators.'}
+                    {language === "hi"
+                      ? "हर विद्यार्थी के लिए अलग एक्सेस कोड होता है, जिससे आपका रिकॉर्ड केवल आपके शिक्षक ही देख सकते हैं।"
+                      : "Unique access keys isolate student records and restrict profile access exclusively to assigned educators."}
                   </p>
                 </div>
               </div>
@@ -341,12 +404,14 @@ export default function Home() {
                 <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
-                    {language === 'hi' ? 'सीखने और आगे बढ़ने का अवसर' : 'Growth-Oriented Assessment'}
+                    {language === "hi"
+                      ? "सीखने और आगे बढ़ने का अवसर"
+                      : "Growth-Oriented Assessment"}
                   </h4>
                   <p className="text-xs text-[var(--color-text-secondary)] mt-1 leading-relaxed">
-                    {language === 'hi'
-                      ? 'यह कोई परीक्षा नहीं है — यह आपकी स्वाभाविक रुचियों और खूबियों को पहचानकर आगे बढ़ने में मदद करता है।'
-                      : 'Evaluations emphasize development areas and natural affinity — these are clues, not limits.'}
+                    {language === "hi"
+                      ? "यह कोई परीक्षा नहीं है — यह आपकी स्वाभाविक रुचियों और खूबियों को पहचानकर आगे बढ़ने में मदद करता है।"
+                      : "Evaluations emphasize development areas and natural affinity — these are clues, not limits."}
                   </p>
                 </div>
               </div>
@@ -357,7 +422,10 @@ export default function Home() {
 
       <footer className="bg-[var(--color-surface)] border-t border-[var(--color-border-subtle)] py-8 text-center">
         <p className="text-xs text-[var(--color-text-muted)]">
-          &copy; {new Date().getFullYear()} {language === 'hi' ? 'भविष्य की दिशा एवं करियर मार्गदर्शक। सर्वाधिकार सुरक्षित।' : 'Career Discovery & Counselling Platform. All rights reserved.'}
+          &copy; {new Date().getFullYear()}{" "}
+          {language === "hi"
+            ? "भविष्य की दिशा एवं करियर मार्गदर्शक। सर्वाधिकार सुरक्षित।"
+            : "Career Discovery & Counselling Platform. All rights reserved."}
         </p>
       </footer>
     </div>
