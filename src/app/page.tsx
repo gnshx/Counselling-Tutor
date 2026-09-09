@@ -139,8 +139,10 @@ export default function Home() {
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-[var(--font-heading)] tracking-tight text-[var(--color-text-primary)] leading-[1.15]">
                 {language === "hi" ? (
                   <>
-                    खुद को पहचानें,
-                    <span className="text-gradient">अपनी खासियत जानें।</span>
+                    जानिए,
+                    <span className="text-gradient">
+                      आपको खास क्या बनाता है।
+                    </span>
                   </>
                 ) : (
                   <>
