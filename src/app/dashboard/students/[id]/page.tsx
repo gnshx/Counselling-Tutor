@@ -2,8 +2,11 @@
 
 import React, { useEffect, useState, use } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Header } from '@/components/teacher/Header';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { DeleteStudentModal } from '@/components/teacher/DeleteStudentModal';
+import { StudentSummaryCard } from '@/components/teacher/StudentSummaryCard';
 import {
   ArrowLeft,
   Calendar,
@@ -25,6 +28,7 @@ import {
   Zap,
   BookOpen,
   Lightbulb,
+  Trash2,
 } from 'lucide-react';
 import {
   formatQuestionnaireResponse,
@@ -62,10 +66,27 @@ interface StudentDetail {
 
 export default function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
   const { language } = useLanguage();
   const [student, setStudent] = useState<StudentDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showAssessmentQuestions, setShowAssessmentQuestions] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to delete student');
+      }
+      router.push('/dashboard');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchStudent() {
@@ -143,15 +164,27 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
             <span>{language === 'hi' ? 'डैशबोर्ड पर वापस जाएँ' : 'Back to Dashboard'}</span>
           </Link>
 
-          {student.feedbackStatus !== 'completed' && (
-            <Link
-              href={`/dashboard/students/${student.id}/feedback`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all cursor-pointer"
+          <div className="flex items-center gap-2.5">
+            {student.feedbackStatus !== 'completed' && (
+              <Link
+                href={`/dashboard/students/${student.id}/feedback`}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all cursor-pointer"
+              >
+                <MessageSquarePlus className="w-4 h-4" />
+                <span>{language === 'hi' ? 'शिक्षक अवलोकन प्रदान करें' : 'Provide Educator Feedback'}</span>
+              </Link>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setIsDeleteOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors cursor-pointer"
+              title={language === 'hi' ? 'विद्यार्थी हटाएं' : 'Delete Student'}
             >
-              <MessageSquarePlus className="w-4 h-4" />
-              <span>{language === 'hi' ? 'शिक्षक अवलोकन प्रदान करें' : 'Provide Educator Feedback'}</span>
-            </Link>
-          )}
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>{language === 'hi' ? 'हटाएं' : 'Delete'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Student Header Card */}
@@ -248,6 +281,9 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
             </div>
           </div>
         </div>
+
+        {/* Executive Student Summary Section */}
+        <StudentSummaryCard student={student} />
 
         {/* Structured Student Discovery Section */}
         <div className="bg-[var(--color-surface)] rounded-2xl p-6 sm:p-8 border border-[var(--color-border-subtle)] shadow-xs space-y-6 transition-colors">
@@ -639,6 +675,16 @@ export default function StudentProfilePage({ params }: { params: Promise<{ id: s
             </div>
           )}
         </div>
+
+        {/* Delete Confirmation Modal */}
+        <DeleteStudentModal
+          isOpen={isDeleteOpen}
+          studentName={student.name}
+          accessCode={student.accessCode}
+          onClose={() => setIsDeleteOpen(false)}
+          onConfirm={handleDeleteConfirm}
+          isDeleting={isDeleting}
+        />
       </main>
     </div>
   );

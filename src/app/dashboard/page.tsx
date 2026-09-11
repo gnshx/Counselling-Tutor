@@ -21,8 +21,16 @@ export default function TeacherDashboard() {
   const fetchTeacherAndStudents = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Auth check
-      const authRes = await fetch('/api/auth/me');
+      const params = new URLSearchParams();
+      if (search) params.set('search', search);
+      if (selectedClass) params.set('class', selectedClass);
+
+      // Concurrently fetch auth and student list in parallel to eliminate waterfall
+      const [authRes, studentsRes] = await Promise.all([
+        fetch('/api/auth/me'),
+        fetch(`/api/students?${params.toString()}`),
+      ]);
+
       if (!authRes.ok) {
         router.push('/login');
         return;
@@ -30,12 +38,6 @@ export default function TeacherDashboard() {
       const authData = await authRes.json();
       setTeacher(authData.teacher);
 
-      // Fetch students
-      const params = new URLSearchParams();
-      if (search) params.set('search', search);
-      if (selectedClass) params.set('class', selectedClass);
-
-      const studentsRes = await fetch(`/api/students?${params.toString()}`);
       if (studentsRes.ok) {
         const studentsData = await studentsRes.json();
         setStudents(studentsData.students || []);
@@ -165,7 +167,12 @@ export default function TeacherDashboard() {
             </p>
           </div>
         ) : (
-          <StudentTable students={students} />
+          <StudentTable
+            students={students}
+            onStudentDeleted={(deletedId) =>
+              setStudents((prev) => prev.filter((s) => s.id !== deletedId))
+            }
+          />
         )}
       </main>
     </div>

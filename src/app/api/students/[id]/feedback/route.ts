@@ -59,8 +59,9 @@ export async function POST(
       data: { feedbackStatus: 'completed' },
     });
 
-    return NextResponse.json({ feedback }, { status: 201 });
-  } catch {
+    return NextResponse.json({ feedback, success: true }, { status: 201 });
+  } catch (err) {
+    console.error('Failed to submit feedback:', err);
     return NextResponse.json(
       { error: 'Failed to submit feedback' },
       { status: 500 }

@@ -12,6 +12,21 @@ export function ThemeToggle() {
     const isDarkMode = document.documentElement.classList.contains('dark');
     setIsDark(isDarkMode);
     setMounted(true);
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'theme') {
+        const dark = e.newValue === 'dark';
+        if (dark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        setIsDark(dark);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const toggleTheme = () => {

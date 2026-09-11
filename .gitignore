@@ -46,3 +46,16 @@ dist/
 
 __pycache__/
 *.pyc
+
+# local database data exports (prevent sensitive student & teacher data from being pushed)
+/db/*.json
+/db/*.sql
+/db/*.db
+/db/*.md
+/db/*.html
+/db/*.docx
+/db/*.pdf
+/db/reports/
+/db/sapana/
+
+

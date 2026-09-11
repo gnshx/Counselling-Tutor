@@ -8,6 +8,10 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
+    "db:export": "node scripts/export_from_supabase.mjs",
+    "report": "node scripts/organize_sapana_data.mjs && python3 scripts/generate_sapana_docx_report.py",
+    "report:organize": "node scripts/organize_sapana_data.mjs",
+    "report:sapana": "python3 scripts/generate_sapana_docx_report.py",
     "postinstall": "prisma generate"
   },
   "dependencies": {

@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { StatusBadge } from '../ui/StatusBadge';
-import { KeyRound, Eye, MessageSquarePlus, CheckCircle } from 'lucide-react';
+import { KeyRound, Eye, MessageSquarePlus, CheckCircle, Sparkles, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/lib/context/LanguageContext';
+import { DeleteStudentModal } from './DeleteStudentModal';
+import { StudentSummaryModal } from './StudentSummaryModal';
 
 export interface StudentListItem {
   id: string;
@@ -25,10 +27,32 @@ export interface StudentListItem {
 interface StudentTableProps {
   students: StudentListItem[];
   onCopyCode?: (code: string) => void;
+  onStudentDeleted?: (studentId: string) => void;
 }
 
-export function StudentTable({ students }: StudentTableProps) {
+export function StudentTable({ students, onStudentDeleted }: StudentTableProps) {
   const { language } = useLanguage();
+  const [summaryStudentId, setSummaryStudentId] = useState<string | null>(null);
+  const [deletingStudent, setDeletingStudent] = useState<StudentListItem | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleConfirmDelete = async () => {
+    if (!deletingStudent) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/students/${deletingStudent.id}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to delete student');
+      }
+      onStudentDeleted?.(deletingStudent.id);
+      setDeletingStudent(null);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const computeOverallStatus = (s: StudentListItem) => {
     const qDone = s.questionnaireStatus === 'completed';
@@ -134,24 +158,35 @@ export function StudentTable({ students }: StudentTableProps) {
 
                   {/* Actions */}
                   <td className="py-4 px-4 sm:px-5 text-right">
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex items-center justify-end gap-1.5 sm:gap-2">
+                      {/* Quick Summary Button */}
+                      <button
+                        type="button"
+                        onClick={() => setSummaryStudentId(student.id)}
+                        title={language === 'hi' ? 'त्वरित सारांश' : 'Quick Summary'}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-all cursor-pointer"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                        <span>{language === 'hi' ? 'सारांश' : 'Summary'}</span>
+                      </button>
+
                       <Link
                         href={`/dashboard/students/${student.id}`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[var(--color-surface-soft)] hover:bg-[var(--color-border-subtle)] text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-all"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-[var(--color-surface-soft)] hover:bg-[var(--color-border-subtle)] text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] transition-all"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>{language === 'hi' ? 'प्रोफ़ाइल' : 'Profile'}</span>
                       </Link>
 
                       {isFeedbackDone ? (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60">
                           <CheckCircle className="w-3.5 h-3.5" />
-                          <span>{language === 'hi' ? 'दर्ज' : 'Submitted'}</span>
+                          <span>{language === 'hi' ? 'दर्ज' : 'Done'}</span>
                         </span>
                       ) : (
                         <Link
                           href={`/dashboard/students/${student.id}/feedback`}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                          className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                             isFeedbackReady
                               ? 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-xs cursor-pointer'
                               : 'bg-[var(--color-surface-soft)] text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)] hover:bg-[var(--color-border-subtle)]'
@@ -161,14 +196,25 @@ export function StudentTable({ students }: StudentTableProps) {
                           <span>
                             {isFeedbackReady
                               ? language === 'hi'
-                                ? 'प्रतिक्रिया दें'
-                                : 'Add Feedback'
+                                ? 'फीडबैक'
+                                : 'Feedback'
                               : language === 'hi'
-                              ? 'प्रतीक्षा करें...'
+                              ? 'प्रतीक्षा...'
                               : 'Wait...'}
                           </span>
                         </Link>
                       )}
+
+                      {/* Delete Student Button */}
+                      <button
+                        type="button"
+                        onClick={() => setDeletingStudent(student)}
+                        title={language === 'hi' ? 'विद्यार्थी हटाएं' : 'Delete Student'}
+                        className="p-1.5 rounded-xl text-[var(--color-text-muted)] hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-transparent hover:border-rose-200 dark:hover:border-rose-900/50 transition-all cursor-pointer"
+                        aria-label="Delete Student"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -177,6 +223,23 @@ export function StudentTable({ students }: StudentTableProps) {
           </tbody>
         </table>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteStudentModal
+        isOpen={Boolean(deletingStudent)}
+        studentName={deletingStudent?.name || ''}
+        accessCode={deletingStudent?.accessCode || ''}
+        onClose={() => setDeletingStudent(null)}
+        onConfirm={handleConfirmDelete}
+        isDeleting={isDeleting}
+      />
+
+      {/* Quick Summary Modal */}
+      <StudentSummaryModal
+        isOpen={Boolean(summaryStudentId)}
+        studentId={summaryStudentId}
+        onClose={() => setSummaryStudentId(null)}
+      />
     </div>
   );
 }
