@@ -19,6 +19,7 @@ import {
   X,
   XCircle,
   Lightbulb,
+  GitFork,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatAssessmentResponse, FormattedAssessmentData } from '@/lib/utils/profile-formatter';
@@ -230,6 +231,13 @@ export default function StudentPortalPage() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/student/roadmap"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors"
+            >
+              <GitFork className="w-3.5 h-3.5" />
+              <span>{language === 'hi' ? 'करियर रोडमैप' : 'Roadmap'}</span>
+            </Link>
             <LanguageToggle />
             <ThemeToggle />
             <button
@@ -317,6 +325,45 @@ export default function StudentPortalPage() {
               </div>
             ))}
           </div>
+        </motion.div>
+
+        {/* ──── Career Pathways & Stream Roadmap Callout Banner ──── */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="bg-gradient-to-r from-indigo-500/10 via-violet-500/10 to-emerald-500/10 border border-indigo-500/25 rounded-2xl p-5 sm:p-6 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-2xs"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-700 text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/20">
+              <GitFork className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-[var(--font-heading)] text-sm sm:text-base font-bold text-[var(--color-text-primary)]">
+                  {language === 'hi'
+                    ? '10वीं के बाद करियर रोडमैप व स्ट्रीम गाइड'
+                    : 'After 10th Career Pathways Roadmap'}
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60">
+                  {language === 'hi' ? 'सभी 6+ धाराएं' : 'All Streams'}
+                </span>
+              </div>
+              <p className="text-xs text-[var(--color-text-secondary)] mt-1 max-w-xl leading-relaxed">
+                {language === 'hi'
+                  ? 'इंटरमीडिएट (एमपीसी, बायपीसी, एमईसी, सीईसी, एचईसी), पॉलिटेक्निक, आईटीआई, पैरामेडिकल और रक्षा सेवाओं का संपूर्ण इंटरैक्टिव फ्लोचार्ट देखें।'
+                  : 'Interactive flowchart & deep-dive guide across Intermediate (+2), Polytechnic, ITI Trades, Paramedical Diplomas, and Uniformed Services.'}
+              </p>
+            </div>
+          </div>
+
+          <Link
+            href="/student/roadmap"
+            className="shrink-0 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-500/20 transition-all cursor-pointer active:scale-[0.98]"
+          >
+            <span>{language === 'hi' ? 'रोडमैप देखें' : 'Explore Roadmap'}</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </motion.div>
 
         {/* Assessment Completed Quick Review Card */}

@@ -14,6 +14,7 @@ import {
   Sparkles,
   Heart,
   Search,
+  GitFork,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { LanguageToggle } from "@/components/ui/LanguageToggle";
@@ -97,12 +98,21 @@ export default function Home() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <Link
+              href="/roadmap"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-all cursor-pointer"
+            >
+              <GitFork className="w-4 h-4 text-indigo-500" />
+              <span>
+                {language === "hi" ? "करियर रोडमैप" : "Career Roadmap"}
+              </span>
+            </Link>
             <LanguageToggle />
             <ThemeToggle />
             <Link
               href="/login"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] transition-all cursor-pointer"
+              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-[var(--color-text-secondary)] transition-all cursor-pointer"
             >
               <ShieldCheck className="w-4 h-4 text-indigo-500" />
               <span>
@@ -158,7 +168,7 @@ export default function Home() {
                   : "A calm, encouraging journey to explore your natural interests, strengths, and thinking style — guided by your counselor every step of the way."}
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-1">
+              <div className="flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start pt-1">
                 <button
                   onClick={scrollToAccess}
                   className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
@@ -168,6 +178,17 @@ export default function Home() {
                     : "Begin Your Journey"}
                   <ArrowRight className="w-4 h-4" />
                 </button>
+                <Link
+                  href="/roadmap"
+                  className="px-6 py-3.5 rounded-xl bg-[var(--color-surface)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] hover:border-indigo-500/40 text-[var(--color-text-primary)] font-semibold text-sm transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <GitFork className="w-4 h-4 text-indigo-500" />
+                  <span>
+                    {language === "hi"
+                      ? "10वीं के बाद करियर रोडमैप"
+                      : "Career Roadmap (After 10th)"}
+                  </span>
+                </Link>
               </div>
             </motion.div>
 

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, UserCheck, X, Compass, Users, BarChart3 } from 'lucide-react';
+import { LogOut, UserCheck, X, Compass, Users, BarChart3, GitFork } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/context/LanguageContext';
@@ -51,6 +51,12 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
       label: language === 'hi' ? 'एनालिटिक्स' : 'Analytics',
       icon: BarChart3,
       isActive: pathname === '/dashboard/analytics',
+    },
+    {
+      href: '/roadmap',
+      label: language === 'hi' ? 'करियर रोडमैप' : 'Career Roadmap',
+      icon: GitFork,
+      isActive: pathname === '/roadmap',
     },
   ];
 
