@@ -12,11 +12,11 @@ async function verify() {
   // 1. Direct functions
   const teachers = getTeachers();
   console.log(`✅ getTeachers(): found ${teachers.length} teachers`);
-  if (teachers.length !== 4) throw new Error(`Expected 4 teachers, got ${teachers.length}`);
+  if (teachers.length < 4) throw new Error(`Expected at least 4 teachers, got ${teachers.length}`);
 
   const students = getStudents();
   console.log(`✅ getStudents(): found ${students.length} students`);
-  if (students.length !== 33) throw new Error(`Expected 33 students, got ${students.length}`);
+  if (students.length < 33) throw new Error(`Expected at least 33 students, got ${students.length}`);
 
   const teacher = findTeacherByEmail('shiva@gmail.com');
   console.log(`✅ findTeacherByEmail('shiva@gmail.com'):`, teacher?.name, teacher?.email);

@@ -497,7 +497,7 @@ export const localDb = {
       }
       if (!match) return null;
 
-      let result: any = { ...match };
+      const result: any = { ...match };
       if (include) {
         if (include.questionnaireResponse) {
           result.questionnaireResponse = getQuestionnaireResponses().find((q) => q.studentId === match?.id) || null;
@@ -517,7 +517,7 @@ export const localDb = {
       const match = students.find((s) => matchesWhere(s, where));
       if (!match) return null;
 
-      let result: any = { ...match };
+      const result: any = { ...match };
       if (include) {
         if (include.questionnaireResponse) {
           result.questionnaireResponse = getQuestionnaireResponses().find((q) => q.studentId === match.id) || null;
@@ -533,7 +533,7 @@ export const localDb = {
       return applySelect(result, select);
     },
     async findMany(args?: { where?: any; orderBy?: any; select?: any; include?: any }) {
-      let list = getStudents().filter((s) => matchesWhere(s, args?.where));
+      const list = getStudents().filter((s) => matchesWhere(s, args?.where));
 
       if (args?.orderBy?.createdAt === 'desc') {
         list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());

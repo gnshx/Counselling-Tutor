@@ -55,7 +55,17 @@ __pycache__/
 /db/*.html
 /db/*.docx
 /db/*.pdf
+/db/*.zip
 /db/reports/
 /db/sapana/
+/db/gagan/
+/db/*stduents*
+/db/*students*
+
+# report generation scripts
+scripts/*report*.py
+scripts/generate_*.py
+scripts/organize_gagan_data.mjs
+scripts/generate_gagan_docx_report.py
 
 

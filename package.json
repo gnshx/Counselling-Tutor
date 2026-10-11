@@ -12,6 +12,7 @@
     "report": "node scripts/organize_sapana_data.mjs && python3 scripts/generate_sapana_docx_report.py",
     "report:organize": "node scripts/organize_sapana_data.mjs",
     "report:sapana": "python3 scripts/generate_sapana_docx_report.py",
+    "report:gagan": "node scripts/organize_gagan_data.mjs && python3 scripts/generate_gagan_docx_report.py",
     "postinstall": "prisma generate"
   },
   "dependencies": {

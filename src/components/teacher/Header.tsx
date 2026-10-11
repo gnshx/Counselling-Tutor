@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { LogOut, UserCheck, X, Compass } from 'lucide-react';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { LogOut, UserCheck, X, Compass, Users, BarChart3, FileText } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/context/LanguageContext';
@@ -16,6 +17,7 @@ interface HeaderProps {
 
 export function Header({ teacherName = 'Teacher', schoolName, onLogout }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { language } = useLanguage();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -37,48 +39,115 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
     }
   };
 
+  const navItems = [
+    {
+      href: '/dashboard',
+      label: language === 'hi' ? 'विद्यार्थी सूची' : 'Students',
+      icon: Users,
+      isActive: pathname === '/dashboard' || pathname.startsWith('/dashboard/students'),
+    },
+    {
+      href: '/dashboard/analytics',
+      label: language === 'hi' ? 'डेटा विश्लेषण और चार्ट' : 'Cohort Analytics',
+      icon: BarChart3,
+      isActive: pathname === '/dashboard/analytics',
+    },
+    {
+      href: '/dashboard/report',
+      label: language === 'hi' ? 'अकादमिक रिपोर्ट' : 'Academic Report',
+      icon: FileText,
+      isActive: pathname === '/dashboard/report',
+    },
+  ];
+
   return (
     <>
       <header className="bg-[var(--color-surface)] border-b border-[var(--color-border-subtle)] sticky top-0 z-30 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white">
-              <Compass className="w-5 h-5 stroke-[2.5]" />
-            </div>
-            <div>
-              <h1 className="font-[var(--font-heading)] text-base leading-tight text-[var(--color-text-primary)]">
-                {language === 'hi' ? 'करियर ' : 'Career'}
-                <span className="text-gradient font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>{' '}
-                <span className="text-[var(--color-text-muted)] font-normal text-xs sm:text-sm">
-                  | {language === 'hi' ? 'शिक्षक पोर्टल' : 'Educator Portal'}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-16 flex items-center justify-between gap-4">
+            {/* Brand Logo */}
+            <Link href="/dashboard" className="flex items-center gap-3 shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-xs">
+                <Compass className="w-5 h-5 stroke-[2.5]" />
+              </div>
+              <div>
+                <h1 className="font-[var(--font-heading)] text-base leading-tight text-[var(--color-text-primary)]">
+                  {language === 'hi' ? 'करियर ' : 'Career'}
+                  <span className="text-gradient font-bold">{language === 'hi' ? 'मार्गदर्शक' : 'Discovery'}</span>{' '}
+                  <span className="text-[var(--color-text-muted)] font-normal text-xs sm:text-sm">
+                    | {language === 'hi' ? 'शिक्षक पोर्टल' : 'Educator Portal'}
+                  </span>
+                </h1>
+                {schoolName && <p className="text-xs text-[var(--color-text-secondary)] font-normal truncate max-w-[200px] sm:max-w-xs">{schoolName}</p>}
+              </div>
+            </Link>
+
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center gap-1 bg-[var(--color-surface-soft)] p-1 rounded-xl border border-[var(--color-border-subtle)]">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                      item.isActive
+                        ? 'bg-[var(--color-surface)] text-[var(--color-text-primary)] shadow-xs'
+                        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${item.isActive ? 'text-indigo-600 dark:text-indigo-400' : ''}`} />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* User Controls */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs text-[var(--color-text-secondary)]">
+                <UserCheck className="w-3.5 h-3.5 text-emerald-500" />
+                <span>
+                  {language === 'hi' ? 'लॉग इन:' : 'Logged in as'}{' '}
+                  <strong className="text-[var(--color-text-primary)] font-semibold">{teacherName}</strong>
                 </span>
-              </h1>
-              {schoolName && <p className="text-xs text-[var(--color-text-secondary)] font-normal">{schoolName}</p>}
+              </div>
+
+              <LanguageToggle />
+              <ThemeToggle />
+
+              <button
+                type="button"
+                onClick={() => setShowLogoutModal(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
+                title={language === 'hi' ? 'लॉगआउट' : 'Log out'}
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{language === 'hi' ? 'लॉगआउट' : 'Logout'}</span>
+              </button>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] text-xs text-[var(--color-text-secondary)]">
-              <UserCheck className="w-3.5 h-3.5 text-emerald-500" />
-              <span>
-                {language === 'hi' ? 'लॉग इन:' : 'Logged in as'}{' '}
-                <strong className="text-[var(--color-text-primary)] font-semibold">{teacherName}</strong>
-              </span>
-            </div>
-
-            <LanguageToggle />
-            <ThemeToggle />
-
-            <button
-              type="button"
-              onClick={() => setShowLogoutModal(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] transition-colors cursor-pointer"
-              title={language === 'hi' ? 'लॉगआउट' : 'Log out'}
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{language === 'hi' ? 'लॉगआउट' : 'Logout'}</span>
-            </button>
-          </div>
+          {/* Mobile Navigation Tabs */}
+          <nav className="flex md:hidden items-center justify-around gap-1 py-2 border-t border-[var(--color-border-subtle)]">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    item.isActive
+                      ? 'bg-[var(--color-surface-soft)] text-indigo-600 dark:text-indigo-400 font-bold'
+                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
         </div>
       </header>
 
