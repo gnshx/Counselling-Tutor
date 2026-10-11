@@ -47,12 +47,12 @@ export function ScoreDistributionChart({
   const maxCount = Math.max(...distribution.map((d) => d.count), 1);
 
   return (
-    <div className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl p-5 sm:p-6 shadow-xs transition-all space-y-6">
+    <div className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl p-6 sm:p-8 shadow-xs transition-all space-y-7">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[var(--color-border-subtle)]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[var(--color-border-subtle)]">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold tracking-wide uppercase">
+          <div className="flex items-center gap-2.5">
+            <span className="px-2.5 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold tracking-wide uppercase">
               Figure 6
             </span>
             <h3 className="text-base sm:text-lg font-[var(--font-heading)] font-semibold text-[var(--color-text-primary)]">
@@ -61,7 +61,7 @@ export function ScoreDistributionChart({
                 : 'Cognitive & Aptitude Assessment Score Distribution (Part II)'}
             </h3>
           </div>
-          <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+          <p className="text-xs text-[var(--color-text-secondary)] mt-1 max-w-2xl leading-relaxed">
             {language === 'hi'
               ? 'तार्किक चिंतन, सामान्य जागरूकता और व्यावहारिक निर्णय क्षमता (15 वस्तुनिष्ठ प्रश्न)'
               : 'Objective 15-question life skills, logic and situational problem solving evaluation'}
@@ -69,7 +69,7 @@ export function ScoreDistributionChart({
         </div>
 
         {/* Flawless Badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold self-start sm:self-auto shrink-0">
+        <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold self-start sm:self-auto shrink-0 shadow-xs">
           <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           <span>
             {language === 'hi'
@@ -80,67 +80,67 @@ export function ScoreDistributionChart({
       </div>
 
       {/* Top High-Level Metric Tiles */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
           <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] font-medium">
-            <Brain className="w-3.5 h-3.5 text-indigo-500" />
+            <Brain className="w-4 h-4 text-indigo-500" />
             <span>{language === 'hi' ? 'औसत स्कोर' : 'Cohort Average'}</span>
           </div>
-          <div className="mt-1 text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
+          <div className="mt-2 text-2xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
             {averageScore} <span className="text-xs font-normal text-[var(--color-text-muted)]">/ 15</span>
           </div>
-          <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold mt-1">
             {Math.round((averageScore / 15) * 100)}% {language === 'hi' ? 'सटीकता' : 'accuracy'}
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
           <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] font-medium">
-            <Award className="w-3.5 h-3.5 text-emerald-500" />
+            <Award className="w-4 h-4 text-emerald-500" />
             <span>{language === 'hi' ? 'सर्वोच्च स्कोर' : 'Top Score'}</span>
           </div>
-          <div className="mt-1 text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
+          <div className="mt-2 text-2xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
             {maxScore} <span className="text-xs font-normal text-[var(--color-text-muted)]">/ 15</span>
           </div>
-          <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
+          <div className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold mt-1">
             100% {language === 'hi' ? 'उत्कृष्ट' : 'Flawless logic'}
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
           <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] font-medium">
-            <Target className="w-3.5 h-3.5 text-blue-500" />
+            <Target className="w-4 h-4 text-blue-500" />
             <span>{language === 'hi' ? 'सफलता दर (>=80%)' : 'High Mastery (>=80%)'}</span>
           </div>
-          <div className="mt-1 text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
+          <div className="mt-2 text-2xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
             100%
           </div>
-          <div className="text-[10px] text-[var(--color-text-muted)] mt-0.5">
+          <div className="text-xs text-[var(--color-text-muted)] mt-1">
             {language === 'hi' ? 'सभी विद्यार्थी उत्तीर्ण' : 'Zero failing scores'}
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)]">
           <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] font-medium">
-            <TrendingUp className="w-3.5 h-3.5 text-violet-500" />
+            <TrendingUp className="w-4 h-4 text-violet-500" />
             <span>{language === 'hi' ? 'न्यूनतम स्कोर' : 'Cohort Floor'}</span>
           </div>
-          <div className="mt-1 text-xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
+          <div className="mt-2 text-2xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)]">
             {minScore} <span className="text-xs font-normal text-[var(--color-text-muted)]">/ 15</span>
           </div>
-          <div className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold mt-0.5">
+          <div className="text-xs text-blue-600 dark:text-blue-400 font-semibold mt-1">
             {Math.round((minScore / 15) * 100)}% {language === 'hi' ? 'मजबूत आधार' : 'Strong baseline'}
           </div>
         </div>
       </div>
 
       {/* Main Score Distribution Histogram */}
-      <div className="space-y-3 pt-2">
+      <div className="space-y-4 pt-1">
         <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
           {language === 'hi' ? 'अंक वितरण हिस्टोग्राम' : 'Score Distribution Breakdown'}
         </h4>
 
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {distribution.map((item) => {
             const barWidth = Math.max(Math.round((item.count / maxCount) * 100), 8);
             const isFlawless = item.score === 15;
@@ -148,15 +148,15 @@ export function ScoreDistributionChart({
             return (
               <div
                 key={item.score}
-                className="p-3 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] transition-all hover:border-indigo-500/30"
+                className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] transition-all hover:border-indigo-500/30"
               >
-                <div className="flex items-center justify-between text-xs mb-1.5">
-                  <div className="flex items-center gap-2 font-semibold text-[var(--color-text-primary)]">
+                <div className="flex items-center justify-between text-xs sm:text-sm mb-2">
+                  <div className="flex items-center gap-2.5 font-semibold text-[var(--color-text-primary)]">
                     <span
-                      className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold ${
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold ${
                         isFlawless
-                          ? 'bg-emerald-600 text-white'
-                          : 'bg-indigo-600 text-white'
+                          ? 'bg-emerald-600 text-white shadow-xs'
+                          : 'bg-indigo-600 text-white shadow-xs'
                       }`}
                     >
                       {item.score}
@@ -164,20 +164,20 @@ export function ScoreDistributionChart({
                     <span>
                       {item.score} / 15 ({Math.round((item.score / 15) * 100)}%)
                     </span>
-                    <span className="text-[10px] text-[var(--color-text-muted)] font-normal hidden sm:inline">
+                    <span className="text-xs text-[var(--color-text-muted)] font-normal hidden sm:inline">
                       • {item.tier}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2.5">
                     <span className="font-bold text-[var(--color-text-primary)]">
                       {item.count}{' '}
-                      <span className="text-[10px] text-[var(--color-text-muted)] font-normal">
+                      <span className="text-xs font-normal text-[var(--color-text-muted)]">
                         {language === 'hi' ? 'छात्र' : 'students'}
                       </span>
                     </span>
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                      className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${
                         isFlawless
                           ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
                           : 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20'
@@ -208,30 +208,30 @@ export function ScoreDistributionChart({
 
       {/* Category Performance Breakdown */}
       {categoryPerformance.length > 0 && (
-        <div className="pt-4 border-t border-[var(--color-border-subtle)] space-y-3">
+        <div className="pt-5 border-t border-[var(--color-border-subtle)] space-y-4">
           <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)]">
             {language === 'hi' ? 'श्रेणीवार सटीकता एवं समझ' : 'Cognitive Domain Accuracy Breakdown'}
           </h4>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {categoryPerformance.map((cat) => (
               <div
                 key={cat.category}
-                className="p-3.5 rounded-xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] flex flex-col justify-between"
+                className="p-4 sm:p-5 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-border-subtle)] flex flex-col justify-between space-y-3"
               >
                 <div>
-                  <div className="flex items-center justify-between text-xs font-semibold text-[var(--color-text-primary)] mb-1">
+                  <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-[var(--color-text-primary)] mb-1">
                     <span>{language === 'hi' ? cat.labelHi : cat.label}</span>
                     <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                       {cat.accuracyPercent}%
                     </span>
                   </div>
-                  <p className="text-[11px] text-[var(--color-text-muted)]">
+                  <p className="text-xs text-[var(--color-text-muted)]">
                     {cat.correctCount} / {cat.totalAnswered} {language === 'hi' ? 'सही उत्तर' : 'correct answers'}
                   </p>
                 </div>
 
-                <div className="w-full h-2 bg-[var(--color-surface)] rounded-full overflow-hidden mt-3 border border-[var(--color-border-subtle)]">
+                <div className="w-full h-2.5 bg-[var(--color-surface)] rounded-full overflow-hidden border border-[var(--color-border-subtle)]">
                   <div
                     className="h-full bg-emerald-500 rounded-full transition-all duration-500"
                     style={{ width: `${cat.accuracyPercent}%` }}

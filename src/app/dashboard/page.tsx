@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Header } from '@/components/teacher/Header';
 import { DashboardCards } from '@/components/teacher/DashboardCards';
 import { StudentTable, StudentListItem } from '@/components/teacher/StudentTable';
-import { Plus, Search, Filter, RefreshCw, BarChart3, FileText, Sparkles } from 'lucide-react';
+import { Plus, Search, Filter, RefreshCw, BarChart3, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
 
@@ -104,45 +104,37 @@ export default function TeacherDashboard() {
           </div>
         </div>
 
-        {/* Cohort Analytics & Insights Quick Access Banner */}
+        {/* Cohort Analytics Quick Access Card */}
         <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-indigo-950 via-indigo-900 to-violet-950 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
                 <Sparkles className="w-3 h-3 text-amber-300" />
-                {language === 'hi' ? 'डेटा विश्लेषण केंद्र' : 'Live Data Intelligence'}
+                {language === 'hi' ? 'डेटा विश्लेषण केंद्र' : 'Live Cohort Intelligence'}
               </span>
               <span className="text-xs text-indigo-200">
-                {language === 'hi' ? '7 मुख्य चार्ट्स एवं अकादमिक रिपोर्ट' : '7 Publication Figures & Reports'}
+                {language === 'hi' ? '7 मुख्य चार्ट्स एवं संकाय अनुशंसा' : '7 Publication Figures & Stream Guidance'}
               </span>
             </div>
             <h2 className="text-base sm:text-lg font-[var(--font-heading)] font-bold text-white">
               {language === 'hi'
-                ? 'कक्षा समूह विश्लेषण, चार्ट्स एवं अकादमिक रिपोर्ट'
-                : 'Cohort Analytics, Visual Charts & Academic Report'}
+                ? 'कक्षा समूह विश्लेषण एवं विज़ुअलाइज़ेशन'
+                : 'Cohort Analytics & Visual Charts'}
             </h2>
             <p className="text-xs text-indigo-200/90 max-w-2xl leading-relaxed">
               {language === 'hi'
                 ? 'लोकल मशीन पर स्क्रिप्ट चलाए बिना, सीधे वेबसाइट पर विषयगत जिज्ञासा, 100% अभिरुचि अंक वितरण, व्यावहारिक नवाचार और 11वीं संकाय मार्गदर्शन देखें।'
-                : 'Access cohort charts, cognitive score distributions, empirical innovations, and senior secondary stream recommendations directly in the portal.'}
+                : 'Interactive cohort analytics, cognitive score distributions, empirical innovations, and senior secondary stream recommendations in one clean view.'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
+          <div className="shrink-0">
             <Link
               href="/dashboard/analytics"
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white text-indigo-950 font-bold text-xs hover:bg-indigo-50 shadow-md transition-all active:scale-[0.98]"
             >
               <BarChart3 className="w-4 h-4 text-indigo-600" />
-              <span>{language === 'hi' ? 'चार्ट्स और विश्लेषण देखें' : 'View Analytics & Charts'}</span>
-            </Link>
-
-            <Link
-              href="/dashboard/report"
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-indigo-800/80 hover:bg-indigo-800 border border-indigo-700 text-white font-semibold text-xs transition-colors"
-            >
-              <FileText className="w-4 h-4" />
-              <span>{language === 'hi' ? 'पूर्ण रिपोर्ट' : 'Full Report'}</span>
+              <span>{language === 'hi' ? 'एनालिटिक्स और चार्ट्स देखें' : 'Explore Analytics & Charts'}</span>
             </Link>
           </div>
         </div>

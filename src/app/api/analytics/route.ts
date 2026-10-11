@@ -9,8 +9,6 @@ import {
   getStandardizedDreamCareer,
   deduceRecommendedStream,
 } from '@/lib/utils/academic-insights';
-import fs from 'fs';
-import path from 'path';
 
 function getOption(qDef: any, val: string): { label: string; labelHi?: string; value: string } | undefined {
   if (!qDef || !Array.isArray(qDef.options)) return undefined;
@@ -423,19 +421,6 @@ export async function GET(request: NextRequest) {
     };
   });
 
-  // Check if precompiled docx report is available on disk
-  let hasDocxReport = false;
-  const docxReportName = 'STUDENTS_INTERESTS_REPORT.docx';
-  const sapanaDocx = path.join(process.cwd(), 'db', 'sapana', 'STUDENTS_INTERESTS_REPORT.docx');
-  const gaganDocx = path.join(process.cwd(), 'db', 'gagan-sir-stduents', 'STUDENTS_INTERESTS_REPORT.docx');
-  if (teacher.email.includes('sapana') && fs.existsSync(sapanaDocx)) {
-    hasDocxReport = true;
-  } else if (teacher.email.includes('gagan') && fs.existsSync(gaganDocx)) {
-    hasDocxReport = true;
-  } else if (fs.existsSync(sapanaDocx) || fs.existsSync(gaganDocx)) {
-    hasDocxReport = true;
-  }
-
   return NextResponse.json({
     cohort: {
       totalStudents,
@@ -465,7 +450,5 @@ export async function GET(request: NextRequest) {
     },
     innovations,
     roster,
-    hasDocxReport,
-    docxReportName,
   });
 }

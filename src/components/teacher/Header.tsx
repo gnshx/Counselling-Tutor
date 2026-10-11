@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, UserCheck, X, Compass, Users, BarChart3, FileText } from 'lucide-react';
+import { LogOut, UserCheck, X, Compass, Users, BarChart3 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/context/LanguageContext';
@@ -42,21 +42,15 @@ export function Header({ teacherName = 'Teacher', schoolName, onLogout }: Header
   const navItems = [
     {
       href: '/dashboard',
-      label: language === 'hi' ? 'विद्यार्थी सूची' : 'Students',
+      label: language === 'hi' ? 'विद्यार्थी' : 'Students',
       icon: Users,
       isActive: pathname === '/dashboard' || pathname.startsWith('/dashboard/students'),
     },
     {
       href: '/dashboard/analytics',
-      label: language === 'hi' ? 'डेटा विश्लेषण और चार्ट' : 'Cohort Analytics',
+      label: language === 'hi' ? 'एनालिटिक्स' : 'Analytics',
       icon: BarChart3,
       isActive: pathname === '/dashboard/analytics',
-    },
-    {
-      href: '/dashboard/report',
-      label: language === 'hi' ? 'अकादमिक रिपोर्ट' : 'Academic Report',
-      icon: FileText,
-      isActive: pathname === '/dashboard/report',
     },
   ];
 

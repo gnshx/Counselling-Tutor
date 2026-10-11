@@ -33,7 +33,7 @@ export function ChartBarVertical({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl p-6 text-center text-xs text-[var(--color-text-muted)]">
+      <div className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl p-8 text-center text-xs text-[var(--color-text-muted)]">
         {language === 'hi' ? 'कोई डेटा उपलब्ध नहीं है' : 'No data available'}
       </div>
     );
@@ -42,13 +42,13 @@ export function ChartBarVertical({
   const maxVal = Math.max(...data.map((d) => (viewMode === 'count' ? d.count : d.percent)), 1);
 
   return (
-    <div className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl p-5 sm:p-6 shadow-xs transition-all">
+    <div className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl p-6 sm:p-8 shadow-xs transition-all space-y-6">
       {/* Chart Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-[var(--color-border-subtle)]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[var(--color-border-subtle)]">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {figureNumber && (
-              <span className="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[11px] font-bold tracking-wide uppercase">
+              <span className="px-2.5 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-wide uppercase">
                 {figureNumber}
               </span>
             )}
@@ -57,7 +57,7 @@ export function ChartBarVertical({
             </h3>
           </div>
           {subtitle && (
-            <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+            <p className="text-xs text-[var(--color-text-secondary)] mt-1 max-w-2xl leading-relaxed">
               {subtitle}
             </p>
           )}
@@ -68,7 +68,7 @@ export function ChartBarVertical({
           <button
             type="button"
             onClick={() => setViewMode('count')}
-            className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
               viewMode === 'count'
                 ? 'bg-[var(--color-surface)] text-[var(--color-text-primary)] shadow-xs'
                 : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
@@ -79,7 +79,7 @@ export function ChartBarVertical({
           <button
             type="button"
             onClick={() => setViewMode('percent')}
-            className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
               viewMode === 'percent'
                 ? 'bg-[var(--color-surface)] text-[var(--color-text-primary)] shadow-xs'
                 : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
@@ -93,14 +93,14 @@ export function ChartBarVertical({
       {/* Vertical Bars Visualization Container */}
       <div className="relative pt-6 pb-2">
         {/* Background Grid Lines */}
-        <div className="absolute inset-x-0 top-6 bottom-16 flex flex-col justify-between pointer-events-none opacity-20">
+        <div className="absolute inset-x-0 top-6 bottom-16 flex flex-col justify-between pointer-events-none opacity-25">
           <div className="border-b border-[var(--color-border-subtle)] w-full" />
           <div className="border-b border-[var(--color-border-subtle)] w-full" />
           <div className="border-b border-[var(--color-border-subtle)] w-full" />
         </div>
 
         {/* Bars Display */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 sm:gap-3 items-end h-64 sm:h-72">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-3 sm:gap-4 items-end h-68 sm:h-76">
           {data.map((item, idx) => {
             const currentVal = viewMode === 'count' ? item.count : item.percent;
             const heightPercent = Math.max(Math.round((currentVal / maxVal) * 100), 8);
@@ -116,11 +116,11 @@ export function ChartBarVertical({
               >
                 {/* Tooltip on Hover */}
                 {isHovered && (
-                  <div className="absolute -top-12 z-20 px-3 py-1.5 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border-subtle)] shadow-lg text-center whitespace-nowrap pointer-events-none animate-in fade-in zoom-in-95 duration-150">
+                  <div className="absolute -top-14 z-20 px-3.5 py-2 rounded-xl bg-[var(--color-surface-raised)] border border-[var(--color-border-subtle)] shadow-xl text-center whitespace-nowrap pointer-events-none animate-in fade-in zoom-in-95 duration-150">
                     <div className="text-xs font-bold text-[var(--color-text-primary)]">
                       {item.count} {language === 'hi' ? 'विद्यार्थी' : 'students'} ({item.percent}%)
                     </div>
-                    <div className="text-[10px] text-[var(--color-text-muted)] truncate max-w-[150px]">
+                    <div className="text-[10px] text-[var(--color-text-muted)] truncate max-w-[160px] mt-0.5">
                       {language === 'hi' && item.labelHi ? item.labelHi : item.label}
                     </div>
                   </div>
@@ -128,7 +128,7 @@ export function ChartBarVertical({
 
                 {/* Value on top of bar */}
                 <div
-                  className={`text-[11px] font-bold mb-1.5 transition-transform ${
+                  className={`text-xs font-bold mb-2 transition-transform ${
                     isHovered
                       ? 'text-indigo-600 dark:text-indigo-400 scale-110'
                       : 'text-[var(--color-text-secondary)]'
@@ -137,14 +137,14 @@ export function ChartBarVertical({
                   {viewMode === 'count' ? item.count : `${item.percent}%`}
                 </div>
 
-                {/* Animated Bar */}
-                <div className="w-full max-w-[42px] sm:max-w-[48px] bg-[var(--color-surface-soft)] rounded-xl overflow-hidden flex items-end h-full p-0.5">
+                {/* Animated Bar with clean track */}
+                <div className="w-full max-w-[44px] sm:max-w-[50px] bg-[var(--color-surface-soft)] rounded-xl overflow-hidden flex items-end h-full p-1 border border-[var(--color-border-subtle)]">
                   <div
-                    className="w-full rounded-lg transition-all duration-500 ease-out relative"
+                    className="w-full rounded-lg transition-all duration-500 ease-out relative shadow-sm"
                     style={{
                       height: `${heightPercent}%`,
                       backgroundColor: barBg,
-                      opacity: hoveredIndex !== null && !isHovered ? 0.45 : 1,
+                      opacity: hoveredIndex !== null && !isHovered ? 0.4 : 1,
                       transform: isHovered ? 'scaleY(1.02)' : 'none',
                       transformOrigin: 'bottom',
                     }}
@@ -154,9 +154,9 @@ export function ChartBarVertical({
                 </div>
 
                 {/* X-Axis Label */}
-                <div className="mt-2 text-center w-full px-0.5">
+                <div className="mt-3 text-center w-full px-1">
                   <p
-                    className={`text-[10px] sm:text-[11px] leading-tight font-medium transition-colors line-clamp-2 ${
+                    className={`text-[11px] leading-snug font-medium transition-colors line-clamp-2 ${
                       isHovered
                         ? 'text-indigo-600 dark:text-indigo-400 font-semibold'
                         : 'text-[var(--color-text-secondary)]'
@@ -173,14 +173,14 @@ export function ChartBarVertical({
       </div>
 
       {/* Footer Info */}
-      <div className="mt-4 pt-3 border-t border-[var(--color-border-subtle)] flex items-center justify-between text-[11px] text-[var(--color-text-muted)]">
+      <div className="pt-4 border-t border-[var(--color-border-subtle)] flex items-center justify-between text-xs text-[var(--color-text-muted)]">
         <span>
           {language === 'hi'
             ? `कुल विद्यार्थी: ${totalCohort || data.reduce((a, b) => Math.max(a, b.count), 0)} (बहु-विकल्प चयन)`
             : `Cohort N = ${totalCohort || data.reduce((a, b) => Math.max(a, b.count), 0)} (Multi-Select Distribution)`}
         </span>
-        <span className="italic">
-          {language === 'hi' ? 'उच्चतम प्राथमिकता क्रम में' : 'Ranked by frequency'}
+        <span className="font-medium">
+          {language === 'hi' ? 'उच्चतम आवृत्ति अनुसार क्रमबद्ध' : 'Ranked by frequency'}
         </span>
       </div>
     </div>
