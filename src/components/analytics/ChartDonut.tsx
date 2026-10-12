@@ -74,7 +74,7 @@ export function ChartDonut({
       </div>
 
       {/* Content: Chart + Legend */}
-      <div className="flex flex-col md:flex-row items-center justify-center gap-8 py-3">
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-14 py-4">
         {/* SVG Donut */}
         <div className="relative shrink-0 flex items-center justify-center">
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="rotate-[-90deg]">
@@ -111,7 +111,7 @@ export function ChartDonut({
                 <span className="text-3xl font-bold text-[var(--color-text-primary)] font-[var(--font-heading)] leading-none">
                   {data[hoveredIdx].percent}%
                 </span>
-                <span className="text-xs font-semibold text-[var(--color-text-secondary)] mt-1.5 truncate max-w-[120px]">
+                <span className="text-xs font-semibold text-[var(--color-text-secondary)] mt-1.5 truncate max-w-[140px]">
                   {data[hoveredIdx].count} {language === 'hi' ? 'विद्यार्थी' : 'students'}
                 </span>
               </>
@@ -129,21 +129,21 @@ export function ChartDonut({
         </div>
 
         {/* Legend */}
-        <div className="flex-1 w-full space-y-3 max-w-md">
+        <div className="flex-1 w-full max-w-2xl space-y-3">
           {data.map((item, idx) => {
             const isHovered = hoveredIdx === idx;
             return (
               <div
                 key={item.id}
-                className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
+                className={`flex items-center justify-between gap-4 p-3.5 sm:p-4 rounded-xl border transition-all cursor-pointer ${
                   isHovered
-                    ? 'bg-[var(--color-surface-soft)] border-indigo-500/40 shadow-xs scale-[1.01]'
+                    ? 'bg-[var(--color-surface-soft)] border-indigo-500/40 shadow-xs scale-[1.005]'
                     : 'bg-[var(--color-surface)] border-[var(--color-border-subtle)] hover:bg-[var(--color-surface-soft)]/60'
                 }`}
                 onMouseEnter={() => setHoveredIdx(idx)}
                 onMouseLeave={() => setHoveredIdx(null)}
               >
-                <div className="flex items-center gap-3 min-w-0">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
                   <span
                     className="w-3.5 h-3.5 rounded-md shrink-0 transition-transform shadow-xs"
                     style={{
@@ -151,13 +151,16 @@ export function ChartDonut({
                       transform: isHovered ? 'scale(1.2)' : 'none',
                     }}
                   />
-                  <span className="text-xs sm:text-sm font-semibold text-[var(--color-text-primary)] truncate">
+                  <span className="text-xs sm:text-sm font-semibold text-[var(--color-text-primary)] leading-snug break-words">
                     {language === 'hi' && item.labelHi ? item.labelHi : item.label}
                   </span>
                 </div>
-                <div className="flex items-center gap-2.5 shrink-0">
+                <div className="flex items-center gap-2.5 shrink-0 ml-2">
                   <span className="text-xs sm:text-sm font-bold text-[var(--color-text-primary)]">
-                    {item.count}
+                    {item.count}{' '}
+                    <span className="text-[10px] font-normal text-[var(--color-text-muted)]">
+                      {language === 'hi' ? 'छात्र' : 'students'}
+                    </span>
                   </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-[var(--color-surface-soft)] text-xs font-bold text-[var(--color-text-secondary)] border border-[var(--color-border-subtle)]">
                     {item.percent}%

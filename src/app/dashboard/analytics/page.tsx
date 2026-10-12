@@ -260,78 +260,76 @@ export default function CohortAnalyticsPage() {
                 totalCohort={cohort.totalStudents}
               />
 
-              {/* Row 2: Joyful Activities (Figure 2) & Superpowers (Figure 3) */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <ChartBarHorizontal
-                  figureNumber="Figure 2"
-                  title={
-                    language === 'hi'
-                      ? 'आनंददायक गतिविधियाँ एवं रुचियाँ (प्रश्न 2)'
-                      : 'Fulfilling Activities & Extracurricular Pursuits (Question 2)'
-                  }
-                  subtitle={
-                    language === 'hi'
-                      ? 'पहेलियाँ हल करना, प्रकृति का अध्ययन, खेल-कूद और निर्माण कार्य'
-                      : 'Self-selected activities where students experience high flow state and fulfillment'
-                  }
-                  data={charts.joyfulActivities || []}
-                  barColor="#059669"
-                  totalCohort={cohort.totalStudents}
-                />
+              {/* Figure 2: Joyful Activities */}
+              <ChartBarHorizontal
+                figureNumber="Figure 2"
+                title={
+                  language === 'hi'
+                    ? 'आनंददायक गतिविधियाँ एवं रुचियाँ (प्रश्न 2)'
+                    : 'Fulfilling Activities & Extracurricular Pursuits (Question 2)'
+                }
+                subtitle={
+                  language === 'hi'
+                    ? 'पहेलियाँ हल करना, प्रकृति का अध्ययन, खेल-कूद और निर्माण कार्य'
+                    : 'Self-selected activities where students experience high flow state and fulfillment'
+                }
+                data={charts.joyfulActivities || []}
+                barColor="#059669"
+                totalCohort={cohort.totalStudents}
+              />
 
-                <ChartBarHorizontal
-                  figureNumber="Figure 3"
-                  title={
-                    language === 'hi'
-                      ? 'विशिष्ट खूबियाँ एवं स्वाभाविक क्षमताएँ (प्रश्न 3)'
-                      : 'Natural Strengths & Unique Superpowers (Question 3)'
-                  }
-                  subtitle={
-                    language === 'hi'
-                      ? 'समस्या समाधान, नेतृत्व, तकनीकी कौशल और सहानुभूति'
-                      : 'Core self-identified competencies and cognitive or interpersonal strengths'
-                  }
-                  data={charts.superpowers || []}
-                  barColor="#7c3aed"
-                  totalCohort={cohort.totalStudents}
-                />
-              </div>
+              {/* Figure 3: Superpowers & Natural Strengths */}
+              <ChartBarHorizontal
+                figureNumber="Figure 3"
+                title={
+                  language === 'hi'
+                    ? 'विशिष्ट खूबियाँ एवं स्वाभाविक क्षमताएँ (प्रश्न 3)'
+                    : 'Natural Strengths & Unique Superpowers (Question 3)'
+                }
+                subtitle={
+                  language === 'hi'
+                    ? 'समस्या समाधान, नेतृत्व, तकनीकी कौशल और सहानुभूति'
+                    : 'Core self-identified competencies and cognitive or interpersonal strengths'
+                }
+                data={charts.superpowers || []}
+                barColor="#7c3aed"
+                totalCohort={cohort.totalStudents}
+              />
 
-              {/* Row 3: Work Environment (Figure 4) & Career Trajectories (Figure 5) */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <ChartDonut
-                  figureNumber="Figure 4"
-                  title={
-                    language === 'hi'
-                      ? 'पसंदीदा कार्य वातावरण एवं टीम सहयोग (प्रश्न 4)'
-                      : 'Preferred Work Environment & Collaboration Dynamics (Question 4)'
-                  }
-                  subtitle={
-                    language === 'hi'
-                      ? 'समूह कार्य, स्वतंत्र कार्य अथवा दोनों का संतुलित मिश्रण'
-                      : 'Workplace modality preference demonstrating social collaboration dynamics'
-                  }
-                  data={charts.workEnvironment || []}
-                  totalCohort={cohort.totalStudents}
-                />
+              {/* Figure 4: Work Environment & Collaboration Dynamics */}
+              <ChartDonut
+                figureNumber="Figure 4"
+                title={
+                  language === 'hi'
+                    ? 'पसंदीदा कार्य वातावरण एवं टीम सहयोग (प्रश्न 4)'
+                    : 'Preferred Work Environment & Collaboration Dynamics (Question 4)'
+                }
+                subtitle={
+                  language === 'hi'
+                    ? 'समूह कार्य, स्वतंत्र कार्य अथवा दोनों का संतुलित मिश्रण'
+                    : 'Workplace modality preference demonstrating social collaboration dynamics'
+                }
+                data={charts.workEnvironment || []}
+                totalCohort={cohort.totalStudents}
+              />
 
-                <ChartBarHorizontal
-                  figureNumber="Figure 5"
-                  title={
-                    language === 'hi'
-                      ? 'भावी करियर क्षेत्र एवं संभावनाएँ (प्रश्न 6)'
-                      : 'Career Trajectories Selected for Further Exploration (Question 6)'
-                  }
-                  subtitle={
-                    language === 'hi'
-                      ? 'कृषि, व्यवसाय, तकनीक, इंजीनियरिंग और सामाजिक सेवा'
-                      : 'Broad professional disciplines targeted by students for vocational exploration'
-                  }
-                  data={charts.careerTrajectories || []}
-                  barColor="#e11d48"
-                  totalCohort={cohort.totalStudents}
-                />
-              </div>
+              {/* Figure 5: Career Trajectories */}
+              <ChartBarHorizontal
+                figureNumber="Figure 5"
+                title={
+                  language === 'hi'
+                    ? 'भावी करियर क्षेत्र एवं संभावनाएँ (प्रश्न 6)'
+                    : 'Career Trajectories Selected for Further Exploration (Question 6)'
+                }
+                subtitle={
+                  language === 'hi'
+                    ? 'कृषि, व्यवसाय, तकनीक, इंजीनियरिंग और सामाजिक सेवा'
+                    : 'Broad professional disciplines targeted by students for vocational exploration'
+                }
+                data={charts.careerTrajectories || []}
+                barColor="#e11d48"
+                totalCohort={cohort.totalStudents}
+              />
 
               {/* Figure 6: Cognitive Aptitude Assessment Distribution */}
               <ScoreDistributionChart
@@ -343,24 +341,23 @@ export default function CohortAnalyticsPage() {
                 totalStudents={cohort.totalStudents || 0}
               />
 
-              {/* Row 4: Support & Mentorship Needs (Figure 7) + Educator Ratings */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <ChartBarHorizontal
-                  figureNumber="Figure 7"
-                  title={
-                    language === 'hi'
-                      ? 'विद्यार्थियों द्वारा वांछित मार्गदर्शन एवं विकास अवसर (प्रश्न 10)'
-                      : 'Priority Growth Opportunities & Mentorship Desired by Students (Question 10)'
-                  }
-                  subtitle={
-                    language === 'hi'
-                      ? 'कोडिंग तकनीक, उद्योग विशेषज्ञों से सलाह, प्रयोगशाला कार्य और कार्यशालाएं'
-                      : 'Targeted institutional supports requested by learners to unlock their highest potential'
-                  }
-                  data={charts.growthNeeds || []}
-                  barColor="#0284c7"
-                  totalCohort={cohort.totalStudents}
-                />
+              {/* Figure 7: Support & Mentorship Needs */}
+              <ChartBarHorizontal
+                figureNumber="Figure 7"
+                title={
+                  language === 'hi'
+                    ? 'विद्यार्थियों द्वारा वांछित मार्गदर्शन एवं विकास अवसर (प्रश्न 10)'
+                    : 'Priority Growth Opportunities & Mentorship Desired by Students (Question 10)'
+                }
+                subtitle={
+                  language === 'hi'
+                    ? 'कोडिंग तकनीक, उद्योग विशेषज्ञों से सलाह, प्रयोगशाला कार्य और कार्यशालाएं'
+                    : 'Targeted institutional supports requested by learners to unlock their highest potential'
+                }
+                data={charts.growthNeeds || []}
+                barColor="#0284c7"
+                totalCohort={cohort.totalStudents}
+              />
 
                 {charts.teacherRatings && charts.teacherRatings.length > 0 ? (
                   <div className="bg-[var(--color-surface)] border border-[var(--color-border-subtle)] rounded-2xl p-6 sm:p-7 shadow-xs space-y-6 flex flex-col justify-between">
@@ -422,7 +419,6 @@ export default function CohortAnalyticsPage() {
                     </p>
                   </div>
                 )}
-              </div>
 
               {/* Student Practical Innovations Showcase */}
               <StudentInnovationsShowcase innovations={innovations} />
