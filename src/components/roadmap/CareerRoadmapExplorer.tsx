@@ -7,12 +7,14 @@ import {
   GitFork,
   LayoutGrid,
   HelpCircle,
+  Layers,
 } from 'lucide-react';
 import {
   CareerStreamOption,
   CAREER_ROADMAP_ITEMS,
   STREAM_CATEGORIES,
 } from '@/lib/data/career-roadmap-data';
+import { RoadmapOverviewDiagram } from '@/components/roadmap/RoadmapOverviewDiagram';
 import { RoadmapTreeView } from '@/components/roadmap/RoadmapTreeView';
 import { RoadmapCardGrid } from '@/components/roadmap/RoadmapCardGrid';
 import { RoadmapDetailModal } from '@/components/roadmap/RoadmapDetailModal';
@@ -24,7 +26,7 @@ export function CareerRoadmapExplorer() {
 
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [viewMode, setViewMode] = useState<'tree' | 'grid'>('tree');
+  const [viewMode, setViewMode] = useState<'diagram' | 'tree' | 'grid'>('diagram');
   const [selectedItem, setSelectedItem] = useState<CareerStreamOption | null>(null);
 
   // Filter items according to search and category
@@ -121,6 +123,18 @@ export function CareerRoadmapExplorer() {
             <div className="flex items-center gap-1 p-1 bg-[var(--color-surface-soft)] rounded-xl border border-[var(--color-border-subtle)]">
               <button
                 type="button"
+                onClick={() => setViewMode('diagram')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  viewMode === 'diagram'
+                    ? 'bg-indigo-600 text-white shadow-xs'
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>{isHindi ? 'चित्रमय नक्शा' : 'Diagram Map'}</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => setViewMode('tree')}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   viewMode === 'tree'
@@ -129,7 +143,7 @@ export function CareerRoadmapExplorer() {
                 }`}
               >
                 <GitFork className="w-3.5 h-3.5" />
-                <span>{isHindi ? 'फ्लोचार्ट दृश्य' : 'Flowchart Tree'}</span>
+                <span>{isHindi ? 'पिलर्स फ्लो' : 'Stream Pillars'}</span>
               </button>
               <button
                 type="button"
@@ -141,7 +155,7 @@ export function CareerRoadmapExplorer() {
                 }`}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
-                <span>{isHindi ? 'कार्ड दृश्य' : 'All Cards'}</span>
+                <span>{isHindi ? 'सभी कार्ड्स' : 'All Cards'}</span>
               </button>
             </div>
 
@@ -178,7 +192,9 @@ export function CareerRoadmapExplorer() {
       </div>
 
       {/* Main View Presentation */}
-      {viewMode === 'tree' && activeCategory === 'all' && !searchQuery ? (
+      {viewMode === 'diagram' && activeCategory === 'all' && !searchQuery ? (
+        <RoadmapOverviewDiagram onSelectItem={(item) => setSelectedItem(item)} />
+      ) : viewMode === 'tree' && activeCategory === 'all' && !searchQuery ? (
         <RoadmapTreeView onSelectItem={(item) => setSelectedItem(item)} />
       ) : (
         <div className="space-y-4">
@@ -191,6 +207,13 @@ export function CareerRoadmapExplorer() {
             {searchQuery && (
               <span className="text-indigo-600 dark:text-indigo-400 font-medium">
                 {isHindi ? `खोज परिणाम: "${searchQuery}"` : `Matches for: "${searchQuery}"`}
+              </span>
+            )}
+            {activeCategory !== 'all' && !searchQuery && (
+              <span className="text-indigo-600 dark:text-indigo-400 font-medium">
+                {isHindi
+                  ? `श्रेणी: ${STREAM_CATEGORIES.find((c) => c.key === activeCategory)?.titleHi || activeCategory}`
+                  : `Filtered by: ${STREAM_CATEGORIES.find((c) => c.key === activeCategory)?.title || activeCategory}`}
               </span>
             )}
           </div>
